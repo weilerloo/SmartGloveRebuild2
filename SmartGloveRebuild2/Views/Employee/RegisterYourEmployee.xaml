@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartGloveRebuild2.Views.Employee.RegisterYourEmployee"
+             Shell.NavBarIsVisible="False"
+             Title="RegisterYourEmployee">
+    <ScrollView>
+        <VerticalStackLayout Margin="20,0,20,20" Spacing="15">
+            <Label Margin="0,80,0,20" Text="Register Your Employee" FontSize="22" FontAttributes="Bold"/>
+            <Frame Padding="10"
+                   BorderColor="Transparent"
+                   Grid.Row="1"
+                   Margin="0,5,0,0">
+                <Grid ColumnDefinitions="50,*" ColumnSpacing="0" RowDefinitions="Auto, Auto">
+                    <Image Source="male.png" Grid.RowSpan="2" VerticalOptions="Center" HeightRequest="30" WidthRequest="50"/>
+                    <Entry Margin="10,5,0,0" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1"/>
+                    <Label Margin="10,0,0,0" VerticalOptions="Center" Grid.Column="1" Grid.Row="0" >Employee ID</Label>
+                </Grid>
+            </Frame>
+            <Frame Padding="10"
+                   BorderColor="Transparent"
+                   Grid.Row="1"
+                   Margin="0,5,0,0">
+                <Grid ColumnDefinitions="50,*" ColumnSpacing="0" RowDefinitions="Auto, Auto">
+                    <Image Source="department.png" Grid.RowSpan="2" VerticalOptions="Center" HeightRequest="30" WidthRequest="50"/>
+                    <Entry Margin="10,5,0,0" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1"/>
+                    <Label Margin="10,0,0,0" VerticalOptions="Center" Grid.Column="1" Grid.Row="0" >Department</Label>
+                </Grid>
+            </Frame>
+            <Frame Padding="10"
+                   BorderColor="Transparent"
+                   Grid.Row="1"
+                   Margin="0,5,0,0">
+                <Grid ColumnDefinitions="50,*" ColumnSpacing="0" RowDefinitions="Auto, Auto">
+                    <Image Source="group.png" Grid.RowSpan="2" VerticalOptions="Center" HeightRequest="30" WidthRequest="50"/>
+                    <Entry Margin="10,5,0,0" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1"/>
+                    <Label Margin="10,0,0,0" VerticalOptions="Center" Grid.Column="1" Grid.Row="0" >Group ID</Label>
+                </Grid>
+            </Frame>
+            <Frame Padding="10"
+                   BorderColor="Transparent"
+                   Grid.Row="1"
+                   Margin="0,5,0,0">
+                <Grid ColumnDefinitions="50,*" ColumnSpacing="0" RowDefinitions="Auto, Auto">
+                    <Image Source="password.png" Grid.RowSpan="2" VerticalOptions="Center" HeightRequest="30" WidthRequest="50"/>
+                    <Entry IsPassword="True" Margin="10,5,0,0" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1"/>
+                    <Label Margin="10,0,0,0" VerticalOptions="Center" Grid.Column="1" Grid.Row="0" >Password</Label>
+                </Grid>
+            </Frame>
+            <Frame Padding="10"
+                   BorderColor="Transparent"
+                   Grid.Row="1"
+                   Margin="0,5,0,0">
+                <Grid ColumnDefinitions="50,*" ColumnSpacing="0" RowDefinitions="Auto, Auto">
+                    <Image Source="password.png" Grid.RowSpan="2" VerticalOptions="Center" HeightRequest="30" WidthRequest="50"/>
+                    <Entry IsPassword="True" Margin="10,5,0,0" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1"/>
+                    <Label Margin="10,0,0,0" VerticalOptions="Center" Grid.Column="1" Grid.Row="0" >Confirm Password</Label>
+                </Grid>
+            </Frame>
+            <Frame Padding="10"
+                   Grid.Row="1"
+                   BorderColor="Transparent"
+                   Margin="0,5,0,0">
+                <Grid ColumnDefinitions="50,*" ColumnSpacing="0" RowDefinitions="Auto, Auto">
+                    <Image Source="secure.png" Grid.RowSpan="2" VerticalOptions="Center" HeightRequest="30" WidthRequest="50"/>
+                    <Entry Margin="10,5,0,0" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1" Grid.RowSpan="1"/>
+                    <Label Margin="10,0,0,0" VerticalOptions="Center" Grid.Column="1" Grid.Row="0" >Security Code</Label>
+                </Grid>
+            </Frame>
+
+            <Button BackgroundColor="{StaticResource Tertiary}" Text="Sign In" Margin="0,70,0,0" HeightRequest="50"/>
+            <Label>Have an Account? Click Here</Label>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

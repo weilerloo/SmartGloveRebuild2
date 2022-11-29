@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartGloveRebuild2.Views.Dashboard.SupervisorDashboardPage"
+             Title="SupervisorDashboardPage">
+    <ScrollView>
+        <Grid BackgroundColor="Transparent">
+
+            <VerticalStackLayout Margin="20,0,20,20" Spacing="20">
+                <Image Source="employee.png" HeightRequest="60" WidthRequest="300" Margin="0,50,0,0"/>
+                <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*" RowSpacing="10">
+                    <Label Grid.Column="0" 
+                           Grid.Row="0" 
+                           FontSize="16" 
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Employee ID</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="0"
+                           Grid.Column="1">
+
+                        <Label HorizontalOptions="Center" >B1080</Label>
+
+
+                    </Frame>
+                    <Label Grid.Column="0" 
+                           Grid.Row="1" 
+                           FontSize="16" 
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Plant</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="1"
+                           Grid.Column="1">
+
+                        <Label HorizontalOptions="Center" >GX2</Label>
+
+
+                    </Frame>
+                    <Label Grid.Column="0" 
+                           Grid.Row="2" 
+                           FontSize="16" 
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Department</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="2"
+                           Grid.Column="1">
+
+                        <Label HorizontalOptions="Center" >STORE</Label>
+
+
+                    </Frame>
+                    <Label Grid.Column="0" 
+                           Grid.Row="3" 
+                           FontSize="16"
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Payroll</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="3"
+                           Grid.Column="1">
+
+                        <Label HorizontalOptions="Center" >SGC</Label>
+
+
+                    </Frame>
+                    <Label Grid.Column="0" 
+                           Grid.Row="4" 
+                           FontSize="16" 
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Total Day of OT's</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="4"
+                           Grid.Column="1">
+
+                        <Label HorizontalOptions="Center" >12 days</Label>
+
+
+                    </Frame>
+                    <Label Grid.Column="0" 
+                           Grid.Row="5" 
+                           FontSize="16" 
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Hours of OT's</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="5"
+                           Grid.Column="1">
+
+                        <Label HorizontalOptions="Center" >21 hours</Label>
+
+
+                    </Frame>
+
+                </Grid>
+                <Button Text="Schedule OT"/>
+
+                <Image Source="sglogo.png" 
+                       HeightRequest="20" 
+                       WidthRequest="300" 
+                       Margin="0,120,0,0"/>
+            </VerticalStackLayout>
+
+        </Grid>
+
+    </ScrollView>
+</ContentPage>

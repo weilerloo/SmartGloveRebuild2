@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartGloveRebuild2.Views.Employee.RejectedOT"
+             Title="Rejected OT">
+    <ScrollView>
+
+
+        <VerticalStackLayout
+                    Padding="15">
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*,Auto">
+                <Label 
+                Text="Reason of Rejection!"
+                Margin="10,10,0,0"
+                FontSize="Large"
+                VerticalOptions="Center" 
+                HorizontalOptions="Start"/>
+                <Label 
+                Text="March"
+                Grid.Row="1"
+                Margin="10,0,0,0"
+                Padding="15"
+                FontSize="19"
+                VerticalOptions="Start"
+                HorizontalOptions="Start"/>
+                <ImageButton Grid.Row="1" Grid.Column="2" Source="leftpage.png" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="0,0,5,0"/>
+                <ImageButton Grid.Row="1" Grid.Column="2" Source="leftpage.png" Opacity="10" Rotation="180" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="70,0,20,0"/>
+            
+            </Grid>
+                <Frame Margin="-20,0,-20,0"
+                       BorderColor="Black"
+                   Grid.Row="2">
+                    <Grid ColumnDefinitions="*,*">
+                        <Label
+                           FontSize="16" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center">Date</Label>
+                        <Label
+                            Grid.Column="1"
+                           FontSize="16" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center">Reason</Label>
+                    </Grid>
+
+                </Frame>
+        </VerticalStackLayout>
+
+    </ScrollView>
+</ContentPage>
