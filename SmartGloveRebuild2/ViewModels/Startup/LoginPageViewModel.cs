@@ -19,7 +19,7 @@ namespace SmartGloveRebuild2.ViewModels.Startup
         [ObservableProperty]
         private string _employeeNumber;
 
-        [ObservableProperty]
+        [ObservableProperty]    
         private string _password;
 
 

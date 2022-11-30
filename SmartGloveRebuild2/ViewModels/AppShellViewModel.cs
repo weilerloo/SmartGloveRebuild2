@@ -18,7 +18,17 @@ namespace SmartGloveRebuild2.ViewModels
             {
                 Preferences.Remove(nameof(App.UserDetails));
             }
-            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            if (DeviceInfo.Platform == DevicePlatform.WinUI)
+            {
+                AppShell.Current.Dispatcher.Dispatch(async () =>
+                {
+                    await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                });
+            }
+            else
+            {
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            }
         }
     }
 }
