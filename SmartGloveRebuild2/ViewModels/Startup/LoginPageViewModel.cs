@@ -32,6 +32,12 @@ namespace SmartGloveRebuild2.ViewModels.Startup
 
         #region Commands
         [RelayCommand]
+        private async void GotoLoginPage()
+        {
+            await Shell.Current.GoToAsync(nameof(LoginPage));
+        }
+
+        [RelayCommand]
         async void Login()
         {
             if (!string.IsNullOrWhiteSpace(EmployeeNumber) && !string.IsNullOrWhiteSpace(Password))

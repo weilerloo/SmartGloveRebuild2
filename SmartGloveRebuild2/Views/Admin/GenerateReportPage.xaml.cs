@@ -4,7 +4,7 @@ namespace SmartGloveRebuild2.Views.Admin;
 
 public partial class GenerateReportPage : ContentPage
 {
-	HRGenerateReportViewModel HRGenerateReportViewModel;
+    HRGenerateReportViewModel HRGenerateReportViewModel;
 	public GenerateReportPage()
 	{
 		InitializeComponent();

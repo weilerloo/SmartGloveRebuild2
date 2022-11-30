@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartGloveRebuild2.Views.Startup.SignInPage"
+             xmlns:SignInviewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Startup"
+             Shell.NavBarIsVisible="False"
+             Title="SignInPage">
+    <ScrollView>
+        <VerticalStackLayout Margin="20,0,20,0" Spacing="15">
+            <Image Source="sglogo.png" HeightRequest="200" WidthRequest="300" Margin="0,200,0,0"/>
+            <Button BackgroundColor="{StaticResource Tertiary}" Text="Sign In" Margin="0,180,0,0" HeightRequest="50"/>
+            <Button Text="Log In" HeightRequest="50" Clicked="Button_Clicked"/>
+            <Label>Forget Password?</Label>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

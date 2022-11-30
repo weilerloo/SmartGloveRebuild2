@@ -39,7 +39,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<DisplayGroupViewModel>();
         builder.Services.AddSingleton<CheckCalendarViewModel>();
         builder.Services.AddSingleton<UpdateSlotsViewModel>();
-        builder.Services.AddSingleton<HRGenerateReportViewModel>();
+        builder.Services.AddSingleton<SignInViewModel>();
         return builder.Build();
     }
 }

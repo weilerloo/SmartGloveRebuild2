@@ -48,7 +48,7 @@ namespace SmartGloveRebuild2.ViewModels.Startup
                 if (jsonToken.ValidTo < DateTime.UtcNow)
                 {
                     await Shell.Current.DisplayAlert("User session expired", "Login Again To conitnue", "OK");
-                    await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                    await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
                 }
                 else
                 {
