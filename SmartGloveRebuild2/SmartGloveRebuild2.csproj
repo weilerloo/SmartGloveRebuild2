@@ -58,4 +58,22 @@
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Views\Dashboard\HODDashboardPage.xaml.cs">
+	    <DependentUpon>HODDashboardPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Dashboard\ClerkDashboardPage.xaml.cs">
+	    <DependentUpon>ClerkDashboardPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\Dashboard\HODDashboardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Dashboard\ClerkDashboardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

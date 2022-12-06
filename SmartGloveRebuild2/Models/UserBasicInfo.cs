@@ -34,5 +34,7 @@ namespace SmartGloveRebuild2.Models
         Supervisor,
         HR,
         HOD,
+        Clerk,
+        Technician,
     }
 }

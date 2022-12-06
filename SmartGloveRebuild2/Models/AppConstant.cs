@@ -18,21 +18,24 @@ namespace SmartGloveRebuild2.Models
         {
             AppShell.Current.FlyoutHeader = new FlyoutHeaderControl();
 
-            var studentDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(EmployeeDashboardPage)).FirstOrDefault();
-            if (studentDashboardInfo != null) AppShell.Current.Items.Remove(studentDashboardInfo);
+            var EmployeeDashboard = AppShell.Current.Items.Where(f => f.Route == nameof(EmployeeDashboardPage)).FirstOrDefault();
+            if (EmployeeDashboard != null) AppShell.Current.Items.Remove(EmployeeDashboard);
 
-            var teacherDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(SupervisorDashboardPage)).FirstOrDefault();
-            if (teacherDashboardInfo != null) AppShell.Current.Items.Remove(teacherDashboardInfo);
+            var SupervisorDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(SupervisorDashboardPage)).FirstOrDefault();
+            if (SupervisorDashboardInfo != null) AppShell.Current.Items.Remove(SupervisorDashboardInfo);
 
-            var HODDashboard = AppShell.Current.Items.Where(f => f.Route == nameof(SupervisorDashboardPage)).FirstOrDefault();
+            var HODDashboard = AppShell.Current.Items.Where(f => f.Route == nameof(HODDashboardPage)).FirstOrDefault();
             if (HODDashboard != null) AppShell.Current.Items.Remove(HODDashboard);
 
             var HRDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(HRDashboardPage)).FirstOrDefault();
-            if (HRDashboardInfo != null) AppShell.Current.Items.Remove(HRDashboardInfo);            
+            if (HRDashboardInfo != null) AppShell.Current.Items.Remove(HRDashboardInfo);             
+            
+            var ClerkDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(ClerkDashboardPage)).FirstOrDefault();
+            if (ClerkDashboardInfo != null) AppShell.Current.Items.Remove(ClerkDashboardInfo);            
             
 
 
-            if (App.UserDetails.RoleID == (int)RoleDetails.Employee)
+            if (App.UserDetails.RoleID == (int)RoleDetails.Employee || App.UserDetails.RoleID == (int)RoleDetails.Technician )
             {
                 var flyoutItem = new FlyoutItem()
                 {
@@ -99,19 +102,19 @@ namespace SmartGloveRebuild2.Models
                                 {
                                     Icon = Icons.UpdateSlots,
                                     Title = "Update Slots",
-                                    ContentTemplate = new DataTemplate(typeof(SupervisorDashboardPage)),
+                                    ContentTemplate = new DataTemplate(typeof(UpdateSlotsPage)),  //Its here, in case we need supervisor to update slots
                                 },
                                 new ShellContent
                                 {
                                     Icon = Icons.CheckCalendar,
                                     Title = "Check Calendar",
-                                    ContentTemplate = new DataTemplate(typeof(SupervisorDashboardPage)),
+                                    ContentTemplate = new DataTemplate(typeof(CheckCalendarPage)),
                                 },
                                 new ShellContent
                                 {
                                     Icon = Icons.Groups,
                                     Title = "Groups",
-                                    ContentTemplate = new DataTemplate(typeof(SupervisorDashboardPage)),
+                                    ContentTemplate = new DataTemplate(typeof(DisplayGroupPage)),
                                 },
                                 
                    }
@@ -134,12 +137,66 @@ namespace SmartGloveRebuild2.Models
                 }
             }
 
+            if (App.UserDetails.RoleID == (int)RoleDetails.Clerk)
+            {
+                var flyoutItem = new FlyoutItem()
+                {
+                    Title = "Dashboard Page",
+                    Route = nameof(ClerkDashboardPage),
+                    FlyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems,
+                    Items =
+                    {
+                                new ShellContent
+                                {
+                                    Icon = Icons.Dashboard,
+                                    Title = "Supervisor Dashboard",
+                                    ContentTemplate = new DataTemplate(typeof(ClerkDashboardPage)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.UpdateSlots,
+                                    Title = "Update Slots",
+                                    ContentTemplate = new DataTemplate(typeof(UpdateSlotsPage)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.CheckCalendar,
+                                    Title = "Check Calendar",
+                                    ContentTemplate = new DataTemplate(typeof(CheckCalendarPage)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.Groups,
+                                    Title = "Groups",
+                                    ContentTemplate = new DataTemplate(typeof(DisplayGroupPage)),
+                                },
+
+                   }
+                };
+
+                if (!AppShell.Current.Items.Contains(flyoutItem))
+                {
+                    AppShell.Current.Items.Add(flyoutItem);
+                    if (DeviceInfo.Platform == DevicePlatform.WinUI)
+                    {
+                        AppShell.Current.Dispatcher.Dispatch(async () =>
+                        {
+                            await Shell.Current.GoToAsync($"//{nameof(ClerkDashboardPage)}");
+                        });
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync($"//{nameof(ClerkDashboardPage)}");
+                    }
+                }
+            }
+
             if (App.UserDetails.RoleID == (int)RoleDetails.HOD)
             {
                 var flyoutItem = new FlyoutItem()
                 {
                     Title = "Dashboard Page",
-                    Route = nameof(SupervisorDashboardPage),
+                    Route = nameof(HODDashboardPage),
                     FlyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems,
                     Items =
                     {
@@ -147,19 +204,19 @@ namespace SmartGloveRebuild2.Models
                                 {
                                     Icon = Icons.Dashboard,
                                     Title = "HOD Dashboard",
-                                    ContentTemplate = new DataTemplate(typeof(SupervisorDashboardPage)),
+                                    ContentTemplate = new DataTemplate(typeof(HODDashboardPage)),
                                 },
                                 new ShellContent
                                 {
                                     Icon = Icons.CheckCalendar,
                                     Title = "HOD Check Calendar",
-                                    ContentTemplate = new DataTemplate(typeof(SupervisorDashboardPage)),
+                                    ContentTemplate = new DataTemplate(typeof(CheckCalendarPage)),
                                 },
                                 new ShellContent
                                 {
                                     Icon = Icons.Groups,
                                     Title = "HOD Groups",
-                                    ContentTemplate = new DataTemplate(typeof(SupervisorDashboardPage)),
+                                    ContentTemplate = new DataTemplate(typeof(DisplayGroupPage)),
                                 },
 
                    }

@@ -2,6 +2,7 @@
 using SmartGloveRebuild2.ViewModels.Dashboard;
 using SmartGloveRebuild2.ViewModels.Admin;
 using SmartGloveRebuild2.ViewModels.Startup;
+using SmartGloveRebuild2.ViewModels.Employee;
 using SmartGloveRebuild2.Views.Admin;
 using SmartGloveRebuild2.Views.Dashboard;
 using SmartGloveRebuild2.Views.Employee;

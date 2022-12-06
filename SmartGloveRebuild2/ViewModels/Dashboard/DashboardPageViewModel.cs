@@ -17,7 +17,6 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
         
         public DashboardPageViewModel()
         {
-
             AppShell.Current.FlyoutHeader = new FlyoutHeaderControl();
 
         }

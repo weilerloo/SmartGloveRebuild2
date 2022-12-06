@@ -2,8 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Dashboard.SupervisorDashboardPage"
-             xmlns:calendarvm="clr-namespace:SmartGloveRebuild2.ViewModels"
-             Title="SupervisorDashboardPage">
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             Title="Supervisor Dashboard">
     <ScrollView>
         <Grid BackgroundColor="Transparent">
 
@@ -116,9 +116,14 @@
                     <!--Hour-->
 
                 </Grid>
-                <Button Margin="0,50,0,0" Text="Schedule OT" Command="{Binding GotoScheduleOTCommand}">
+                <Button Margin="0,50,0,0" Text="Check Calender" Command="{Binding CheckCalendarCommand}">
                     <Button.BindingContext>
-                        <calendarvm:ScheduleViewModel/>
+                        <viewmodel:CheckCalendarViewModel/>
+                    </Button.BindingContext>
+                </Button>
+                <Button Margin="0,50,0,0" Text="Schedule OT" Command="{Binding DisplayGroupCommand}">
+                    <Button.BindingContext>
+                        <viewmodel:DisplayGroupViewModel/>
                     </Button.BindingContext>
                 </Button>
                 <Image Source="sglogo.png" 

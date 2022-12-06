@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:model="clr-namespace:SmartGloveRebuild2.Models"
-             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Employee"
              x:DataType="viewmodel:ScheduleViewModel"
              Title="{Binding Title}"
              x:Class="SmartGloveRebuild2.Views.Employee.ScheduleOT"
