@@ -23,13 +23,13 @@ namespace SmartGloveRebuild2.ViewModels
         DateTime now = DateTime.Now;
 
         [ObservableProperty]
-        int month = 1, decreasemonth = 1, year;
+        int month = 1, decreasemonth, increasemonth, year;
 
         [ObservableProperty]
         String lastcurrentmonth;
 
         [ObservableProperty]
-        bool isRefreshing;
+        bool isRefreshing, status = true;
 
         [ObservableProperty]
         CalendarModel selectedDate;
@@ -58,20 +58,64 @@ namespace SmartGloveRebuild2.ViewModels
             await Shell.Current.GoToAsync(nameof(ScheduleOT));
         }
 
+        public int AddMonth()
+        {
+            if(decreasemonth < 0)
+            {
+                status = false;
+            }
+
+            if (status == false)
+            {
+                month = decreasemonth + 1;
+                decreasemonth++;
+                status = true;
+                return month;
+            }
+            else
+            {
+                month = increasemonth + 1;
+                increasemonth++;
+            }
+            return month;
+        }
+        public int ReduceMonth()
+        {
+
+            if (increasemonth > 0)
+            {
+                status = false;
+            }
+
+            if (status == false)
+            {
+                month = increasemonth - 1;
+                increasemonth--;
+                status = true;
+                return month;
+            }
+            else
+            {
+                month = decreasemonth - 1;  // month = 2, increasemonth = 2; 
+                decreasemonth--;
+            }
+            return month;
+        }
+
 
 
         [RelayCommand]
         public void DisplayDays()
         {
-            var month = now.Month;
-            year = now.Year;
+            var month = now.Month;  // Current Date
+            year = now.Year; // 2022
 
             if (month == 12)
             {
                 Monthname.Add(new CalendarModel
                 {
-                    Year = year,
-                    LastCurrentMonth = "November ~ December"
+                    Year = year,  // 2022
+                    LastCurrentMonth = "November ~ December" // 11~12
                 });
 
                 for (int a = 0; a < 7; a++)
@@ -82,7 +126,7 @@ namespace SmartGloveRebuild2.ViewModels
                     {
                         Currentday = dayoftheweek, // 21, 22
                     });
-                }
+                }  //Day Name
 
                 for (int b = 21; b <= DateTime.DaysInMonth(year, 11); b++)
                 {
@@ -92,7 +136,7 @@ namespace SmartGloveRebuild2.ViewModels
                         CurrentGridColumn = buttonGridColumn, //1, 2
                         CurrentGridRow = buttonGridRow //0
                     });
-                }
+                }  // End of the November
 
                 for (int m = 1; m <= DateTime.DaysInMonth(year, 12); m++)
                 {
@@ -107,10 +151,9 @@ namespace SmartGloveRebuild2.ViewModels
                     {
                         break;
                     }
-                }
+                }  // Start of the December
 
-                //month = 1;
-            }
+            }  // For December, it will print end of November with start of Decemebr
             else if (month == 1)
             {
                 Monthname.Add(new CalendarModel
@@ -127,7 +170,7 @@ namespace SmartGloveRebuild2.ViewModels
                     {
                         Currentday = dayoftheweek, // 21, 22
                     });
-                }
+                } //Day Name
 
                 for (int c = 21; c <= DateTime.DaysInMonth(year, 12); c++)
                 {
@@ -137,7 +180,7 @@ namespace SmartGloveRebuild2.ViewModels
                         CurrentGridColumn = buttonGridColumn, //1, 2
                         CurrentGridRow = buttonGridRow //0
                     });
-                }
+                }  //End of December
 
                 for (int d = 1; d <= DateTime.DaysInMonth(year + 1, 1); d++)
                 {
@@ -152,9 +195,9 @@ namespace SmartGloveRebuild2.ViewModels
                     {
                         break;
                     }
-                }
+                }  //Start of January
                 month++;
-            }
+            } // For January, it will print end of December with start of January
             else
             {
                 if (DateTime.Now.Day >= 21)
@@ -282,13 +325,8 @@ namespace SmartGloveRebuild2.ViewModels
             CalendarDetails.Clear();
             Datename.Clear();
             Monthname.Clear();
-            decreasemonth = month - 2;  //3
-            if(decreasemonth < 0)
-            {
-                decreasemonth++;
-            }
-            now = DateTime.Now.AddMonths(decreasemonth); //3
-            month = decreasemonth; // 3
+            ReduceMonth();
+            now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
             IsBusy = false;
             IsRefreshing = false;
@@ -303,7 +341,8 @@ namespace SmartGloveRebuild2.ViewModels
             CalendarDetails.Clear();
             Datename.Clear();
             Monthname.Clear();
-            now = DateTime.Now.AddMonths(month++);  //4
+            AddMonth();
+            now = DateTime.Now.AddMonths(month);
             DisplayDays();
             IsBusy = false;
             IsRefreshing = false;
