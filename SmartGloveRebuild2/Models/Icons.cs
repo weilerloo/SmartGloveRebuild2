@@ -9,13 +9,12 @@ namespace SmartGloveRebuild2.Models
     public static class Icons
     {
         public const string Dashboard = "home.png";
-        public const string ContactUs = "home.png";
-        public const string AboutUs = "home.png";
-        public const string People = "home.png";
-        public const string RejectedOT = "home.png";
-        public const string ScheduleOT = "home.png";
-        public const string UpdateSlots = "home.png";
-        public const string CheckCalendar = "home.png";
-        public const string Groups = "home.png";
+        public const string People = "people.png";
+        public const string RejectedOT = "reject.png";
+        public const string ScheduleOT = "calender.png";
+        public const string UpdateSlots = "checkcalender.png";
+        public const string CheckCalendar = "rejectot.png";
+        public const string Groups = "people.png";
+        public const string GenerateReport = "report.png";
     }
 }

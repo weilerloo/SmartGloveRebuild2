@@ -1,4 +1,5 @@
 ﻿using SmartGloveRebuild2.Controls;
+using SmartGloveRebuild2.Views.Admin;
 using SmartGloveRebuild2.Views.Dashboard;
 using SmartGloveRebuild2.Views.Employee;
 using SmartGloveRebuild2.Views.Startup;
@@ -198,9 +199,9 @@ namespace SmartGloveRebuild2.Models
                                 },
                                 new ShellContent
                                 {
-                                    Icon = Icons.AboutUs,
-                                    Title = "HR Profile",
-                                    ContentTemplate = new DataTemplate(typeof(HRDashboardPage)),
+                                    Icon = Icons.GenerateReport,
+                                    Title = "Generate Report",
+                                    ContentTemplate = new DataTemplate(typeof(GenerateReportPage)),
                                 },
                    }
                 };

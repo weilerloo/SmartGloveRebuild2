@@ -9,16 +9,22 @@ namespace SmartGloveRebuild2.Models
     public class UserBasicInfo
     {
         public string EmployeeNumber { get; set; }
-        public string GivenName { get; set; }
-        public string Surname { get; set; }
-        public string DepartmentCode { get; set; }
+        public string EmployeeName { get; set; }
+        public string ForeignerLocal { get; set; }
+        public string Passport { get; set; }
+        public string NRIC { get; set; }
+        public string Payroll { get; set; }
+        public string Plant { get; set; }
+        public string Department { get; set; }
+        public int TotalOTDay { get; set; }
+        public int TotalHour { get; set; }
         public string Role { get; set; }
         public int? RoleID { get; set; }
 
-        public string EmployeeName
-        {
-            get => $"{GivenName} {Surname}";
-        }
+        //public string EmployeeName
+        //{
+        //    get => $"{GivenName} {Surname}";
+        //}
 
     }
 

@@ -8,12 +8,13 @@ public partial class SupervisorDashboardPage : ContentPage
 
         if (App.UserDetails != null)
         {
+            EmployeeName.Text = App.UserDetails.EmployeeName;
             EmployeeNumber.Text = App.UserDetails.EmployeeNumber;
-            //Plant.Text = App.UserDetails.Plant;
-            DepartmentCode.Text = App.UserDetails.DepartmentCode;
-            //Payroll.Text = App.UserDetails.Payroll;
-            //TotalOTDay.Text = App.UserDetails.TotalDayOT;
-            //TotalHour.Text = App.UserDetails.TotalHour;
+            Plant.Text = App.UserDetails.Plant;
+            Department.Text = App.UserDetails.Department;
+            Payroll.Text = App.UserDetails.Payroll;
+            TotalDayOT.Text = App.UserDetails.TotalOTDay.ToString();
+            TotalHour.Text = App.UserDetails.TotalHour.ToString();
         }
     }
 }

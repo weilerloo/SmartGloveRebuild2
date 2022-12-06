@@ -9,91 +9,104 @@
 
             <VerticalStackLayout Margin="20,0,20,20" Spacing="20">
                 <Image Source="employee.png" HeightRequest="60" WidthRequest="300" Margin="0,50,0,0"/>
-                <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*" RowSpacing="10">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*,*" RowSpacing="10">
                     <Label Grid.Column="0" 
                            Grid.Row="0" 
                            FontSize="16" 
                            HorizontalOptions="Start" 
-                           VerticalOptions="Center">Admin Name</Label>
+                           VerticalOptions="Center">Employee Number</Label>
                     <Frame Padding="10"
                            BorderColor="Black"
                            Grid.Row="0"
                            Grid.Column="1">
 
-                        <Label HorizontalOptions="Center" >Clerk A</Label>
+                        <Label x:Name="EmployeeNumber" HorizontalOptions="Center"/>
 
 
-                    </Frame>
+                    </Frame> <!--EmployeeNumber-->                    
                     <Label Grid.Column="0" 
                            Grid.Row="1" 
                            FontSize="16" 
                            HorizontalOptions="Start" 
-                           VerticalOptions="Center">Admin ID</Label>
+                           VerticalOptions="Center">Employee Name</Label>
                     <Frame Padding="10"
                            BorderColor="Black"
                            Grid.Row="1"
                            Grid.Column="1">
 
-                        <Label HorizontalOptions="Center" >C123</Label>
+                        <Label x:Name="EmployeeName" HorizontalOptions="Center"/>
 
 
-                    </Frame>
+                    </Frame> <!--EmployeeName-->
                     <Label Grid.Column="0" 
                            Grid.Row="2" 
                            FontSize="16" 
                            HorizontalOptions="Start" 
-                           VerticalOptions="Center">Department</Label>
+                           VerticalOptions="Center">Plant</Label>
                     <Frame Padding="10"
                            BorderColor="Black"
                            Grid.Row="2"
                            Grid.Column="1">
 
-                        <Label HorizontalOptions="Center" >Production</Label>
+                        <Label x:Name="Plant" HorizontalOptions="Center"/>
 
 
-                    </Frame>
-                    <!--<Label Grid.Column="0" 
+                    </Frame> <!--Plant-->
+                    <Label Grid.Column="0" 
                            Grid.Row="3" 
-                           FontSize="16"
+                           FontSize="16" 
                            HorizontalOptions="Start" 
-                           VerticalOptions="Center">Payroll</Label>
+                           VerticalOptions="Center">Department</Label>
                     <Frame Padding="10"
                            BorderColor="Black"
                            Grid.Row="3"
                            Grid.Column="1">
 
-                        <Label HorizontalOptions="Center" >SGC</Label>
+                        <Label x:Name="Department" HorizontalOptions="Center"/>
 
 
-                    </Frame>
+                    </Frame> <!--Department-->
                     <Label Grid.Column="0" 
                            Grid.Row="4" 
-                           FontSize="16" 
+                           FontSize="16"
                            HorizontalOptions="Start" 
-                           VerticalOptions="Center">Total Day of OT's</Label>
+                           VerticalOptions="Center">Payroll</Label>
                     <Frame Padding="10"
                            BorderColor="Black"
                            Grid.Row="4"
                            Grid.Column="1">
 
-                        <Label HorizontalOptions="Center" >12 days</Label>
+                        <Label x:Name="Payroll" HorizontalOptions="Center"/>
 
 
-                    </Frame>
+                    </Frame> <!--Payroll-->
                     <Label Grid.Column="0" 
                            Grid.Row="5" 
                            FontSize="16" 
                            HorizontalOptions="Start" 
-                           VerticalOptions="Center">Hours of OT's</Label>
+                           VerticalOptions="Center">Total Day of OT's</Label>
                     <Frame Padding="10"
                            BorderColor="Black"
                            Grid.Row="5"
                            Grid.Column="1">
 
-                        <Label HorizontalOptions="Center" >21 hours</Label>
+                        <Label x:Name="TotalDayOT" HorizontalOptions="Center"/>
 
 
-                    </Frame>-->
+                    </Frame> <!--Day-->
+                    <Label Grid.Column="0" 
+                           Grid.Row="6" 
+                           FontSize="16" 
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Hours of OT's</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="6"
+                           Grid.Column="1">
+
+                        <Label x:Name="TotalHour" HorizontalOptions="Center"/>
+
+                    </Frame> <!--Hour-->
 
                 </Grid>
                 <Button Text="Generate Report" Command="{Binding HRGenerateReportCommand}">
