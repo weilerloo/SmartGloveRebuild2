@@ -34,24 +34,5 @@ namespace SmartGloveRebuild2.Services
             }
         }
 
-        public async Task<List<UserListResponse>> GetAllUsers()
-        {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
-                var response = await client.GetAsync("http://192.168.0.185/User/GetAllUsers");
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<UserListResponse>>(json);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
     }
 }

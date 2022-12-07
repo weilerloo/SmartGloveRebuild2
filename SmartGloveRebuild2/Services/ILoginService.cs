@@ -10,7 +10,5 @@ namespace SmartGloveRebuild2.Services
     public interface ILoginService
     {
         Task<LoginResponse> Authenticate(LoginRequest loginRequest);
-        Task<List<UserListResponse>> GetAllUsers();
-
     }
 }

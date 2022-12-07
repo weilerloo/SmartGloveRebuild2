@@ -9,49 +9,52 @@ using SmartGloveRebuild2.Views.Employee;
 using SmartGloveRebuild2.Views.Startup;
 using CommunityToolkit.Maui;
 using SmartGloveRebuild2.Services;
+using Microsoft.Maui.LifecycleEvents;
+
+#if WINDOWS
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using Windows.Graphics;
+#endif
 
 namespace SmartGloveRebuild2;
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-
-        #if WINDOWS
-            // using Microsoft.Maui.LifecycleEvents;
-            // #if WINDOWS
-            //            using Microsoft.UI;
-            //            using Microsoft.UI.Windowing;
-            //            using Windows.Graphics;
-            // #endif
-
-            builder.ConfigureLifecycleEvents(events =>
-                {
-                    events.AddWindows(windowsLifecycleBuilder =>
-                        {
-                            windowsLifecycleBuilder.OnWindowCreated(window =>
-                                {
-                                    window.ExtendsContentIntoTitleBar = false;
-                                    var handle = WinRT.Interop.WindowNative.GetWindowHandle(window);
-                                    var id = Win32Interop.GetWindowIdFromWindow(handle);
-                                    var appWindow = AppWindow.GetFromWindowId(id);
-                                    switch (appWindow.Presenter)
-                                    {
-                                        case OverlappedPresenter overlappedPresenter:
-                                            overlappedPresenter.SetBorderAndTitleBar(false, false);
-                                            overlappedPresenter.Maximize();
-                                            break;
-                                    }
-                                });
-                        });
-                });
-#endif
         var builder = MauiApp.CreateBuilder();
         builder.UseMauiApp<App>().ConfigureFonts(fonts =>
         {
             fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
             fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
         }).UseMauiCommunityToolkit();
+
+
         builder.Services.AddSingleton<ILoginService, LoginServices>();
+#if WINDOWS
+    
+
+builder.ConfigureLifecycleEvents(events =>
+        {
+            events.AddWindows(wndLifeCycleBuilder =>
+            {
+                wndLifeCycleBuilder.OnWindowCreated(window =>
+                {
+                    IntPtr nativeWindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                    WindowId win32WindowsId = Win32Interop.GetWindowIdFromWindow(nativeWindowHandle);
+                    AppWindow winuiAppWindow = AppWindow.GetFromWindowId(win32WindowsId);
+                    if(winuiAppWindow.Presenter is OverlappedPresenter p)
+                        p.Maximize();
+                    else
+                    {
+                        const int width = 1200;
+                        const int height = 800;
+                        winuiAppWindow.MoveAndResize(new RectInt32(1920 / 2 - width / 2, 1080 / 2 - height / 2, width, height));
+                    }
+                });
+            });
+        });
+#endif
         //Views
         builder.Services.AddSingleton<LoginPage>();
         builder.Services.AddSingleton<DashboardPage>();
