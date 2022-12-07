@@ -19,7 +19,7 @@
                         FontAttributes="Bold"
                         VerticalOptions="Center"
                         HorizontalTextAlignment="Center"
-                        Margin="0,120,0,0"
+                        Margin="0,110,0,0"
                         Grid.RowSpan="2"/>
         <Label x:Name="lblUserEmail"
                         TextColor="White"

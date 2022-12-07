@@ -229,12 +229,12 @@ namespace SmartGloveRebuild2.Models
                     {
                         AppShell.Current.Dispatcher.Dispatch(async () =>
                         {
-                            await Shell.Current.GoToAsync($"//{nameof(SupervisorDashboardPage)}");
+                            await Shell.Current.GoToAsync($"//{nameof(HODDashboardPage)}");
                         });
                     }
                     else
                     {
-                        await Shell.Current.GoToAsync($"//{nameof(SupervisorDashboardPage)}");
+                        await Shell.Current.GoToAsync($"//{nameof(HODDashboardPage)}");
                     }
                 }
             }

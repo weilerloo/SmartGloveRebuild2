@@ -11,7 +11,8 @@
 
 
     <ShellContent FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
-        ContentTemplate="{DataTemplate startupPages:LoadingPage}" Route="LoadingPage" />
+        ContentTemplate="{DataTemplate startupPages:LoadingPage}" 
+        Route="LoadingPage" />
 
     <ShellContent
         Title="SignInPage" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"

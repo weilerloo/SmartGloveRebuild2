@@ -103,13 +103,13 @@
                             Fill="Green"
                             Grid.Column="1"/>
                     <Label Grid.Column="2" Margin="10,0,40,0" Text="Avaiable"/>
-                    <!--<Ellipse 
+                    <Ellipse 
                             Stroke="Grey"
                             StrokeThickness="4"
                             HeightRequest="10"
                             WidthRequest="10"
                             Fill="Grey"
-                            Grid.Column="3"/>-->
+                            Grid.Column="3"/>
                     <Label Grid.Column="4" Margin="10,0,40,0" Text="N/A"/>
                     <Ellipse 
                             Stroke="Red"

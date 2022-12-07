@@ -15,6 +15,36 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
+
+        #if WINDOWS
+            // using Microsoft.Maui.LifecycleEvents;
+            // #if WINDOWS
+            //            using Microsoft.UI;
+            //            using Microsoft.UI.Windowing;
+            //            using Windows.Graphics;
+            // #endif
+
+            builder.ConfigureLifecycleEvents(events =>
+                {
+                    events.AddWindows(windowsLifecycleBuilder =>
+                        {
+                            windowsLifecycleBuilder.OnWindowCreated(window =>
+                                {
+                                    window.ExtendsContentIntoTitleBar = false;
+                                    var handle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                                    var id = Win32Interop.GetWindowIdFromWindow(handle);
+                                    var appWindow = AppWindow.GetFromWindowId(id);
+                                    switch (appWindow.Presenter)
+                                    {
+                                        case OverlappedPresenter overlappedPresenter:
+                                            overlappedPresenter.SetBorderAndTitleBar(false, false);
+                                            overlappedPresenter.Maximize();
+                                            break;
+                                    }
+                                });
+                        });
+                });
+#endif
         var builder = MauiApp.CreateBuilder();
         builder.UseMauiApp<App>().ConfigureFonts(fonts =>
         {

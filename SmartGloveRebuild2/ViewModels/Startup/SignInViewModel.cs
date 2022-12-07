@@ -12,13 +12,13 @@ namespace SmartGloveRebuild2.ViewModels.Startup
     {
         public SignInViewModel()
         {
-            GoToSignInPage();
+            
         }
 
         [RelayCommand]
-        private async void GoToSignInPage()
+        private async void GoToLoginPage()
         {
-            await Shell.Current.GoToAsync(nameof(SignInPage));
+            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
         }
     }
 }
