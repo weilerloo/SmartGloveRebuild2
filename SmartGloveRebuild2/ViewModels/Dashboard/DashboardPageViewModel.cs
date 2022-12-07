@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 
 namespace SmartGloveRebuild2.ViewModels.Dashboard
-{
+{  
     public partial class DashboardPageViewModel : BaseViewModel
     {
         

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartGloveRebuild2.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ namespace SmartGloveRebuild2.Services
 {
     public interface IScheduleServices
     {
-        Task<MainResponse> AddSchedule(AddScheduleDTO ScheduleDateDTO);
-        Task<MainResponse> UpdateGroupStatus(UpdateScheduleStatusDTO ScheduleStatusDTO); //update
+        Task<UserListResponseDTO> AddSchedule(UserListResponseDTO userListResponse);
         Task<MainResponse> GetSchedule(GetScheduleDTO getScheduleDTO);
+        Task<MainResponse> UpdateGroupStatus(UpdateScheduleStatusDTO ScheduleStatusDTO); //update
         Task<MainResponse> DeleteGroup(DeleteGroupDTO deleteGroupDTO);
         Task<MainResponse> EditGroup(EditGroupDTO editGroupDTO);
         Task<MainResponse> RejectEmployee(RejectDTO rejectDTO);

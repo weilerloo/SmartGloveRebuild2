@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartGloveRebuild2.Models.Schedule
 {
-    internal interface ScheduleDate
+    public interface ScheduleDate
     {
     }
 }
