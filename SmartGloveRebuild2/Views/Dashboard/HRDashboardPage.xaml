@@ -2,13 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Dashboard.HRDashboardPage"
-             xmlns:adminviewmodels="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
-             Title="HR Dashboard Page">
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             Title="HR Dashboard">
     <ScrollView>
         <Grid BackgroundColor="Transparent">
 
             <VerticalStackLayout Margin="20,0,20,20" Spacing="20">
-                <Image Source="employee.png" HeightRequest="60" WidthRequest="300" Margin="0,50,0,0"/>
+                <Image Source="admin.png" HeightRequest="60" WidthRequest="300" Margin="0,50,0,0"/>
                 <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*,*" RowSpacing="10">
                     <Label Grid.Column="0" 
                            Grid.Row="0" 
@@ -111,7 +111,7 @@
                 </Grid>
                 <Button Text="Generate Report" Command="{Binding HRGenerateReportCommand}">
                     <Button.BindingContext>
-                        <adminviewmodels:HRGenerateReportViewModel/>
+                        <viewmodel:HRGenerateReportViewModel/>
                     </Button.BindingContext>
                 </Button>
 

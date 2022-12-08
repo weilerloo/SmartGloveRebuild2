@@ -18,7 +18,7 @@ namespace SmartGloveRebuild2.Services
             {
                 string loginRequestStr = JsonConvert.SerializeObject(loginRequest);
 
-                var response = await client.PostAsync("http://192.168.68.122:7006/api/Users/AuthenticateUser",
+                var response = await client.PostAsync("http://172.16.12.151:7006/api/Users/AuthenticateUser",
                       new StringContent(loginRequestStr, Encoding.UTF8,
                       "application/json"));
 
@@ -26,25 +26,6 @@ namespace SmartGloveRebuild2.Services
                 {
                     var json = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<LoginResponse>(json);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        public async Task<List<UserListResponse>> GetAllUsers()
-        {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
-                var response = await client.GetAsync("http://192.168.0.185/User/GetAllUsers");
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<UserListResponse>>(json);
                 }
                 else
                 {

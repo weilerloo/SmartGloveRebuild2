@@ -1,5 +1,5 @@
 using SmartGloveRebuild2.ViewModels;
-using SmartGloveRebuild2.ViewModels.Admin;
+using SmartGloveRebuild2.ViewModels.Employee;
 
 namespace SmartGloveRebuild2.Views.Employee;
 

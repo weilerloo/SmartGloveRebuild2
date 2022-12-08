@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:model="clr-namespace:SmartGloveRebuild2.Models"
-             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Employee"
              x:DataType="viewmodel:ScheduleViewModel"
              Title="{Binding Title}"
              x:Class="SmartGloveRebuild2.Views.Employee.ScheduleOT"
@@ -103,13 +103,12 @@
                             Fill="Green"
                             Grid.Column="1"/>
                     <Label Grid.Column="2" Margin="10,0,40,0" Text="Avaiable"/>
-                    <!--<Ellipse 
-                            Stroke="Grey"
+                    <Ellipse 
                             StrokeThickness="4"
                             HeightRequest="10"
                             WidthRequest="10"
-                            Fill="Grey"
-                            Grid.Column="3"/>-->
+                            
+                            Grid.Column="3"/>
                     <Label Grid.Column="4" Margin="10,0,40,0" Text="N/A"/>
                     <Ellipse 
                             Stroke="Red"

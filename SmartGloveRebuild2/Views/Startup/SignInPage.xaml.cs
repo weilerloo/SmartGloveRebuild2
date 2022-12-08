@@ -9,8 +9,8 @@ public partial class SignInPage : ContentPage
         InitializeComponent();
     }
 
-    private async void Button_Clicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
-    }
+    //private async void Button_Clicked(object sender, EventArgs e)
+    //{
+    //    await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+    //}
 }

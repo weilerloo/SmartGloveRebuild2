@@ -12,7 +12,7 @@ using Microsoft.Maui.Networking;
 using System.Diagnostics;
 using SmartGloveRebuild2.Views.Employee;
 
-namespace SmartGloveRebuild2.ViewModels
+namespace SmartGloveRebuild2.ViewModels.Employee
 {
     public partial class ScheduleViewModel : BaseViewModel
     {

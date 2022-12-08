@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SmartGloveRebuild2.Views.Dashboard.EmployeeDashboardPage"
-             xmlns:calendarvm="clr-namespace:SmartGloveRebuild2.ViewModels.Employee"
-             Title="Employee Dashboard">
+             x:Class="SmartGloveRebuild2.Views.Dashboard.HODDashboardPage"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             Title="HOD Dashboard">
     <ScrollView>
         <Grid BackgroundColor="Transparent">
 
             <VerticalStackLayout Margin="20,0,20,20" Spacing="20">
-                <Image Source="employee.png" HeightRequest="60" WidthRequest="300" Margin="0,50,0,0"/>
+                <Image Source="admin.png" HeightRequest="60" WidthRequest="300" Margin="0,50,0,0"/>
                 <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*,*" RowSpacing="10">
                     <Label Grid.Column="0" 
                            Grid.Row="0" 
@@ -116,21 +116,23 @@
                     <!--Hour-->
 
                 </Grid>
-                <Button Margin="0,50,0,0" Text="Schedule OT" Command="{Binding GotoScheduleOTCommand}">
+                <Button Margin="0,50,0,0" Text="Check Calender" Command="{Binding CheckCalendarCommand}">
                     <Button.BindingContext>
-                        <calendarvm:ScheduleViewModel/>
+                        <viewmodel:CheckCalendarViewModel/>
+                    </Button.BindingContext>
+                </Button>                
+                <Button Margin="0,50,0,0" Text="Schedule OT" Command="{Binding DisplayGroupCommand}">
+                    <Button.BindingContext>
+                        <viewmodel:DisplayGroupViewModel/>
                     </Button.BindingContext>
                 </Button>
-
                 <Image Source="sglogo.png" 
                        HeightRequest="20" 
                        WidthRequest="300" 
                        Margin="0,120,0,0"/>
             </VerticalStackLayout>
 
-
         </Grid>
 
-        
     </ScrollView>
 </ContentPage>

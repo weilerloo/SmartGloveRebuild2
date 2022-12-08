@@ -5,7 +5,7 @@
              Title="UpdateSlotsPage">
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .Check Calendar MAUI!"
+            Text="Welcome to .Update Slots MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
     </VerticalStackLayout>
