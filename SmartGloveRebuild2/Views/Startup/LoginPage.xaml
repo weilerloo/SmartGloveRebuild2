@@ -2,23 +2,24 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Startup.LoginPage"
+             Shell.FlyoutBehavior="Disabled"
              Shell.NavBarIsVisible="False"
-             NavigationPage.HasNavigationBar="False"
              xmlns:handlers="clr-namespace:SmartGloveRebuild2.Handlers"
-             Title="LoginPage">
+             Title="Login Page">
     <Grid RowDefinitions="*,*">
         <Frame Grid.Row="0" BackgroundColor="{StaticResource Primary}" BorderColor="{StaticResource Primary}" CornerRadius="0">
-            <Grid RowDefinitions="*,Auto">
-                <Image Source="Background.png" Margin="20" Aspect="AspectFit"/>
-                <Image Source="Working.png" Margin="20" Aspect="AspectFit" />
-                <Label Grid.Row="1" FontSize="20" HorizontalOptions="Center" TextColor="{StaticResource White}">Please Enter your Details.</Label>
+            <Grid RowDefinitions="50,*,Auto">
+                <Button BackgroundColor="{StaticResource Primary}" HorizontalOptions="Start" Grid.Row="0" WidthRequest="100" HeightRequest="50" Text="Go Back" Clicked="Button_Clicked"/>
+                <Image Grid.Row="1" Source="Background.png" Margin="20" Aspect="AspectFit"/>
+                <Image Grid.Row="1" Source="Working.png" Margin="20" Aspect="AspectFit" />
+                <Label Grid.Row="2" FontSize="20" HorizontalOptions="Center" TextColor="{StaticResource White}">Please Enter your Details.</Label>
             </Grid>
         </Frame>
         <Grid Margin="30,0,30,0" Grid.Row="1" ColumnDefinitions="50,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*" VerticalOptions="Start">
             <Grid Padding="20" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1">
-                <Image Margin="15" Source="sglogo.png" Aspect="AspectFit" VerticalOptions="Center"/>
+                <Image Margin="15" Source="sglogo.png" HeightRequest="100" WidthRequest="200" VerticalOptions="Center"/>
             </Grid>
-            <Label FontSize="15" Grid.Column="1" Grid.Row="1" VerticalOptions="Center">Employee ID</Label>
+            <Label FontSize="15" FontAttributes="Bold" Grid.Column="1" Grid.Row="1" VerticalTextAlignment="Center" VerticalOptions="Center">Employee ID</Label>
             <Image Margin="10" Source="male.png" Grid.Row="2" Grid.RowSpan="2" VerticalOptions="Center" HorizontalOptions="Center" Aspect="AspectFit"/>
             <Frame Padding="10"
                    BorderColor="{StaticResource Tertiary}"
@@ -27,7 +28,7 @@
                    Grid.RowSpan="2">
                 <handlers:BorderlessEntry FontSize="20" Text="{Binding EmployeeNumber}" VerticalOptions="FillAndExpand"/>
             </Frame>
-            <Label FontSize="15" Grid.Column="1" Grid.Row="4" VerticalOptions="Center" >Password</Label>
+            <Label FontSize="15" FontAttributes="Bold" Grid.Column="1" Grid.Row="4" VerticalOptions="Center" >Password</Label>
             <Image Margin="10" Grid.Column="0" Grid.Row="5" Grid.RowSpan="2" Source="password.png" VerticalOptions="Center" HorizontalOptions="Center" Aspect="AspectFit"/>
             <Frame Padding="10"
                    BorderColor="{StaticResource Tertiary}"
@@ -36,7 +37,7 @@
                    Grid.RowSpan="2">
                 <handlers:BorderlessEntry FontSize="20" Text="{Binding Password}" VerticalOptions="FillAndExpand"/>
             </Frame>
-            <Button Margin="0,10,0,10" Grid.Row="7" Grid.ColumnSpan="2" WidthRequest="150" HeightRequest="40" HorizontalOptions="End" Text="Sign in" Command="{Binding LoginCommand}"/>
+            <Button Margin="0,20,0,10" Grid.Row="7" Grid.ColumnSpan="2" WidthRequest="250" HeightRequest="50" HorizontalOptions="Center" Text="Sign in" Command="{Binding LoginCommand}"/>
         </Grid>
     </Grid>
 </ContentPage>

@@ -31,6 +31,7 @@ public static class MauiProgram
 
 
         builder.Services.AddSingleton<ILoginService, LoginServices>();
+        builder.Services.AddSingleton<IScheduleServices, ScheduleServices>();
 #if WINDOWS
     
 
@@ -62,6 +63,7 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddSingleton<ScheduleOT>();
         builder.Services.AddSingleton<RejectedOT>();
         builder.Services.AddSingleton<DisplayGroupPage>();
+        builder.Services.AddSingleton<UpdateSlotsDetails>();
         builder.Services.AddSingleton<CheckCalendarPage>();
         builder.Services.AddSingleton<UpdateSlotsPage>();
         builder.Services.AddSingleton<GenerateReportPage>();
@@ -69,11 +71,11 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddSingleton<LoginPageViewModel>();
         builder.Services.AddSingleton<DashboardPageViewModel>();
         builder.Services.AddSingleton<LoadingPageViewModel>();
+        builder.Services.AddSingleton<UpdateSlotsDetailViewModel>();
         builder.Services.AddSingleton<ScheduleViewModel>();
         builder.Services.AddSingleton<DisplayGroupViewModel>();
         builder.Services.AddSingleton<CheckCalendarViewModel>();
         builder.Services.AddSingleton<UpdateSlotsViewModel>();
-        builder.Services.AddSingleton<SignInViewModel>();
         return builder.Build();
     }
 }

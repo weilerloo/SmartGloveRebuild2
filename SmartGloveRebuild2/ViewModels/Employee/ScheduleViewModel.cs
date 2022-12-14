@@ -31,9 +31,6 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         [ObservableProperty]
         bool isRefreshing, status = true;
 
-        [ObservableProperty]
-        CalendarModel selectedDate;
-
         #region Properties  
         public ObservableCollection<CalendarModel> CalendarDetails { get; set; } = new ObservableCollection<CalendarModel>();
         public ObservableCollection<CalendarModel> Datename { get; set; } = new ObservableCollection<CalendarModel>();
@@ -41,11 +38,6 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
         #endregion
 
-        public Command TriggerSceneCommand { get; set; }
-        private void TriggerScene(CalendarModel newSelectedItem)
-        {
-            SelectedDate = newSelectedItem;
-        }
         public ScheduleViewModel()
         {
             DisplayDays();

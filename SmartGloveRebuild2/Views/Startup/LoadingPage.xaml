@@ -2,9 +2,22 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Startup.LoadingPage"
+             xmlns:Loadingviewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Startup"
+             Shell.FlyoutBehavior="Disabled"
              Title="LoadingPage"
+             Shell.NavBarIsVisible="False"
              NavigationPage.HasNavigationBar="False">
-    <StackLayout>
-        <ActivityIndicator IsRunning="True" HeightRequest="40" WidthRequest="40" HorizontalOptions="Center" VerticalOptions="Center" />
-    </StackLayout>
+    <Grid RowDefinitions="*,*,*,*">
+        <Image Grid.Row="1" VerticalOptions="End" Source="sglogo.png" HeightRequest="200" WidthRequest="200"/>
+        <Label Grid.Row="2" 
+                       VerticalOptions="End"
+                       HorizontalOptions="Center"
+                       TextColor="Black"
+                       FontSize="Caption"
+                       Padding="50,0,50,0"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       Text="Malaysia’s leading innovative glove manufacturers recognised on a global front"/>
+        <Button VerticalOptions="Center" Grid.Row="3" Text="Log In" WidthRequest="200" HeightRequest="50" Clicked="Button_Clicked"/>
+    </Grid>
 </ContentPage>

@@ -1,7 +1,10 @@
+using SmartGloveRebuild2.Views.Admin;
+
 namespace SmartGloveRebuild2.Views.Dashboard;
 
 public partial class ClerkDashboardPage : ContentPage
 {
+
 	public ClerkDashboardPage()
 	{
 		InitializeComponent();
@@ -16,5 +19,10 @@ public partial class ClerkDashboardPage : ContentPage
             TotalDayOT.Text = App.UserDetails.TotalOTDay.ToString();
             TotalHour.Text = App.UserDetails.TotalHour.ToString();
         }
+    }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync(nameof(UpdateSlotsPage));
     }
 }

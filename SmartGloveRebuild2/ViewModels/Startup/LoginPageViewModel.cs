@@ -31,11 +31,6 @@ namespace SmartGloveRebuild2.ViewModels.Startup
         }
 
         #region Commands
-        [RelayCommand]
-        private async void GotoLoginPage()
-        {
-            await Shell.Current.GoToAsync(nameof(LoginPage));
-        }
 
         [RelayCommand]
         async void Login()
@@ -81,6 +76,10 @@ namespace SmartGloveRebuild2.ViewModels.Startup
 
 
 
+            }
+            else
+            {
+                await AppShell.Current.DisplayAlert("No User Name or Password", "Please Enter Users Name or Passwword", "OK");
             }
 
 

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using SmartGloveRebuild2.Controls;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Views.Dashboard;
@@ -13,12 +14,13 @@ using System.Threading.Tasks;
 namespace SmartGloveRebuild2.ViewModels.Startup
 {
 
-    public class LoadingPageViewModel
+    public partial class LoadingPageViewModel
     {
         public LoadingPageViewModel()
         {
             CheckUserLoginDetails();
         }
+
         private async void CheckUserLoginDetails()
         {
             string userDetailsStr = Preferences.Get(nameof(App.UserDetails), "");
@@ -29,12 +31,12 @@ namespace SmartGloveRebuild2.ViewModels.Startup
                 {
                     AppShell.Current.Dispatcher.Dispatch(async () =>
                     {
-                        await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
+                        await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
                     });
                 }
                 else
                 {
-                    await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
+                    await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
                 }
                 // navigate to Login Page
             }
@@ -47,8 +49,8 @@ namespace SmartGloveRebuild2.ViewModels.Startup
 
                 if (jsonToken.ValidTo < DateTime.UtcNow)
                 {
-                    await Shell.Current.GoToAsync($"/{nameof(SignInPage)}");
-                    await Shell.Current.DisplayAlert("User session expired", "Login Again To conitnue", "OK");
+                    await AppShell.Current.DisplayAlert("User session expired", "Login Again To conitnue", "OK");
+                    await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
                 }
                 else
                 {

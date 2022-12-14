@@ -7,22 +7,19 @@
     xmlns:dashboardPages="clr-namespace:SmartGloveRebuild2.Views.Dashboard"
     xmlns:models="clr-namespace:SmartGloveRebuild2.Models"
     Shell.TabBarIsVisible="False"
+    FlyoutItemIsVisible="False"
     xmlns:startupPages="clr-namespace:SmartGloveRebuild2.Views.Startup">
 
-
-    <ShellContent FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
+    <FlyoutItem FlyoutItemIsVisible="False">
+        <ShellContent
         ContentTemplate="{DataTemplate startupPages:LoadingPage}" 
         Route="LoadingPage" />
 
-    <ShellContent
-        Title="SignInPage" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
-        ContentTemplate="{DataTemplate startupPages:SignInPage}"
-        Route="SignInPage" />
-
-    <ShellContent
-        Title="Login Page" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"
+        <ShellContent
+        Title="Login Page"
         ContentTemplate="{DataTemplate startupPages:LoginPage}"
         Route="LoginPage" />
+    </FlyoutItem>
 
 
     <Shell.FlyoutFooter>

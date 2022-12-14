@@ -1,4 +1,6 @@
-﻿using SmartGloveRebuild2.Models;
+﻿using SmartGloveRebuild2.Models.Schedule;
+using SmartGloveRebuild2.Models.ScheduleResponse;
+using SmartGloveRebuild2.Models.Group;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +11,12 @@ namespace SmartGloveRebuild2.Services
 {
     public interface IScheduleServices
     {
-        Task<UserListResponseDTO> AddSchedule(UserListResponseDTO userListResponse);
-        Task<MainResponse> GetSchedule(GetScheduleDTO getScheduleDTO);
-        Task<MainResponse> UpdateGroupStatus(UpdateScheduleStatusDTO ScheduleStatusDTO); //update
-        Task<MainResponse> DeleteGroup(DeleteGroupDTO deleteGroupDTO);
-        Task<MainResponse> EditGroup(EditGroupDTO editGroupDTO);
-        Task<MainResponse> RejectEmployee(RejectDTO rejectDTO);
-        Task<MainResponse> GetAllEmployee();
-        Task<MainResponse> GetEmployeeByNumber(string studentID);
+        Task<AddGroupScheduleResponse> GroupAddSchedule(AddGroupScheduleDTO addGroupScheduleDTO);
+        Task<EmployeeAddScheduleResponse> EmployeeAddSchedule(EmployeeAddScheduleDTO addScheduleDTO);
+        Task<List<GetScheduleResponse>> GetSchedule();
+        Task<List<GetScheduleByGroupResponse>> GetSchedulebyGroup(CreateGroupDTO createGroupDTO);
+        Task<UpdateScheduleStatusByGroupNameResponse> updateScheduleStatusByGroupName(UpdateScheduleStatusByGroupNameDTO updateScheduleStatusByGroupNameDTO);
+        Task<UpdateScheduleStatusByEmployeeNumberResponse> updateScheduleStatusByEmployeeName(UpdateScheduleStatusByEmployeeNumberDTO updateScheduleStatusByEmployeeNumberDTO);
+        Task<RejectScheduleResponse> RejectSchedule(RejectScheduleDTO rejectScheduleDTO);
     }
 }

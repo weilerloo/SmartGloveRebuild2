@@ -10,6 +10,7 @@ namespace SmartGloveRebuild2.Models
     {
         public string EmployeeNumber { get; set; }
         public string EmployeeName { get; set; }
+        public string GroupName { get; set; }
         public string ForeignerLocal { get; set; }
         public string Passport { get; set; }
         public string NRIC { get; set; }
@@ -36,5 +37,6 @@ namespace SmartGloveRebuild2.Models
         HOD,
         Clerk,
         Technician,
+        Worker,
     }
 }

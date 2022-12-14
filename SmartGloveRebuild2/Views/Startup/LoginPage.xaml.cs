@@ -8,5 +8,16 @@ public partial class LoginPage : ContentPage
 	{
 		InitializeComponent();
 		this.BindingContext = viewModel;
-	}
+
+    }
+
+    protected override bool OnBackButtonPressed()
+    {
+        return base.OnBackButtonPressed();
+    }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        Application.Current.MainPage = new AppShell();
+    }
 }

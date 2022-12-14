@@ -2,6 +2,7 @@
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Services;
 using Microsoft.Maui.Platform;
+using SmartGloveRebuild2.Views.Startup;
 
 namespace SmartGloveRebuild2;
 
@@ -27,4 +28,5 @@ public partial class App : Application
         });
         MainPage = new AppShell();
     }
+
 }

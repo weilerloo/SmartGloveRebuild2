@@ -119,17 +119,14 @@
                 <Grid RowDefinitions="*,*,*,*"
                       WidthRequest="300">
 
-                    <Button Grid.Row="0" Margin="0,30,0,0" Text="Update Slots" Command="{Binding UpdateSlotsCommand}">
-                        <Button.BindingContext>
-                            <viewmodel:UpdateSlotsViewModel/>
-                        </Button.BindingContext>
+                    <Button HeightRequest="50" Grid.Row="0" Margin="0,30,0,0" Text="Update Slots" Clicked="Button_Clicked">
                     </Button>
-                    <Button Grid.Row="1" Margin="0,10,0,0" Text="Check Calender" Command="{Binding CheckCalendarCommand}">
+                    <Button HeightRequest="50" Grid.Row="1" Margin="0,10,0,0" Text="Check Calender" Command="{Binding CheckCalendarCommand}">
                         <Button.BindingContext>
                             <viewmodel:CheckCalendarViewModel/>
                         </Button.BindingContext>
                     </Button>
-                    <Button Grid.Row="2" Margin="0,10,0,0" Text="Display Group" Command="{Binding DisplayGroupCommand}">
+                    <Button HeightRequest="50" Grid.Row="2" Margin="0,10,0,0" Text="Display Group" Command="{Binding DisplayGroupCommand}">
                         <Button.BindingContext>
                             <viewmodel:DisplayGroupViewModel/>
                         </Button.BindingContext>

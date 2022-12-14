@@ -1,13 +1,14 @@
+using SmartGloveRebuild2.Services;
 using SmartGloveRebuild2.ViewModels.Admin;
 
 namespace SmartGloveRebuild2.Views.Admin;
 
 public partial class UpdateSlotsPage : ContentPage
 {
-	UpdateSlotsViewModel UpdateSlotsViewModel;
+	IScheduleServices scheduleServices;
 	public UpdateSlotsPage()
 	{
 		InitializeComponent();
-		this.BindingContext = UpdateSlotsViewModel = new UpdateSlotsViewModel();
+		this.BindingContext = new UpdateSlotsViewModel(scheduleServices);
 	}
 }

@@ -59,6 +59,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\Admin\GenerateReportPage.xaml.cs">
+	    <DependentUpon>GenerateReportPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Admin\UpdateSlotsDetails.xaml.cs">
+	    <DependentUpon>UpdateSlotsDetails.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Dashboard\HODDashboardPage.xaml.cs">
 	    <DependentUpon>HODDashboardPage.xaml</DependentUpon>
 	  </Compile>
@@ -68,6 +74,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\Admin\GenerateReportPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Dashboard\HODDashboardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

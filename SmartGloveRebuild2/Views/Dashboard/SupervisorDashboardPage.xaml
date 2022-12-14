@@ -121,7 +121,7 @@
                         <viewmodel:CheckCalendarViewModel/>
                     </Button.BindingContext>
                 </Button>
-                <Button Margin="0,50,0,0" Text="Schedule OT" Command="{Binding DisplayGroupCommand}">
+                <Button Text="Group" Command="{Binding DisplayGroupCommand}">
                     <Button.BindingContext>
                         <viewmodel:DisplayGroupViewModel/>
                     </Button.BindingContext>

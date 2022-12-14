@@ -5,7 +5,7 @@ public partial class EmployeeDashboardPage : ContentPage
 	public EmployeeDashboardPage()
 	{
 		InitializeComponent();
-
+        
         if (App.UserDetails != null)
         {
             EmployeeName.Text = App.UserDetails.EmployeeName;

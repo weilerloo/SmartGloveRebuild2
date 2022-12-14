@@ -22,12 +22,12 @@ namespace SmartGloveRebuild2.ViewModels
             {
                 AppShell.Current.Dispatcher.Dispatch(async () =>
                 {
-                    await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
+                    await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
                 });
             }
             else
             {
-                await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
+                await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
             }
         }
     }
