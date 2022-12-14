@@ -35,7 +35,7 @@ namespace SmartGloveRebuild2.Services
             }
         }  //Done, not test yet
 
-        public async Task<List<GetScheduleResponse>> GetSchedule()
+        public async Task<GetScheduleResponse> GetSchedule()
         {
             using (var client = new HttpClient())
             {
@@ -45,7 +45,7 @@ namespace SmartGloveRebuild2.Services
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<GetScheduleResponse>>(json);
+                    return JsonConvert.DeserializeObject<GetScheduleResponse>(json);
                 }
                 else
                 {
@@ -54,7 +54,7 @@ namespace SmartGloveRebuild2.Services
             }
         }  //Done, not test yet
 
-        public async Task<List<GetScheduleByGroupResponse>> GetSchedulebyGroup(CreateGroupDTO createGroupDTO) //Done, not test yet, API Get group not done yet
+        public async Task<GetScheduleByGroupResponse> GetSchedulebyGroup(CreateGroupDTO createGroupDTO) //Done, not test yet, API Get group not done yet
         {
             using (var client = new HttpClient())
             {
@@ -64,7 +64,7 @@ namespace SmartGloveRebuild2.Services
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<GetScheduleByGroupResponse>>(json);
+                    return JsonConvert.DeserializeObject<GetScheduleByGroupResponse>(json);
                 }
                 else
                 {
@@ -72,6 +72,26 @@ namespace SmartGloveRebuild2.Services
                 }
             }
         }  //Done, IP not change yet
+
+        public async Task<GetScheduleByGroupandDateResponse> GetSchedulebyGroupandDate(GetSchedulebyGroupandDateDTO getSchedulebyGroupandDateDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
+                string getSchedulebyGroupandDateDTOStr = JsonConvert.SerializeObject(getSchedulebyGroupandDateDTO);
+                var response = await client.GetAsync($"http://172.16.12.149:7006/api/Schedule/GetSchedulebyGroupandDate?GruopName={getSchedulebyGroupandDateDTO.GroupName}&ScheduleDate={getSchedulebyGroupandDateDTO.ScheduleDate}");
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<GetScheduleByGroupandDateResponse>(json);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
 
         public async Task<AddGroupScheduleResponse> GroupAddSchedule(AddGroupScheduleDTO addGroupScheduleDTO)
         {

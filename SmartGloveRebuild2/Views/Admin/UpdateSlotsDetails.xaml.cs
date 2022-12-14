@@ -10,13 +10,6 @@ public partial class UpdateSlotsDetails : ContentPage
 		InitializeComponent();
 		this.BindingContext = updateSlotsDetailViewModel;
 
-        //Title.Text = Day
-    }
-
-    
-
-    protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
-    {
-        base.OnNavigatedFrom(args);
-    }
+		//Title.Text = Day
+	}
 }

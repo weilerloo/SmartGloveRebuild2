@@ -13,8 +13,9 @@ namespace SmartGloveRebuild2.Services
     {
         Task<AddGroupScheduleResponse> GroupAddSchedule(AddGroupScheduleDTO addGroupScheduleDTO);
         Task<EmployeeAddScheduleResponse> EmployeeAddSchedule(EmployeeAddScheduleDTO addScheduleDTO);
-        Task<List<GetScheduleResponse>> GetSchedule();
-        Task<List<GetScheduleByGroupResponse>> GetSchedulebyGroup(CreateGroupDTO createGroupDTO);
+        Task<GetScheduleResponse> GetSchedule();
+        Task<GetScheduleByGroupResponse> GetSchedulebyGroup(CreateGroupDTO createGroupDTO);
+        Task<GetScheduleByGroupandDateResponse> GetSchedulebyGroupandDate(GetSchedulebyGroupandDateDTO getSchedulebyGroupandDateDTO);
         Task<UpdateScheduleStatusByGroupNameResponse> updateScheduleStatusByGroupName(UpdateScheduleStatusByGroupNameDTO updateScheduleStatusByGroupNameDTO);
         Task<UpdateScheduleStatusByEmployeeNumberResponse> updateScheduleStatusByEmployeeName(UpdateScheduleStatusByEmployeeNumberDTO updateScheduleStatusByEmployeeNumberDTO);
         Task<RejectScheduleResponse> RejectSchedule(RejectScheduleDTO rejectScheduleDTO);

@@ -5,10 +5,9 @@ namespace SmartGloveRebuild2.Views.Admin;
 
 public partial class UpdateSlotsPage : ContentPage
 {
-	IScheduleServices scheduleServices;
-	public UpdateSlotsPage()
+	public UpdateSlotsPage(UpdateSlotsViewModel updateSlotsViewModel)
 	{
 		InitializeComponent();
-		this.BindingContext = new UpdateSlotsViewModel(scheduleServices);
+		this.BindingContext = updateSlotsViewModel;
 	}
 }
