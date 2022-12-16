@@ -9,7 +9,7 @@
     <Grid RowDefinitions="*,80">
         <Grid RowDefinitions="Auto,Auto,*">
             <Label x:Name="Title" Text="{Binding Daymonthyear}" />
-            <Button Grid.Row="1" Command="{Binding GetGroupSchduleCommand}" Text="Test"/>
+            <Button x:Name="Test" Grid.Row="1" Command="{Binding GetGroupSchduleCommand}" Text="Test" IsVisible="False"/>
             <CollectionView Grid.Row="2" ItemsSource="{Binding GroupSchedule}">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="7"/>

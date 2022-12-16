@@ -1,3 +1,5 @@
+using SmartGloveRebuild2.Views.Employee;
+
 namespace SmartGloveRebuild2.Views.Dashboard;
 
 public partial class EmployeeDashboardPage : ContentPage
@@ -16,5 +18,10 @@ public partial class EmployeeDashboardPage : ContentPage
             TotalDayOT.Text = App.UserDetails.TotalOTDay.ToString();
             TotalHour.Text = App.UserDetails.TotalHour.ToString();
         }
+    }
+
+    private void ScheduleButton_Clicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync(nameof(ScheduleOT));
     }
 }

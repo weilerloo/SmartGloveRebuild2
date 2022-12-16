@@ -36,6 +36,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
         [ObservableProperty]
         double hours;
+
         public void ConcatenateLabelDate()
         {
             if (UpdateSlotsModel.Day.ToString().Length > 1)
@@ -61,12 +62,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             try
             {
                 ConcatenateLabelDate();
-                if (App.UserDetails.GroupName != "Unassigned")
+                if (App.UserDetails.Role == "CLERK")
                 {
 
-                    var response = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
+                    var response = await _scheduleServices.GetSchedulebyDate(new GetSchedulebyDateDTO
                     {
-                        GroupName = App.UserDetails.GroupName,
                         ScheduleDate = daymonthyear,
                     });
 
@@ -74,7 +74,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
                         GroupSchedule.Add(new GroupScheduleModel
                         {
-                            GroupName = App.UserDetails.GroupName,
+                            GroupName = response.GroupName,
                             Hours = response.Hours,
                             Paxs = response.Paxs,
                             Status = response.Status,

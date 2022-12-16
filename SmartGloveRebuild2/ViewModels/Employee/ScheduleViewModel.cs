@@ -11,11 +11,18 @@ using SmartGloveRebuild2.ViewModels;
 using Microsoft.Maui.Networking;
 using System.Diagnostics;
 using SmartGloveRebuild2.Views.Employee;
+using SmartGloveRebuild2.Models.Group;
+using SmartGloveRebuild2.Models.Schedule;
+using Newtonsoft.Json.Serialization;
 
 namespace SmartGloveRebuild2.ViewModels.Employee
 {
     public partial class ScheduleViewModel : BaseViewModel
     {
+        #region Properties
+        private readonly IScheduleServices _scheduleServices;
+
+
         int buttonGridColumn = 0;
         int buttonGridRow = 0;
 
@@ -29,30 +36,60 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         String lastcurrentmonth;
 
         [ObservableProperty]
-        bool isRefreshing, status = true;
+        bool isRefreshing, status = true, isBooked, isAvailable, isRejected;
 
-        #region Properties  
+
+        public CalendarModel selectedItem;
+        public CalendarModel SelectedItem
+        {
+            get
+            {
+                return selectedItem;
+            }
+            set
+            {
+                if (selectedItem != value)
+                {
+                    selectedItem = value;
+                }
+            }
+        }
+
+
+        #endregion
+
+        #region ObservableCollection  
         public ObservableCollection<CalendarModel> CalendarDetails { get; set; } = new ObservableCollection<CalendarModel>();
+        public ObservableCollection<CalendarModel> Items { get; set; } = new ObservableCollection<CalendarModel>();
         public ObservableCollection<CalendarModel> Datename { get; set; } = new ObservableCollection<CalendarModel>();
         public ObservableCollection<CalendarModel> Monthname { get; set; } = new ObservableCollection<CalendarModel>();
 
         #endregion
 
-        public ScheduleViewModel()
+        public ScheduleViewModel(IScheduleServices scheduleServices)
         {
+            _scheduleServices = scheduleServices;
             DisplayDays();
+            ColorStatus();
             Title = "Your OT Schdule";
+            Items = new ObservableCollection<CalendarModel>();
+            SelectedItem = new CalendarModel();
+
         }
+
+        #region Navigation
 
         [RelayCommand]
         private async void GotoScheduleOT()
         {
             await Shell.Current.GoToAsync(nameof(ScheduleOT));
         }
+        #endregion
 
+        #region Calendar
         public int AddMonth()
         {
-            if(decreasemonth < 0)
+            if (decreasemonth < 0)
             {
                 status = false;
             }
@@ -94,10 +131,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             return month;
         }
 
-
-
         [RelayCommand]
-        public void DisplayDays()
+        public async Task DisplayDays()
         {
             var month = now.Month;  // Current Date
             year = now.Year; // 2022
@@ -125,8 +160,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     CalendarDetails.Add(new CalendarModel
                     {
                         Day = b, // start with the curretn month
-                        CurrentGridColumn = buttonGridColumn, //1, 2
-                        CurrentGridRow = buttonGridRow //0
+                        Month = 11,
+                        Year = year,
                     });
                 }  // End of the November
 
@@ -135,8 +170,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     CalendarDetails.Add(new CalendarModel
                     {
                         Day = m,
-                        CurrentGridColumn = buttonGridColumn,
-                        CurrentGridRow = buttonGridRow,
+                        Month = 12,
+                        Year = year,
                     });
 
                     if (m == 20)
@@ -157,30 +192,32 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                 for (int a = 0; a < 7; a++)
                 {
                     //Day of Week
-                    string dayoftheweek = new DateTime(year, 12, 21 + a).ToString("ddd");
+                    string dayoftheweek = new DateTime(year - 1, 12, 21 + a).ToString("ddd");
                     Datename.Add(new CalendarModel
                     {
                         Currentday = dayoftheweek, // 21, 22
+                        Month = 12,
+                        Year = year - 1,
                     });
                 } //Day Name
 
-                for (int c = 21; c <= DateTime.DaysInMonth(year, 12); c++)
+                for (int c = 21; c <= DateTime.DaysInMonth(year - 1, 12); c++)
                 {
                     CalendarDetails.Add(new CalendarModel
                     {
                         Day = c, // start with the curretn month
-                        CurrentGridColumn = buttonGridColumn, //1, 2
-                        CurrentGridRow = buttonGridRow //0
+                        Month = 12,
+                        Year = year - 1,
                     });
                 }  //End of December
 
-                for (int d = 1; d <= DateTime.DaysInMonth(year + 1, 1); d++)
+                for (int d = 1; d <= DateTime.DaysInMonth(year, 1); d++)
                 {
                     CalendarDetails.Add(new CalendarModel
                     {
                         Day = d,
-                        CurrentGridColumn = buttonGridColumn,
-                        CurrentGridRow = buttonGridRow,
+                        Month = 1,
+                        Year = year,
                     });
 
                     if (d == 20)
@@ -225,8 +262,6 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         CalendarDetails.Add(new CalendarModel
                         {
                             Day = p, // start with the curretn month
-                            CurrentGridColumn = buttonGridColumn, //1, 2
-                            CurrentGridRow = buttonGridRow //0
                         });
                     }
 
@@ -239,8 +274,6 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         CalendarDetails.Add(new CalendarModel
                         {
                             Day = q,
-                            CurrentGridColumn = buttonGridColumn,
-                            CurrentGridRow = buttonGridRow,
                         });
 
                         if (q == 20)
@@ -270,6 +303,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         Datename.Add(new CalendarModel
                         {
                             Currentday = dayoftheweek, // 21, 22
+                            Month = month - 1,
+                            Year = year,
                         });
                     } //Day Week Name
 
@@ -282,8 +317,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         CalendarDetails.Add(new CalendarModel
                         {
                             Day = r, // 21,22,23,24,25,26,27,28,29,30 start with the last month
-                            CurrentGridColumn = buttonGridColumn, //1, 2
-                            CurrentGridRow = buttonGridRow //0
+                            Month = month - 1,
+                            Year = year,
                         });
                     } //Start with Last Month 21 ~ 31 
 
@@ -296,8 +331,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         CalendarDetails.Add(new CalendarModel
                         {
                             Day = t,
-                            CurrentGridColumn = buttonGridColumn,
-                            CurrentGridRow = buttonGridRow,
+                            Month = month,
+                            Year = year,
                         });
 
                         if (t == 20)
@@ -309,9 +344,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             }
         }
 
-
         [RelayCommand]
-        public void DecreaseMonth()
+        public async Task DecreaseMonth()
         {
             IsBusy = true;
             CalendarDetails.Clear();
@@ -320,14 +354,13 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             ReduceMonth();
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
+            ColorStatus();
             IsBusy = false;
             IsRefreshing = false;
         }
 
-
-
         [RelayCommand]
-        public void IncreaseMonth()
+        public async Task IncreaseMonth()
         {
             IsBusy = true;
             CalendarDetails.Clear();
@@ -336,12 +369,152 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             AddMonth();
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
+            ColorStatus();
             IsBusy = false;
             IsRefreshing = false;
 
         }
-    }
 
+        #endregion
+
+        #region Color
+
+        [RelayCommand]
+        public async Task ColorStatus()
+        {
+            if (App.UserDetails.GroupName != "Unassigned")
+            {
+                foreach (var cm in CalendarDetails)
+                {
+                    var response = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
+                    {
+                        GroupName = App.UserDetails.GroupName,
+                        ScheduleDate = cm.DayMonthYear,
+                    });
+
+                    if (response != null)
+                    {
+                        DateTime sDate = DateTime.ParseExact(cm.DayMonthYear, "dd/MM/yyyy", null);
+
+                        var DayDifferences = (DateTime.Now - sDate.Date).Days;
+                        if (DayDifferences > 7 && response.Status == true)
+                        {
+                            cm.Color = Color.FromArgb("#FFA500");
+                            cm.IsBooked = true;
+
+                        }
+                        else if (DayDifferences < 7 && response.Status == true)
+                        {
+                            cm.Color = Color.FromArgb("#32CD32");
+                            cm.IsAvailable = true;
+
+                        }
+                        else if (response.Status == false)
+                        {
+                            cm.Color = Color.FromArgb("#FFA07A");
+                            cm.IsRejected = true;
+                        }
+                    }
+                    else
+                    {
+                        cm.Color = Color.FromArgb("#778899");
+                        cm.IsAvailable = false;
+
+                    }
+                }
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("You are Unassigned", "Please get a group to be assigned first.", "OK");
+
+            }
+        }
+
+        #endregion
+
+
+        [RelayCommand]
+        public async Task SubmitButtonSelected(CalendarModel selectedItem)
+        {
+            if (selectedItem != null)
+            {
+                foreach (var ccm in CalendarDetails)
+                {
+                    if (ccm.IsSelected == false &&
+                        ccm.DayMonthYear == selectedItem.DayMonthYear &&
+                        ccm.IsAvailable == true)
+                    {
+                        ccm.IsSelected = true;
+                        if (ccm.IsSelected == true)
+                        {
+                            ccm.Color = Color.FromArgb("#006400");
+                            Items.Add(new CalendarModel
+                            {
+                                DayMonthYear = selectedItem.DayMonthYear,
+                                Day = selectedItem.Day,
+                                Month = selectedItem.Month,
+                                Year = selectedItem.Year,
+                                IsSelected = true,
+                                EmployeeNumber = App.UserDetails.EmployeeName,
+                                GroupName = App.UserDetails.GroupName,
+                            });
+                        }
+                    }
+                }
+            }
+
+        }
+    
+
+    [RelayCommand]
+    public async Task DeleteButtonSelected()
+    {
+        IsBusy = true;
+        foreach (var ccm in CalendarDetails)
+        {
+            if (ccm.IsSelected == true)
+            {
+                ccm.Color = Color.FromArgb("#32CD32");
+                ccm.IsSelected = false;
+            }
+        }
+        Items.Clear();
+        IsBusy = false;
+        IsRefreshing = false;
+    }
+}
+
+    //try
+    //{
+    //    foreach (var cm in SubmitOTRequest)
+    //    {
+    //        var response = await _scheduleServices.EmployeeAddSchedule(new EmployeeAddScheduleDTO
+    //        {
+    //            DayMonthYear = cm.DayMonthYear,
+    //            EmployeeNumber = App.UserDetails.EmployeeNumber,
+    //            ScheduleDate = cm.ScheduleDate,
+    //            GroupName = App.UserDetails.GroupName,
+    //            Status = true,
+    //        });
+
+    //        if (response != null)
+    //        {
+    //            SubmitOTRequest.Add(new CalendarModel
+    //            {
+
+    //            });
+    //        }
+    //        else
+    //        {
+    //            await Shell.Current.DisplayAlert("Hello", "Takpaye kerja", "OK");
+    //        }
+    //    }
+    //}
+    //catch (Exception ex)
+    //{
+
+
+    //}
 }
 
 

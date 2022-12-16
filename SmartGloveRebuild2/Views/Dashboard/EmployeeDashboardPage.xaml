@@ -116,12 +116,7 @@
                     <!--Hour-->
 
                 </Grid>
-                <Button Margin="0,50,0,0" Text="Schedule OT" Command="{Binding GotoScheduleOTCommand}">
-                    <Button.BindingContext>
-                        <calendarvm:ScheduleViewModel/>
-                    </Button.BindingContext>
-                </Button>
-
+                <Button x:Name="ScheduleButton" Clicked="ScheduleButton_Clicked" Margin="0,50,0,0" Text="Schedule OT"/>
                 <Image Source="sglogo.png" 
                        HeightRequest="20" 
                        WidthRequest="300" 
