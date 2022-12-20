@@ -3,21 +3,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Admin.UpdateSlotsDetails"
              xmlns:model="clr-namespace:SmartGloveRebuild2.Models.ClerkDTO"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewmodel:UpdateSlotsDetailViewModel"
-             Title="UpdateSlotsDetails">
-    <VerticalStackLayout>
-        <CollectionView ItemsSource="{Binding addedGroupSchedule}">
+             Title="Update Slots Page">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+        <Grid RowDefinitions="Auto,*">
+            <Grid Grid.Row="0" Margin="20,20,0,20"  ColumnDefinitions="Auto,Auto">
+                <Label FontSize="24" Grid.Column="0" Text="Groups for" TextColor="Black"/>
+                <Label FontAttributes="Bold" FontSize="24" Margin="10,0,0,0" Grid.Column="1" Text="{Binding Daymonthyear}" TextColor="Black"/>
+            </Grid>
+            <Label Margin="20,0,0,20" FontSize="21" Grid.Row="1" Text="Modify the schedule OT for" TextColor="Black"/>
+            <Button Margin="20,0,0,20" Grid.Row="1" Text="Refresh" Command="{Binding RefreshButtonCommand}" HorizontalOptions="End" HeightRequest="50"/>
+        </Grid>
+        <Frame Grid.Row="1" Margin="0,10,0,0" CornerRadius="0" Padding="0,20,0,20">
+            <Grid ColumnDefinitions="*,*,*,*">
+                <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="Groups"/>
+                <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="Paxs."/>
+                <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Hours"/>
+                <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="4" Text="Status"/>
+            </Grid>
+        </Frame>
+        <CollectionView 
+            Grid.Row="2" 
+            ItemsSource="{Binding addedGroupSchedule}"
+            SelectedItem="{Binding Items}"
+            SelectionMode="Multiple">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:GroupScheduleModel">
-                    <VerticalStackLayout>
-                        <Label Text="{Binding GroupName}"/>
-                        <Label Text="{Binding Paxs}"/>
-                        <Label Text="{Binding Status}"/>
-                        <Label Text="{Binding Hours}"/>
-                    </VerticalStackLayout>
+                    <Frame CornerRadius="0" Padding="0">
+                        <Grid HeightRequest="70" ColumnDefinitions="*,*,*,*">
+                            <Label FontSize="18" FontAttributes="Bold" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="{Binding GroupName}"/>
+                            <Entry FontSize="18" FontAttributes="Bold" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="{Binding Paxs}" Placeholder="{Binding Paxs}"/>
+                            <Entry FontSize="18" FontAttributes="Bold" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="{Binding Hours}" Placeholder="{Binding Hours}"/>
+                            <Button x:Name="statusbutton" FontSize="18" WidthRequest="80" BackgroundColor="{Binding Color}" Text="{Binding OnOff}" HeightRequest="50" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="3" IsEnabled="{Binding Status, Converter={StaticResource InvertedBoolConverter}}">
+                                <Button.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:UpdateSlotsDetailViewModel}},Path=UpdateButtonCommand}" CommandParameter="{Binding .}"/>
+                                </Button.GestureRecognizers>
+                            </Button>                            
+                            <Button FontSize="18" WidthRequest="80" BackgroundColor="{Binding Color}" Text="{Binding OnOff}" HeightRequest="50" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="3" IsEnabled="{Binding Status}">
+                                <Button.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:UpdateSlotsDetailViewModel}},Path=UpdateButtonCommand}" CommandParameter="{Binding .}"/>
+                                </Button.GestureRecognizers>
+                            </Button>
+                        </Grid>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+        <Button Grid.Row="3" Command="{Binding UpdateStatusCommand}" Margin="0,10,0,20" Text="Save Changes" HeightRequest="50" WidthRequest="200" VerticalOptions="Center" HorizontalOptions="Center" />
+    </Grid>
+    <!--Command="{Binding UpdateStatusCommand}"-->
 </ContentPage>

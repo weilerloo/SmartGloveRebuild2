@@ -15,6 +15,7 @@ using SmartGloveRebuild2.Models.Group;
 using SmartGloveRebuild2.Models.Schedule;
 using Newtonsoft.Json.Serialization;
 using SmartGloveRebuild2.Models.ClerkDTO;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SmartGloveRebuild2.ViewModels.Employee
 {
@@ -22,10 +23,6 @@ namespace SmartGloveRebuild2.ViewModels.Employee
     {
         #region Properties
         private readonly IScheduleServices _scheduleServices;
-
-
-        int buttonGridColumn = 0;
-        int buttonGridRow = 0;
 
         [ObservableProperty]
         DateTime now = DateTime.Now;
@@ -133,7 +130,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         }
 
         [RelayCommand]
-        public async Task DisplayDays()
+        public async void DisplayDays()
         {
             var month = now.Month;  // Current Date
             year = now.Year; // 2022
@@ -346,9 +343,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         }
 
         [RelayCommand]
-        public async Task DecreaseMonth()
+        public async void DecreaseMonth()
         {
-            IsBusy = true;
             CalendarDetails.Clear();
             Datename.Clear();
             Monthname.Clear();
@@ -356,14 +352,11 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
             ColorStatus();
-            IsBusy = false;
-            IsRefreshing = false;
         }
 
         [RelayCommand]
-        public async Task IncreaseMonth()
+        public async void IncreaseMonth()
         {
-            IsBusy = true;
             CalendarDetails.Clear();
             Datename.Clear();
             Monthname.Clear();
@@ -371,9 +364,6 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
             ColorStatus();
-            IsBusy = false;
-            IsRefreshing = false;
-
         }
 
         #endregion
@@ -387,6 +377,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             {
                 foreach (var cm in CalendarDetails)
                 {
+
                     var getEmployeeSchedule = await _scheduleServices.GetScheduleByEmployeeNumberandDate(new GetScheduleByEmployeeNumberandDateDTO
                     {
                         DayMonthYear = cm.DayMonthYear,
@@ -402,10 +393,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
                     if (response != null)
                     {
-                        DateTime sDate = DateTime.ParseExact(cm.DayMonthYear, "dd/MM/yyyy", null);
+                        DateTime sDate = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
 
                         var DayDifferences = (DateTime.Now - sDate.Date).Days;
-                        if (DayDifferences > 7 && response.Where(f => f.Status == true) != null)
+                        if (DayDifferences > 7 && response.Count() != 0 && getEmployeeSchedule != null)
                         {
                             cm.Color = Color.FromArgb("#FFA500");
                             cm.IsBooked = true;
@@ -416,23 +407,23 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                             cm.Color = Color.FromArgb("#FFA500");
 
                         }
-                        else if (DayDifferences < 7 && response.Where(f => f.Status == true) != null)
+                        else if (DayDifferences < 7 && response.Count() != 0)
                         {
                             cm.Color = Color.FromArgb("#32CD32");
                             cm.IsAvailable = true;
 
                         }
-                        else if (response.Where(f => f.Status == false) != null)
+                        else if (response.Find(f => f.Status == false) != null
+                                && response.Count() == 0)
                         {
                             cm.Color = Color.FromArgb("#FFA07A");
                             cm.IsRejected = true;
                         }
-                    }
-                    else
-                    {
-                        cm.Color = Color.FromArgb("#778899");
-                        cm.IsAvailable = false;
-
+                        else
+                        {
+                            cm.Color = Color.FromArgb("#778899");
+                            cm.IsAvailable = false;
+                        }
                     }
                 }
             }
@@ -447,7 +438,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
 
         [RelayCommand]
-        public async Task SubmitButtonSelected(CalendarModel selectedItem)
+        public void SubmitButtonSelected(CalendarModel selectedItem)
         {
             if (selectedItem != null)
             {
@@ -474,15 +465,16 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         }
                     }
                 }
+
+                //
             }
 
         }
 
 
         [RelayCommand]
-        public async Task DeleteButtonSelected()
+        public async void DeleteButtonSelected()
         {
-            IsBusy = true;
             foreach (var ccm in CalendarDetails)
             {
                 if (ccm.IsSelected == true)
@@ -492,26 +484,32 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                 }
             }
             Items.Clear();
-            IsBusy = false;
-            IsRefreshing = false;
         }
 
         [RelayCommand]
-        public async void SubmitRequest()
+        public async Task SubmitRequest()
         {
-            foreach (var rqt in Items)
+            if (Items.Count < 20)
             {
-                var response = await _scheduleServices.EmployeeAddSchedule(new EmployeeAddScheduleDTO
+                foreach (var rqt in Items)
                 {
-                    DayMonthYear = rqt.DayMonthYear,
-                    EmployeeNumber = App.UserDetails.EmployeeNumber,
-                    ScheduleDate = DateTime.ParseExact(rqt.DayMonthYear, "dd/MM/yyyy", null),
-                    GroupName = App.UserDetails.GroupName,
-                    Status = true,
-                });
+                    var response = await _scheduleServices.EmployeeAddSchedule(new EmployeeAddScheduleDTO
+                    {
+                        DayMonthYear = rqt.DayMonthYear,
+                        EmployeeNumber = App.UserDetails.EmployeeNumber,
+                        ScheduleDate = DateTime.ParseExact(rqt.DayMonthYear, "d/M/yyyy", null),
+                        GroupName = App.UserDetails.GroupName,
+                        Status = true,
+                    });
+                }
 
-
-
+                await Shell.Current.DisplayAlert("Schedule Successfully", "Please wait the pending OT result.", "OK");
+                await Shell.Current.GoToAsync("..");
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Schedule Unsuccesfull", "Please select the Available Date.", "OK");
+                await Shell.Current.GoToAsync("..");
             }
         }
     }

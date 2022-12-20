@@ -8,28 +8,6 @@
              Title="{Binding Title}"
              x:Class="SmartGloveRebuild2.Views.Employee.ScheduleOT"
              BackgroundColor="White">
-    <!--<ContentPage.Resources>
-        <ControlTemplate x:Key="FrameRadioTemplate">
-            <Frame 
-                Padding="0"
-                BorderColor="#2B79E1" CornerRadius="15" VerticalOptions="Start" HorizontalOptions="End">
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CheckedStates">
-                        <VisualState x:Name="Checked">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="#2B79E1"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Unchecked">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="#f3f2f1"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-            </Frame>
-        </ControlTemplate>
-    </ContentPage.Resources>-->
     <ScrollView>
         <Grid RowDefinitions="*,Auto">
             <VerticalStackLayout>

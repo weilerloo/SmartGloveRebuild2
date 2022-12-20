@@ -6,14 +6,10 @@ namespace SmartGloveRebuild2.Views.Employee;
 
 public partial class ScheduleOT : ContentPage
 {
-    Button DateButton;
-    ScheduleViewModel temp;
     public ScheduleOT(ScheduleViewModel viewModel)
     {
         InitializeComponent();
         this.BindingContext = viewModel;
-        temp = viewModel;
-
     }
 
     //private void SelectItemsButton_Clicked(object sender, EventArgs e)

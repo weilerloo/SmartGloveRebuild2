@@ -22,48 +22,34 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <!--<ImageButton Grid.Row="2" Grid.Column="2" Source="leftpage.png" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="0,0,5,0" Command="{Binding DecreaseMonthCommand}"/>
-                    <ImageButton Grid.Row="2" Grid.Column="2" Source="leftpage.png" Opacity="10" Rotation="180" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="70,0,20,0" Command="{Binding IncreaseMonthCommand}" />-->
             <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2" Command="{Binding IncreaseMonthCommand}"/>
             <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="2" Text="-" Margin="2" Command="{Binding DecreaseMonthCommand}"/>
         </Grid>
-        <!--<CollectionView ItemsSource="{Binding Datename}">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="7"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:UpdateSlotsModel">
-                    <Grid RowDefinitions="*,Auto, Auto,*">
-                        <Label Grid.Row="1" Text="{Binding Currentday}" HorizontalOptions="Center" FontAttributes="Bold"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>-->
-
-
-        <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}">
-            <CollectionView 
+        <CollectionView Grid.Row="1"
                             ItemsSource="{Binding ListCalendar}"
                             SelectionMode="Single"
                             SelectionChangedCommandParameter="{Binding .}">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:UpdateSlotsModel">
-                        <Frame>
-                            <Grid HeightRequest="50" VerticalOptions="CenterAndExpand" ColumnDefinitions="Auto,*" Padding="5,0,5,0">
-                                <Label VerticalOptions="Center" HorizontalTextAlignment="Center" HorizontalOptions="Start" FontAttributes="Bold" Grid.Column="0" Text="{Binding Day}"/>
-                                <Label VerticalOptions="Center" Margin="40,0,40,0" HorizontalTextAlignment="Center" HorizontalOptions="Center" FontAttributes="Bold" Padding="5,0,5,0" Grid.Column="0" Text="{Binding Month}"/>
-                                <Label VerticalOptions="Center" HorizontalTextAlignment="Center" HorizontalOptions="End" FontAttributes="Bold" Grid.Column="0" Text="{Binding Currentyear}"/>
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:UpdateSlotsModel">
+                    <Frame>
+                        <Grid HeightRequest="50" ColumnDefinitions="*,Auto">
+                            <Grid HorizontalOptions="Start" ColumnDefinitions="Auto,Auto,Auto,*" Grid.Column="0" Margin="5">
+                                <Label Padding="5,0,5,0" FontSize="Medium" Grid.Column="1" FontAttributes="Bold" Text="{Binding Day}"/>
+                                <Label Padding="5,0,5,0" FontSize="Medium" Grid.Column="2" FontAttributes="Bold" Text="{Binding Month}"/>
+                                <Label Padding="0,0,0,0" FontSize="Medium" Grid.Column="3" FontAttributes="Bold" Text="{Binding Currentyear}"/>
                             </Grid>
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:UpdateSlotsViewModel}},Path=SelectedItemCommand}" CommandParameter="{Binding .}"/>
-                                </Frame.GestureRecognizers>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </RefreshView>
+                            <Button Grid.Column="1" BackgroundColor="Green" TextColor="White" VerticalOptions="Center" HorizontalOptions="End" Text="ACTIONS">
+                                <Button.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:UpdateSlotsViewModel}},Path=SelectedItemCommand}" CommandParameter="{Binding Path=.}"/>
+                                </Button.GestureRecognizers>
+                            </Button>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>

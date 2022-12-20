@@ -2,14 +2,10 @@
 {
     public class UpdateScheduleStatusByGroupNameDTO
     {
-        public string DayMonthYear
-        {
-            get => $"{ScheduleDate.ToUniversalTime}";
-        }
-        public DateTime ScheduleDate { get; set; }
+        public string DayMonthYear { get; set; }
         public string GroupName { get; set; }
-        public double Hours { get; set; } = 0;
-        public int Paxs { get; set; } = 0;
+        public double Hours { get; set; }
+        public int Paxs { get; set; }
         public bool Status { get; set; }
     }
 }

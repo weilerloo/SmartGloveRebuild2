@@ -75,7 +75,7 @@ namespace SmartGloveRebuild2.Services
             }
         }
 
-        public async Task<GetScheduleByGroupandDateResponse> GetSchedulebyDate(GetSchedulebyDateDTO getSchedulebyDateDTO)
+        public async Task<List<GetScheduleByGroupandDateResponse>> GetSchedulebyDate(GetSchedulebyDateDTO getSchedulebyDateDTO)
         {
             using (var client = new HttpClient())
             {
@@ -86,7 +86,7 @@ namespace SmartGloveRebuild2.Services
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<GetScheduleByGroupandDateResponse>(json);
+                    return JsonConvert.DeserializeObject<List<GetScheduleByGroupandDateResponse>>(json);
                 }
                 else
                 {
@@ -167,7 +167,10 @@ namespace SmartGloveRebuild2.Services
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string updateScheduleStatusByGroupNameStr = JsonConvert.SerializeObject(updateScheduleStatusByGroupNameDTO);
-                var response = await client.PutAsync($"http://172.16.12.149:7006/api/Schedule/UpdateScheduleStatusByGroupName/{updateScheduleStatusByGroupNameDTO.GroupName}",
+                var response = await client.PutAsync($"http://172.16.12.149:7006/api/Schedule/UpdateScheduleStatusByGroupName?GroupName=" +
+                    $"{updateScheduleStatusByGroupNameDTO.GroupName}&DayMonthYear={updateScheduleStatusByGroupNameDTO.DayMonthYear}" +
+                    $"&Hours={updateScheduleStatusByGroupNameDTO.Hours}&Paxs={updateScheduleStatusByGroupNameDTO.Paxs}" +
+                    $"&Status={updateScheduleStatusByGroupNameDTO.Status}",
                       new StringContent(updateScheduleStatusByGroupNameStr, Encoding.UTF8,
                       "application/json"));
 

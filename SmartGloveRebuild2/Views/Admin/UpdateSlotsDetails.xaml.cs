@@ -6,7 +6,6 @@ namespace SmartGloveRebuild2.Views.Admin;
 
 public partial class UpdateSlotsDetails : ContentPage
 {
-    UpdateSlotsDetailViewModel updateSlotsDetailViewModel;
     public UpdateSlotsDetails(UpdateSlotsDetailViewModel updateSlotsDetailViewModel)
     {
         InitializeComponent();
