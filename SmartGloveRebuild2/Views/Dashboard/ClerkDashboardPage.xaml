@@ -119,7 +119,7 @@
                 <Grid RowDefinitions="*,*,*,*"
                       WidthRequest="300">
 
-                    <Button HeightRequest="50" Grid.Row="0" Margin="0,30,0,0" Text="Update Slots" Clicked="Button_Clicked">
+                    <Button HeightRequest="50" Grid.Row="0" Margin="0,30,0,0" Text="Update Slots" Clicked="Button_Clicked_1">
                     </Button>
                     <Button HeightRequest="50" Grid.Row="1" Margin="0,10,0,0" Text="Check Calender" Command="{Binding CheckCalendarCommand}">
                         <Button.BindingContext>

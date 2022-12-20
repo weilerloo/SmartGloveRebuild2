@@ -20,9 +20,8 @@ public partial class ClerkDashboardPage : ContentPage
             TotalHour.Text = App.UserDetails.TotalHour.ToString();
         }
     }
-
-    private void Button_Clicked(object sender, EventArgs e)
+    private async void Button_Clicked_1(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync(nameof(UpdateSlotsPage));
+        await Shell.Current.GoToAsync(nameof(UpdateSlotsPage));
     }
 }

@@ -9,5 +9,6 @@ public partial class UpdateSlotsPage : ContentPage
 	{
 		InitializeComponent();
 		this.BindingContext = updateSlotsViewModel;
-	}
+		
+    }
 }

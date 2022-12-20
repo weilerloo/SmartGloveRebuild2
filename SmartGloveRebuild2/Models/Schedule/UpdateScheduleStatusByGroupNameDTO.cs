@@ -6,9 +6,10 @@
         {
             get => $"{ScheduleDate.ToUniversalTime}";
         }
-        public string EmployeeNumber { get; set; }
-        public string GroupName { get; set; }
         public DateTime ScheduleDate { get; set; }
+        public string GroupName { get; set; }
+        public double Hours { get; set; } = 0;
+        public int Paxs { get; set; } = 0;
         public bool Status { get; set; }
     }
 }

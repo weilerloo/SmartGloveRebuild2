@@ -1,6 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SmartGloveRebuild2.Models.ClerkDTO;
+using SmartGloveRebuild2.Models.Group;
+using SmartGloveRebuild2.Models.GroupResponse;
+using SmartGloveRebuild2.Models.Schedule;
+using SmartGloveRebuild2.Models.ScheduleResponse;
 using SmartGloveRebuild2.Services;
 using SmartGloveRebuild2.Views.Admin;
 using System;
@@ -16,6 +20,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
     public partial class UpdateSlotsViewModel : BaseViewModel
     {
         #region Properties  
+        public static ObservableCollection<UpdateGroupModel> GroupSchedule { get; set; } = new ObservableCollection<UpdateGroupModel>();
         public ObservableCollection<UpdateSlotsModel> ListCalendar { get; set; } = new ObservableCollection<UpdateSlotsModel>();
         public ObservableCollection<UpdateSlotsModel> Datename { get; set; } = new ObservableCollection<UpdateSlotsModel>();
         public ObservableCollection<UpdateSlotsModel> Monthname { get; set; } = new ObservableCollection<UpdateSlotsModel>();
@@ -35,15 +40,35 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
         [ObservableProperty]
         bool isRefreshing, status = true;
+
+        public UpdateSlotsModel choosenitem;
+        public UpdateSlotsModel ChoosenItem
+        {
+            get
+            {
+                return choosenitem;
+            }
+            set
+            {
+                if (choosenitem != value)
+                {
+                    choosenitem = value;
+                }
+            }
+        }
         #endregion
 
         private readonly IScheduleServices _scheduleService;
+        private readonly IGroupServices _groupServices;
 
-        public UpdateSlotsViewModel(IScheduleServices scheduleServices)
+        public UpdateSlotsViewModel(IScheduleServices scheduleServices, IGroupServices groupServices)
         {
             _scheduleService = scheduleServices;
+            _groupServices = groupServices;
             DisplayDays();
             Title = "Update Slots";
+            GroupSchedule = new ObservableCollection<UpdateGroupModel>();
+            ChoosenItem = new UpdateSlotsModel();
         }
 
         #region LoadCalendar
@@ -350,6 +375,72 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public async Task SelectedItem(UpdateSlotsModel updateSlotsModel)
         {
+            bool success = false;
+            GroupSchedule.Clear();
+            updateSlotsModel.DayMonthYear = updateSlotsModel.Day.ToString() +
+                "/" + updateSlotsModel.Currentmonth.ToString() +
+                "/" + updateSlotsModel.Currentyear.ToString();
+            var response = await _scheduleService.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
+            {
+                ScheduleDate = updateSlotsModel.DayMonthYear,
+                GroupName = App.UserDetails.GroupName,
+            });
+
+            var getGroup = await _groupServices.DisplayGroup();
+            if (updateSlotsModel != null)
+            {
+                if (response != null && getGroup != null)
+                {
+                    foreach (var Group in response)// 14/12/2022, Biomas, Sigma, GX2
+                    {
+                        foreach (var newG in getGroup)  // From new group
+                        {
+                            string ConvertedDayMonthYear = Group.DayMonthYear.Substring(0, 10);
+                            if (updateSlotsModel.DayMonthYear == ConvertedDayMonthYear && Group.GroupName == newG.GroupName)
+                            {
+                                GroupSchedule.Add(new UpdateGroupModel
+                                {
+                                    GroupName = Group.GroupName,
+                                    Status = Group.Status,
+                                    DayMonthYear = Group.DayMonthYear.Substring(0, 10),
+                                    Hours = Group.Hours,
+                                    Paxs = Group.Paxs,
+                                });
+                            }
+                            else
+                            {
+                                GroupSchedule.Add(new UpdateGroupModel
+                                {
+                                    GroupName = newG.GroupName,
+                                    Status = false,
+                                    DayMonthYear = Group.DayMonthYear.Substring(0, 10),
+                                    Hours = 0,
+                                    Paxs = 0,
+                                });
+                            }
+                        }
+                        success = true;
+                        break;
+                    }
+                }
+            }
+
+            if(success == false)
+            {
+                foreach (var newG in getGroup)  // From new group
+                {
+
+                    GroupSchedule.Add(new UpdateGroupModel
+                    {
+                        GroupName = newG.GroupName,
+                        Status = false,
+                        DayMonthYear = updateSlotsModel.DayMonthYear,
+                        Hours = 0,
+                        Paxs = 0,
+                    });
+                }
+            }
+
             if (updateSlotsModel == null)
             {
                 return;
@@ -357,10 +448,98 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
             await Shell.Current.GoToAsync(nameof(UpdateSlotsDetails), true, new Dictionary<string, object>
             {
-            {"UpdateSlotsModel", updateSlotsModel }
-            });
+            {"UpdateSlotsModel", updateSlotsModel
+    }
+
+});
         }
 
         #endregion
+
+        #region GetGroupList
+
+        public void ConcatenateLabelDate()
+        {
+            //foreach (var date in ListCalendar)
+            //{
+            //    string day = date.Day.ToString();
+            //    string month = date.Currentmonth.ToString();
+            //    string year = date.Currentyear.ToString();
+            //    GroupSchedule.Add(new ListCalendar
+            //    {
+            //        DayMonthYear = day + "/" + month + "/" + year
+            //    });
+            //}
+        }
+
+
+        [RelayCommand]
+        public async Task ClickSelectedDate(UpdateSlotsModel choosenItem)
+        {
+
+
+
+        }
+
+        //public void ConcatenateLabelDate()
+        //{
+        //    if (UpdateSlotsModel.Day.ToString().Length > 1)
+        //    {
+        //        string day = UpdateSlotsModel.Day.ToString();
+        //        string month = UpdateSlotsModel.Currentmonth.ToString();
+        //        string year = UpdateSlotsModel.Currentyear.ToString();
+        //        daymonthyear = day + "%2F" + month + "%2F" + year;
+        //    }
+        //    else
+        //    {
+        //        string day = UpdateSlotsModel.Day.ToString();
+        //        string month = UpdateSlotsModel.Currentmonth.ToString();
+        //        string year = UpdateSlotsModel.Currentyear.ToString();
+        //        daymonthyear = day + "%2F" + month + "%2F" + year;
+        //    }
+
+        //}
+        //[RelayCommand]
+        //public async void GetGroupSchdule()
+        //{
+        //    try
+        //    {
+        //        if (App.UserDetails.Role == "CLERK")
+        //        {
+
+        //            var response = await _scheduleServices.GetSchedulebyDate(new GetSchedulebyDateDTO
+        //            {
+        //                ScheduleDate = daymonthyear,
+        //            });
+
+        //            if (response != null)
+        //            {
+        //                GroupSchedule.Add(new GroupScheduleModel
+        //                {
+        //                    GroupName = response.GroupName,
+        //                    Hours = response.Hours,
+        //                    Paxs = response.Paxs,
+        //                    Status = response.Status,
+        //                });
+        //            }
+        //            else
+        //            {
+        //                await AppShell.Current.DisplayAlert("Hello", "Takpaye kerja", "OK");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            await AppShell.Current.DisplayAlert("Error!", "No Group or Schedule Found!", "OK");
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+
+        //    }
+        //}
+        #endregion
+
     }
 }

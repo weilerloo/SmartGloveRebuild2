@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartGloveRebuild2.Models.ScheduleResponse
+namespace SmartGloveRebuild2.Models.GroupResponse
 {
-    public class GetScheduleResponse
+    public class GroupResponse
     {
+
     }
 }

@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 
 namespace SmartGloveRebuild2.ViewModels.Admin
 {
-    [QueryProperty(nameof(UpdateSlotsModel), "UpdateSlotsModel")]
+    [QueryProperty(nameof(UpdateGroupModel), "UpdateGroupModel")]
     public partial class UpdateSlotsDetailViewModel : BaseViewModel
     {
         #region ObservableCollections
-        public ObservableCollection<GroupScheduleModel> GroupSchedule { get; set; } = new ObservableCollection<GroupScheduleModel>();
+        public ObservableCollection<GroupScheduleModel> addedGroupSchedule { get; set; } = new ObservableCollection<GroupScheduleModel>();
 
         #endregion
 
@@ -26,78 +26,26 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public UpdateSlotsDetailViewModel(IScheduleServices scheduleServices)
         {
             _scheduleServices = scheduleServices;
+            foreach (var groups in UpdateSlotsViewModel.GroupSchedule)
+            {
+                addedGroupSchedule.Add(new GroupScheduleModel
+                {
+                    GroupName = groups.GroupName,
+                    Hours = groups.Hours,
+                    Paxs = groups.Paxs,
+                    Status = groups.Status,
+                });
+            }
         }
 
         [ObservableProperty]
-        UpdateSlotsModel updateSlotsModel;
+        UpdateGroupModel updateGroupModel;
 
         [ObservableProperty]
         string daymonthyear, groupname, paxs, status;
 
         [ObservableProperty]
         double hours;
-
-        public void ConcatenateLabelDate()
-        {
-            if (UpdateSlotsModel.Day.ToString().Length > 1)
-            {
-                string day = UpdateSlotsModel.Day.ToString();
-                string month = UpdateSlotsModel.Currentmonth.ToString();
-                string year = UpdateSlotsModel.Currentyear.ToString();
-                daymonthyear = day + "%2F" + month + "%2F" + year;
-            }
-            else
-            {
-                string day = UpdateSlotsModel.Day.ToString();
-                string month = UpdateSlotsModel.Currentmonth.ToString();
-                string year = UpdateSlotsModel.Currentyear.ToString();
-                daymonthyear = day + "%2F" + month + "%2F" + year;
-            }
-
-        }
-
-        [RelayCommand]
-        public async void GetGroupSchdule()
-        {
-            try
-            {
-                ConcatenateLabelDate();
-                if (App.UserDetails.Role == "CLERK")
-                {
-
-                    var response = await _scheduleServices.GetSchedulebyDate(new GetSchedulebyDateDTO
-                    {
-                        ScheduleDate = daymonthyear,
-                    });
-
-                    if (response != null)
-                    {
-                        GroupSchedule.Add(new GroupScheduleModel
-                        {
-                            GroupName = response.GroupName,
-                            Hours = response.Hours,
-                            Paxs = response.Paxs,
-                            Status = response.Status,
-                        });
-                    }
-                    else
-                    {
-                        await AppShell.Current.DisplayAlert("Hello", "Takpaye kerja", "OK");
-                    }
-                }
-                else
-                {
-                    await AppShell.Current.DisplayAlert("Error!", "No Group or Schedule Found!", "OK");
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-
-            }
-        }
-
 
     }
 }

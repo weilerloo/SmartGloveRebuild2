@@ -32,6 +32,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<ILoginService, LoginServices>();
         builder.Services.AddSingleton<IScheduleServices, ScheduleServices>();
+        builder.Services.AddSingleton<IGroupServices, GroupServices>();
 #if WINDOWS
     
 

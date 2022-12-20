@@ -51,7 +51,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:UpdateSlotsModel">
-                        <Frame >
+                        <Frame>
                             <Grid HeightRequest="50" VerticalOptions="CenterAndExpand" ColumnDefinitions="Auto,*" Padding="5,0,5,0">
                                 <Label VerticalOptions="Center" HorizontalTextAlignment="Center" HorizontalOptions="Start" FontAttributes="Bold" Grid.Column="0" Text="{Binding Day}"/>
                                 <Label VerticalOptions="Center" Margin="40,0,40,0" HorizontalTextAlignment="Center" HorizontalOptions="Center" FontAttributes="Bold" Padding="5,0,5,0" Grid.Column="0" Text="{Binding Month}"/>

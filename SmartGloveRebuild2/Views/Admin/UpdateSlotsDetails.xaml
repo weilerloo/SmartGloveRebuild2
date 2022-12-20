@@ -6,25 +6,18 @@
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewmodel:UpdateSlotsDetailViewModel"
              Title="UpdateSlotsDetails">
-    <Grid RowDefinitions="*,80">
-        <Grid RowDefinitions="Auto,Auto,*">
-            <Label x:Name="Title" Text="{Binding Daymonthyear}" />
-            <Button x:Name="Test" Grid.Row="1" Command="{Binding GetGroupSchduleCommand}" Text="Test" IsVisible="False"/>
-            <CollectionView Grid.Row="2" ItemsSource="{Binding GroupSchedule}">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="7"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:GroupScheduleModel">
-                        <Grid RowDefinitions="Auto,Auto,Auto,Auto">
-                            <Label Grid.Row="0" Text="{Binding GroupName}" HorizontalOptions="Center" FontAttributes="Bold"/>
-                            <Label Grid.Row="1" Text="{Binding Hours}" HorizontalOptions="Center" FontAttributes="Bold"/>
-                            <Label Grid.Row="2" Text="{Binding Paxs}" HorizontalOptions="Center" FontAttributes="Bold"/>
-                            <Label Grid.Row="3" Text="{Binding Status}" HorizontalOptions="Center" FontAttributes="Bold"/>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </Grid>
-    </Grid>
+    <VerticalStackLayout>
+        <CollectionView ItemsSource="{Binding addedGroupSchedule}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:GroupScheduleModel">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding GroupName}"/>
+                        <Label Text="{Binding Paxs}"/>
+                        <Label Text="{Binding Status}"/>
+                        <Label Text="{Binding Hours}"/>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
 </ContentPage>

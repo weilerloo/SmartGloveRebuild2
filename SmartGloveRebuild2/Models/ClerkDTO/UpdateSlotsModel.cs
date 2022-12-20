@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartGloveRebuild2.Models.ScheduleResponse;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -15,8 +16,7 @@ namespace SmartGloveRebuild2.Models.ClerkDTO
         public int Currentyear { get; set; }
         public int Year { get; set; }
         public string LastCurrentMonth { get; set; }
-            
         public string Month => $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Currentmonth)} {" "}";
-
+        public string DayMonthYear { get; set; }
     }
 }
