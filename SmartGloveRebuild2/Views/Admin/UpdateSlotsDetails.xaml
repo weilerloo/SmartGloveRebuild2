@@ -11,17 +11,23 @@
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         </ResourceDictionary>
+        <Style x:Key="InvalidEntryStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Red" />
+        </Style>
+        <Style x:Key="ValidEntryStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Green" />
+        </Style>
     </ContentPage.Resources>
     <Grid RowDefinitions="Auto,Auto,*,Auto">
-        <Grid RowDefinitions="Auto,*">
+        <Grid RowDefinitions="Auto,*,Auto">
             <Grid Grid.Row="0" Margin="20,20,0,20"  ColumnDefinitions="Auto,Auto">
                 <Label FontSize="24" Grid.Column="0" Text="Groups for" TextColor="Black"/>
                 <Label FontAttributes="Bold" FontSize="24" Margin="10,0,0,0" Grid.Column="1" Text="{Binding Daymonthyear}" TextColor="Black"/>
             </Grid>
-            <Label Margin="20,0,0,20" FontSize="21" Grid.Row="1" Text="Modify the schedule OT for" TextColor="Black"/>
-            <Button Margin="20,0,0,20" Grid.Row="1" Text="Refresh" Command="{Binding RefreshButtonCommand}" HorizontalOptions="End" HeightRequest="50"/>
+            <Label Margin="20,0,0,20" FontSize="21" Grid.Row="1" Text="Please Modify the schedule." TextColor="Black"/>
+            <Button Margin="20,0,0,20" Grid.Row="2" Text="Refresh" Command="{Binding RefreshButtonCommand}" HorizontalOptions="End" HeightRequest="50"/>
         </Grid>
-        <Frame Grid.Row="1" Margin="0,10,0,0" CornerRadius="0" Padding="0,20,0,20">
+        <Frame Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
             <Grid ColumnDefinitions="*,*,*,*">
                 <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="Groups"/>
                 <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="Paxs."/>
@@ -29,33 +35,84 @@
                 <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="4" Text="Status"/>
             </Grid>
         </Frame>
-        <CollectionView 
-            Grid.Row="2" 
-            ItemsSource="{Binding addedGroupSchedule}"
-            SelectedItem="{Binding Items}"
-            SelectionMode="Multiple">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:GroupScheduleModel">
-                    <Frame CornerRadius="0" Padding="0">
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                      Grid.Row="2">
+            <CollectionView 
+                    ItemsSource="{Binding addedGroupSchedule}"
+                    SelectedItem="{Binding Items}"
+                    SelectionMode="Multiple">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:GroupScheduleModel">
                         <Grid HeightRequest="70" ColumnDefinitions="*,*,*,*">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal" />
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="Transparent" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
                             <Label FontSize="18" FontAttributes="Bold" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="{Binding GroupName}"/>
-                            <Entry FontSize="18" FontAttributes="Bold" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="{Binding Paxs}" Placeholder="{Binding Paxs}"/>
-                            <Entry FontSize="18" FontAttributes="Bold" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="{Binding Hours}" Placeholder="{Binding Hours}"/>
-                            <Button x:Name="statusbutton" FontSize="18" WidthRequest="80" BackgroundColor="{Binding Color}" Text="{Binding OnOff}" HeightRequest="50" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="3" IsEnabled="{Binding Status, Converter={StaticResource InvertedBoolConverter}}">
+                            <Entry x:Name="Paxs" 
+                                   Keyboard="Numeric" 
+                                   FontSize="18" 
+                                   WidthRequest="50" 
+                                   FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center" 
+                                   VerticalOptions="Center" 
+                                   HorizontalOptions="Center" 
+                                   Grid.Column="1" 
+                                   Text="{Binding Paxs}" 
+                                   Placeholder="{Binding Paxs}">
+                                <Entry.Behaviors>
+                                    <toolkit:NumericValidationBehavior 
+                                        InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                        ValidStyle="{StaticResource ValidEntryStyle}"
+                                        Flags="ValidateOnValueChanged"
+                                        MinimumValue="0.1"
+                                        MaximumValue="7.0"
+                                        MaximumDecimalPlaces="2" />
+                                </Entry.Behaviors>
+                            </Entry>
+                            <Entry x:Name="Hours" 
+                                   Keyboard="Numeric" 
+                                   FontSize="18" 
+                                   WidthRequest="50" 
+                                   FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center" 
+                                   VerticalOptions="Center" 
+                                   HorizontalOptions="Center" 
+                                   Grid.Column="2" Text="{Binding Hours}" 
+                                   Placeholder="{Binding Hours}">
+                                <Entry.Behaviors>
+                                    <toolkit:NumericValidationBehavior 
+                                        InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                        ValidStyle="{StaticResource ValidEntryStyle}"
+                                        Flags="ValidateOnValueChanged"
+                                        MinimumValue="0.1"
+                                        MaximumValue="7.0"
+                                        MaximumDecimalPlaces="2" />
+                                </Entry.Behaviors>
+                            </Entry>
+                            <Button x:Name="statusbutton" FontSize="18" WidthRequest="80" BackgroundColor="{Binding Color}" Text="{Binding OnOff}" HeightRequest="50" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="3"  IsEnabled="{Binding Status, Converter={StaticResource InvertedBoolConverter}}">
                                 <Button.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:UpdateSlotsDetailViewModel}},Path=UpdateButtonCommand}" CommandParameter="{Binding .}"/>
                                 </Button.GestureRecognizers>
-                            </Button>                            
-                            <Button FontSize="18" WidthRequest="80" BackgroundColor="{Binding Color}" Text="{Binding OnOff}" HeightRequest="50" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="3" IsEnabled="{Binding Status}">
+                            </Button>
+                            <Button FontSize="18" WidthRequest="80" BackgroundColor="{Binding Color}" Text="{Binding OnOff}" HeightRequest="50" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="3" IsVisible="{Binding Status}" IsEnabled="{Binding Status}">
                                 <Button.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:UpdateSlotsDetailViewModel}},Path=UpdateButtonCommand}" CommandParameter="{Binding .}"/>
                                 </Button.GestureRecognizers>
                             </Button>
                         </Grid>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
         <Button Grid.Row="3" Command="{Binding UpdateStatusCommand}" Margin="0,10,0,20" Text="Save Changes" HeightRequest="50" WidthRequest="200" VerticalOptions="Center" HorizontalOptions="Center" />
     </Grid>
     <!--Command="{Binding UpdateStatusCommand}"-->

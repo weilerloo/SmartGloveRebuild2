@@ -12,6 +12,36 @@ public partial class ScheduleOT : ContentPage
         this.BindingContext = viewModel;
     }
 
+    //private void MinusButton_Clicked(object sender, EventArgs e)
+    //{
+    //    if (sender is Button button)
+    //    {
+    //        if (viewModel.IsBusy == true)
+    //        {
+    //            button.IsEnabled = false;
+    //        }
+    //        else
+    //        {
+    //            button.IsEnabled = true;
+    //        }
+    //    }
+    //}
+
+    //private void AddButton_Clicked(object sender, EventArgs e)
+    //{
+    //    if(sender is Button button)
+    //    {
+    //        if(ScheduleViewModel.IsBusy == true)
+    //        {
+    //            button.IsEnabled = false;
+    //        }
+    //        else
+    //        {
+    //            button.IsEnabled = true;
+    //        }
+    //    }
+    //}
+
     //private void SelectItemsButton_Clicked(object sender, EventArgs e)
     //{
     //    var button = sender as Button;

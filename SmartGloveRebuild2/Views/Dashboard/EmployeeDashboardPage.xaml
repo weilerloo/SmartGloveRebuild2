@@ -120,7 +120,7 @@
                 <Image Source="sglogo.png" 
                        HeightRequest="20" 
                        WidthRequest="300" 
-                       Margin="0,120,0,0"/>
+                       Margin="0,60,0,0"/>
             </VerticalStackLayout>
 
 

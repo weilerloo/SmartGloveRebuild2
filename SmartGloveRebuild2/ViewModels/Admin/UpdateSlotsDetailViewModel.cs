@@ -87,12 +87,20 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [ObservableProperty]
         int paxs;
 
+        [ObservableProperty]
+        bool isBusy, isRefreshing;
+
 
         [RelayCommand]
         public async Task UpdateStatus()
         {
+            isBusy = true;
             foreach (var content in addedGroupSchedule)
             {
+                if (content.Paxs == 0 || content.Hours == 0 && content.Status == true)
+                {
+                    break;
+                }
                 var response = await _scheduleServices.updateScheduleStatusByGroupName(new UpdateScheduleStatusByGroupNameDTO
                 {
                     DayMonthYear = content.DayMonthYear,
@@ -102,14 +110,15 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     Paxs = content.Paxs,
                 });
             }
+
+            IsRefreshing = false;
+            isBusy = false;
             await Shell.Current.DisplayAlert("Messages", "Schedule Updated.", "OK");
             await Shell.Current.GoToAsync("..");
-
-
         }
 
         [RelayCommand]
-        public async Task UpdateButton(GroupScheduleModel selectedItem)
+        public void UpdateButton(GroupScheduleModel selectedItem)
         {
             if (selectedItem != null)
             {
@@ -117,8 +126,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 {
                     if (ccm.GroupName == selectedItem.GroupName)
                     {
-                        //ccm.IsSelected = true;
-
                         if (ccm.Status == true)
                         {
                             ccm.Status = false;
@@ -131,19 +138,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             ccm.Color = Color.FromArgb("#7CFC00");
                             ccm.OnOff = "ON";
                         }
-                        //if(ccm.IsSelected = true){
-                        //    Items.Add(new GroupScheduleModel
-                        //    {
-                        //        Paxs = ccm.Paxs,
-                        //        Hours = ccm.Hours,
-                        //        Status = ccm.Status,
-                        //        Color = ccm.Color,
-                        //        OnOff = ccm.OnOff,
-                        //        DayMonthYear = selectedItem.DayMonthYear,
-                        //        IsSelected = true,
-                        //        GroupName = App.UserDetails.GroupName,
-                        //    });
-                        //}
                     }
                 }
             }
@@ -151,7 +145,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         }
 
         [RelayCommand]
-        public async void RefreshButton()
+        public void RefreshButton()
         {
             addedGroupSchedule.Clear();
             foreach (var groups in UpdateSlotsViewModel.GroupSchedule)

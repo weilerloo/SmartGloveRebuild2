@@ -15,6 +15,7 @@ namespace SmartGloveRebuild2.Models
         private int year;
         private string currentday;
         private string rejectedreason;
+        private string rejectedby;
         private double hours;
         private bool isfull;
         private bool isavailable;
@@ -37,6 +38,11 @@ namespace SmartGloveRebuild2.Models
         {
             get => scheduledate;
             set => SetProperty(ref scheduledate, value);
+        }        
+        public string RejectedBy
+        {
+            get => rejectedby;
+            set => SetProperty(ref rejectedby, value);
         }
 
         public int Day

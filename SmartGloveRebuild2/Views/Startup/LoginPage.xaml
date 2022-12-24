@@ -21,21 +21,21 @@
             </Grid>
             <Label FontSize="15" FontAttributes="Bold" Grid.Column="1" Grid.Row="1" VerticalTextAlignment="Center" VerticalOptions="Center">Employee ID</Label>
             <Image Margin="10" Source="male.png" Grid.Row="2" Grid.RowSpan="2" VerticalOptions="Center" HorizontalOptions="Center" Aspect="AspectFit"/>
-            <Frame Padding="10"
+            <Frame Padding="0"
                    BorderColor="{StaticResource Tertiary}"
                    Grid.Column="1"
                    Grid.Row="2"
                    Grid.RowSpan="2">
-                <handlers:BorderlessEntry FontSize="20" Text="{Binding EmployeeNumber}" VerticalOptions="FillAndExpand"/>
+                <handlers:BorderlessEntry Keyboard="Default" TextTransform="Uppercase" Margin="5" FontSize="20" Text="{Binding EmployeeNumber}" VerticalOptions="FillAndExpand"/>
             </Frame>
             <Label FontSize="15" FontAttributes="Bold" Grid.Column="1" Grid.Row="4" VerticalOptions="Center" >Password</Label>
             <Image Margin="10" Grid.Column="0" Grid.Row="5" Grid.RowSpan="2" Source="password.png" VerticalOptions="Center" HorizontalOptions="Center" Aspect="AspectFit"/>
-            <Frame Padding="10"
+            <Frame Padding="0"
                    BorderColor="{StaticResource Tertiary}"
                    Grid.Column="1"
                    Grid.Row="5"
                    Grid.RowSpan="2">
-                <handlers:BorderlessEntry IsPassword="True" FontSize="20" Text="{Binding Password}" VerticalOptions="FillAndExpand"/>
+                <handlers:BorderlessEntry Margin="5" IsPassword="True" FontSize="20" Text="{Binding Password}" VerticalOptions="FillAndExpand"/>
             </Frame>
             <Button Margin="0,20,0,10" Grid.Row="7" Grid.ColumnSpan="2" WidthRequest="250" HeightRequest="50" HorizontalOptions="Center" Text="Sign in" Command="{Binding LoginCommand}"/>
         </Grid>

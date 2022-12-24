@@ -126,91 +126,183 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
             if (month == 12)
             {
-                Monthname.Add(new UpdateSlotsModel
+                if (DateTime.Now.Day >= 21)
                 {
-                    Year = year,  // 2022
-                    LastCurrentMonth = "November ~ December" // 11~12
-                });
-
-                for (int a = 0; a < 7; a++)
-                {
-                    //Day of Week
-                    string dayoftheweek = new DateTime(year, 11, 21 + a).ToString("ddd");
-                    Datename.Add(new UpdateSlotsModel
+                    Monthname.Add(new UpdateSlotsModel
                     {
-                        Currentday = dayoftheweek, // 21, 22
-                    });
-                }  //Day Name
-
-                for (int b = 21; b <= DateTime.DaysInMonth(year, 11); b++)
-                {
-                    ListCalendar.Add(new UpdateSlotsModel
-                    {
-                        Day = b, // start with the curretn month
-                        Currentmonth = 11,
-                        Currentyear = year,
-                    });
-                }  // End of the November
-
-                for (int m = 1; m <= DateTime.DaysInMonth(year, 12); m++)
-                {
-                    ListCalendar.Add(new UpdateSlotsModel
-                    {
-                        Day = m,
-                        Currentmonth = 12,
-                        Currentyear = year,
+                        Year = year,  // 2022
+                        LastCurrentMonth = "December ~ January" // 11~12
                     });
 
-                    if (m == 20)
+                    for (int a = 0; a < 7; a++)
                     {
-                        break;
-                    }
-                }  // Start of the December
+                        //Day of Week
+                        string dayoftheweek = new DateTime(year, 12, 21 + a).ToString("ddd");
+                        Datename.Add(new UpdateSlotsModel
+                        {
+                            Currentday = dayoftheweek, // 21, 22
+                        });
+                    }  //Day Name
+
+                    for (int b = 21; b <= DateTime.DaysInMonth(year, 12); b++)
+                    {
+                        ListCalendar.Add(new UpdateSlotsModel
+                        {
+                            Day = b, // start with the curretn month
+                            Currentmonth = 12,
+                            Currentyear = year,
+                        });
+                    }  // End of the November
+
+                    for (int m = 1; m <= DateTime.DaysInMonth(year + 1, 1); m++)
+                    {
+                        ListCalendar.Add(new UpdateSlotsModel
+                        {
+                            Day = m,
+                            Currentmonth = 1,
+                            Currentyear = year + 1,
+                        });
+
+                        if (m == 20)
+                        {
+                            break;
+                        }
+                    }  // Start of the December
+                }
+                else
+                {
+                    Monthname.Add(new UpdateSlotsModel
+                    {
+                        Year = year,  // 2022
+                        LastCurrentMonth = "November ~ December" // 11~12
+                    });
+
+                    for (int a = 0; a < 7; a++)
+                    {
+                        //Day of Week
+                        string dayoftheweek = new DateTime(year, 11, 21 + a).ToString("ddd");
+                        Datename.Add(new UpdateSlotsModel
+                        {
+                            Currentday = dayoftheweek, // 21, 22
+                        });
+                    }  //Day Name
+
+                    for (int b = 21; b <= DateTime.DaysInMonth(year, 11); b++)
+                    {
+                        ListCalendar.Add(new UpdateSlotsModel
+                        {
+                            Day = b, // start with the curretn month
+                            Currentmonth = 11,
+                            Currentyear = year,
+                        });
+                    }  // End of the November
+
+                    for (int m = 1; m <= DateTime.DaysInMonth(year, 12); m++)
+                    {
+                        ListCalendar.Add(new UpdateSlotsModel
+                        {
+                            Day = m,
+                            Currentmonth = 12,
+                            Currentyear = year,
+                        });
+
+                        if (m == 20)
+                        {
+                            break;
+                        }
+                    }  // Start of the December
+                }
 
             }  // For December, it will print end of November with start of Decemebr
             else if (month == 1)
             {
-                Monthname.Add(new UpdateSlotsModel
+                if (DateTime.Now.Day >= 21)
                 {
-                    Year = year,
-                    LastCurrentMonth = "December ~ January"
-                });
-
-                for (int a = 0; a < 7; a++)
-                {
-                    //Day of Week
-                    string dayoftheweek = new DateTime(year, 12, 21 + a).ToString("ddd");
-                    Datename.Add(new UpdateSlotsModel
+                    Monthname.Add(new UpdateSlotsModel
                     {
-                        Currentday = dayoftheweek, // 21, 22
-                    });
-                } //Day Name
-
-                for (int c = 21; c <= DateTime.DaysInMonth(year, 12); c++)
-                {
-                    ListCalendar.Add(new UpdateSlotsModel
-                    {
-                        Day = c, // start with the curretn month
-                        Currentmonth = 12,
-                        Currentyear = year,
-                    });
-                }  //End of December
-
-                for (int d = 1; d <= DateTime.DaysInMonth(year + 1, 1); d++)
-                {
-                    ListCalendar.Add(new UpdateSlotsModel
-                    {
-                        Day = d,
-                        Currentmonth = 1,
-                        Currentyear = year + 1,
+                        Year = year,
+                        LastCurrentMonth = "January ~ February"
                     });
 
-                    if (d == 20)
+                    for (int a = 0; a < 7; a++)
                     {
-                        break;
-                    }
-                }  //Start of January
-                month++;
+                        //Day of Week
+                        string dayoftheweek = new DateTime(year, 1, 21 + a).ToString("ddd");
+                        Datename.Add(new UpdateSlotsModel
+                        {
+                            Currentday = dayoftheweek, // 21, 22
+                        });
+                    } //Day Name
+
+                    for (int c = 21; c <= DateTime.DaysInMonth(year, 1); c++)
+                    {
+                        ListCalendar.Add(new UpdateSlotsModel
+                        {
+                            Day = c, // start with the curretn month
+                            Currentmonth = 1,
+                            Currentyear = year,
+                        });
+                    }  //End of December
+
+                    for (int d = 1; d <= DateTime.DaysInMonth(year + 1, 2); d++)
+                    {
+                        ListCalendar.Add(new UpdateSlotsModel
+                        {
+                            Day = d,
+                            Currentmonth = 2,
+                            Currentyear = year + 1,
+                        });
+
+                        if (d == 20)
+                        {
+                            break;
+                        }
+                    }  //Start of January
+                }
+                else
+                {
+                    Monthname.Add(new UpdateSlotsModel
+                    {
+                        Year = year,
+                        LastCurrentMonth = "December ~ January"
+                    });
+
+                    for (int a = 0; a < 7; a++)
+                    {
+                        //Day of Week
+                        string dayoftheweek = new DateTime(year - 1, 12, 21 + a).ToString("ddd");
+                        Datename.Add(new UpdateSlotsModel
+                        {
+                            Currentday = dayoftheweek, // 21, 22
+                        });
+                    } //Day Name
+
+                    for (int c = 21; c <= DateTime.DaysInMonth(year - 1, 12); c++)
+                    {
+                        ListCalendar.Add(new UpdateSlotsModel
+                        {
+                            Day = c, // start with the curretn month
+                            Currentmonth = 12,
+                            Currentyear = year - 1,
+                        });
+                    }  //End of December
+
+                    for (int d = 1; d <= DateTime.DaysInMonth(year, 1); d++)
+                    {
+                        ListCalendar.Add(new UpdateSlotsModel
+                        {
+                            Day = d,
+                            Currentmonth = 1,
+                            Currentyear = year,
+                        });
+
+                        if (d == 20)
+                        {
+                            break;
+                        }
+                    }  //Start of January
+                }
+
             } // For January, it will print end of December with start of January
             else
             {

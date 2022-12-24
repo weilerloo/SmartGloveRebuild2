@@ -14,6 +14,7 @@ namespace SmartGloveRebuild2.Models.ScheduleResponse
         public string GroupName { get; set; }
         public string RejectedReason { get; set; }
         public string RejectedDate { get; set; }
+        public string RejectedBy { get; set; }
         public double Hours { get; set; } = 0;
         public DateTime ScheduleDate { get; set; }
         public bool IsRejected { get; set; } = false;

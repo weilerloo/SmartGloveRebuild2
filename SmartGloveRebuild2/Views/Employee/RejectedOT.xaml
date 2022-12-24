@@ -2,48 +2,76 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Employee.RejectedOT"
+             xmlns:model="clr-namespace:SmartGloveRebuild2.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Employee"
+             x:DataType="viewmodel:RejectViewModel"
              Title="Rejected OT">
-    <ScrollView>
-
-
-        <VerticalStackLayout
-                    Padding="15">
-            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*,Auto">
-                <Label 
-                Text="Reason of Rejection!"
-                Margin="10,10,0,0"
-                FontSize="Large"
-                VerticalOptions="Center" 
-                HorizontalOptions="Start"/>
-                <Label 
-                Text="March"
-                Grid.Row="1"
-                Margin="10,0,0,0"
-                Padding="15"
-                FontSize="19"
-                VerticalOptions="Start"
-                HorizontalOptions="Start"/>
-                <ImageButton Grid.Row="1" Grid.Column="2" Source="leftpage.png" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="0,0,5,0"/>
-                <ImageButton Grid.Row="1" Grid.Column="2" Source="leftpage.png" Opacity="10" Rotation="180" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="70,0,20,0"/>
-            
+    <Grid RowDefinitions="Auto,*">
+        <VerticalStackLayout>
+            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto" Margin="0,0,0,30">
+                <Label Text="Update Slots" FontSize="24" Margin="20,20,0,10" TextColor="Black"/>
+                <CollectionView Grid.Row="1" 
+                            ItemsSource="{Binding Monthname}">
+                    <CollectionView.EmptyView>
+                        <Label Text="No Logs Found"
+                           HorizontalOptions="FillAndExpand"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" />
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:CalendarModel">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Label Text="{Binding LastCurrentMonth}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center" Margin="20,0,0,0"/>
+                                <Label Grid.Column="1" Text="{Binding Year}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center" Margin="10,0,0,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2" Command="{Binding IncreaseMonthCommand}"/>
+                <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="2" Text="-" Margin="2" Command="{Binding DecreaseMonthCommand}"/>
             </Grid>
-                <Frame Margin="-20,0,-20,0"
-                       BorderColor="Black"
-                   Grid.Row="2">
-                    <Grid ColumnDefinitions="*,*">
-                        <Label
-                           FontSize="16" 
-                           HorizontalOptions="Center" 
-                           VerticalOptions="Center">Date</Label>
-                        <Label
-                            Grid.Column="1"
-                           FontSize="16" 
-                           HorizontalOptions="Center" 
-                           VerticalOptions="Center">Reason</Label>
-                    </Grid>
-
-                </Frame>
+            <Frame Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
+                <Grid ColumnDefinitions="*,*,*">
+                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="Date"/>
+                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Reason"/>
+                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="Reject by"/>
+                </Grid>
+            </Frame>
         </VerticalStackLayout>
-
-    </ScrollView>
+        <RefreshView Grid.Row="1">
+            <CollectionView ItemsSource="{Binding RejectedList}">
+                <CollectionView.EmptyView>
+                    <Label Text="No Logs Found"
+                           HorizontalOptions="FillAndExpand"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:CalendarModel">
+                        <Frame CornerRadius="0" Padding="5">
+                            <Grid HeightRequest="40" ColumnDefinitions="*,*,*">
+                                <Grid ColumnDefinitions="*,*,*" Grid.Column="0">
+                                    <Label HorizontalOptions="End" VerticalOptions="Center" VerticalTextAlignment="Center" Padding="5,0,5,0" FontSize="Medium" Grid.Column="0" FontAttributes="Bold" Text="{Binding Day}"/>
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center" VerticalTextAlignment="Center" Padding="5,0,5,0" FontSize="Medium" Grid.Column="1" FontAttributes="Bold" Text="{Binding Month}"/>
+                                    <Label HorizontalOptions="Start" VerticalOptions="Center" VerticalTextAlignment="Center" Padding="0,0,0,0" FontSize="Medium" Grid.Column="2" FontAttributes="Bold" Text="{Binding Year}"/>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center" VerticalTextAlignment="Center" Padding="5,0,5,0" FontSize="Medium" Grid.Column="1" FontAttributes="Bold" Text="{Binding Rejectedreason}"/>
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center" VerticalTextAlignment="Center" Padding="5,0,5,0" FontSize="Medium" Grid.Column="1" FontAttributes="Bold" Text="{Binding RejectedBy}"/>
+                                </Grid>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
 </ContentPage>

@@ -2,18 +2,33 @@
 using CommunityToolkit.Mvvm.Input;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Models.ClerkDTO;
+using SmartGloveRebuild2.Models.Group;
+using SmartGloveRebuild2.Models.GroupResponse;
 using SmartGloveRebuild2.Models.Schedule;
+using SmartGloveRebuild2.Models.ScheduleResponse;
 using SmartGloveRebuild2.Services;
-using SmartGloveRebuild2.Views.Employee;
+using SmartGloveRebuild2.Views.Admin;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SmartGloveRebuild2.ViewModels.Employee
 {
-    public partial class ScheduleViewModel : BaseViewModel
+    public partial class RejectViewModel : BaseViewModel
     {
-        #region Properties
-        private readonly IScheduleServices _scheduleServices;
+        #region Properties  
+        public ObservableCollection<CalendarModel> RejectedList { get; set; } = new ObservableCollection<CalendarModel>();
+        public ObservableCollection<CalendarModel> ListCalendar { get; set; } = new ObservableCollection<CalendarModel>();
+        public ObservableCollection<CalendarModel> Datename { get; set; } = new ObservableCollection<CalendarModel>();
+        public ObservableCollection<CalendarModel> Monthname { get; set; } = new ObservableCollection<CalendarModel>();
+
+        #endregion
+
+        #region Obseravble Property
 
         [ObservableProperty]
         DateTime now = DateTime.Now;
@@ -24,69 +39,36 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         [ObservableProperty]
         String lastcurrentmonth;
 
-        private double totalhours;
-        public double TotalHours
-        {
-            get => totalhours;
-            set
-            {
-                totalhours = value;
-                OnPropertyChanged(nameof(TotalHours));
-            }
-        }
-
         [ObservableProperty]
-        bool isRefreshing, status = true, isBooked, isAvailable, isRejected;
+        bool status = true, isRefreshing;
 
-
-        public CalendarModel selectedItem;
-        public CalendarModel SelectedItem
+        public CalendarModel choosenitem;
+        public CalendarModel ChoosenItem
         {
             get
             {
-                return selectedItem;
+                return choosenitem;
             }
             set
             {
-                if (selectedItem != value)
+                if (choosenitem != value)
                 {
-                    selectedItem = value;
+                    choosenitem = value;
                 }
             }
         }
-
-
         #endregion
 
-        #region ObservableCollection  
-        public ObservableCollection<CalendarModel> CalendarDetails { get; set; } = new ObservableCollection<CalendarModel>();
-        public ObservableCollection<CalendarModel> Items { get; set; } = new ObservableCollection<CalendarModel>();
-        public ObservableCollection<CalendarModel> Datename { get; set; } = new ObservableCollection<CalendarModel>();
-        public ObservableCollection<CalendarModel> Monthname { get; set; } = new ObservableCollection<CalendarModel>();
-
-        #endregion
-
-        public ScheduleViewModel(IScheduleServices scheduleServices)
+        private readonly IScheduleServices _scheduleService;
+        public RejectViewModel(IScheduleServices scheduleServices)
         {
-            _scheduleServices = scheduleServices;
+            _scheduleService = scheduleServices;
             DisplayDays();
-            ColorStatus();
-            Title = "Your OT Schedule";
-            Items = new ObservableCollection<CalendarModel>();
-            SelectedItem = new CalendarModel();
-
+            GetRejectedList();
+            Title = "Update Slots";
         }
 
-        #region Navigation
-
-        [RelayCommand]
-        private async void GotoScheduleOT()
-        {
-            await Shell.Current.GoToAsync(nameof(ScheduleOT));
-        }
-        #endregion
-
-        #region Calendar
+        #region LoadCalendar
         public int AddMonth()
         {
             if (decreasemonth < 0)
@@ -131,6 +113,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             return month;
         }
 
+
+
         [RelayCommand]
         public void DisplayDays()
         {
@@ -159,7 +143,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
                     for (int b = 21; b <= DateTime.DaysInMonth(year, 12); b++)
                     {
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = b, // start with the curretn month
                             Month = 12,
@@ -169,7 +153,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
                     for (int m = 1; m <= DateTime.DaysInMonth(year + 1, 1); m++)
                     {
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = m,
                             Month = 1,
@@ -202,7 +186,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
                     for (int b = 21; b <= DateTime.DaysInMonth(year, 11); b++)
                     {
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = b, // start with the curretn month
                             Month = 11,
@@ -212,7 +196,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
                     for (int m = 1; m <= DateTime.DaysInMonth(year, 12); m++)
                     {
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = m,
                             Month = 12,
@@ -234,38 +218,36 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     Monthname.Add(new CalendarModel
                     {
                         Year = year,
-                        LastCurrentMonth = "Januray ~ February"
+                        LastCurrentMonth = "January ~ February"
                     });
 
                     for (int a = 0; a < 7; a++)
                     {
                         //Day of Week
-                        string dayoftheweek = new DateTime(year - 1, 1, 21 + a).ToString("ddd");
+                        string dayoftheweek = new DateTime(year, 1, 21 + a).ToString("ddd");
                         Datename.Add(new CalendarModel
                         {
                             Currentday = dayoftheweek, // 21, 22
-                            Month = 12,
-                            Year = year - 1,
                         });
                     } //Day Name
 
-                    for (int c = 21; c <= DateTime.DaysInMonth(year - 1, 1); c++)
+                    for (int c = 21; c <= DateTime.DaysInMonth(year, 1); c++)
                     {
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = c, // start with the curretn month
                             Month = 1,
-                            Year = year - 1,
+                            Year = year,
                         });
                     }  //End of December
 
-                    for (int d = 1; d <= DateTime.DaysInMonth(year, 2); d++)
+                    for (int d = 1; d <= DateTime.DaysInMonth(year + 1, 2); d++)
                     {
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = d,
                             Month = 2,
-                            Year = year,
+                            Year = year + 1,
                         });
 
                         if (d == 20)
@@ -289,14 +271,12 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         Datename.Add(new CalendarModel
                         {
                             Currentday = dayoftheweek, // 21, 22
-                            Month = 12,
-                            Year = year - 1,
                         });
                     } //Day Name
 
                     for (int c = 21; c <= DateTime.DaysInMonth(year - 1, 12); c++)
                     {
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = c, // start with the curretn month
                             Month = 12,
@@ -306,7 +286,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
                     for (int d = 1; d <= DateTime.DaysInMonth(year, 1); d++)
                     {
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = d,
                             Month = 1,
@@ -353,11 +333,11 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         {
                             break;
                         }
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
-                            Day = p,
+                            Day = p, // start with the curretn month
                             Month = month,
-                            Year = year,// start with the curretn month
+                            Year = year,
                         });
                     }
 
@@ -367,10 +347,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         {
                             break;
                         }
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = q,
-                            Month = month,
+                            Month = month + 1,
                             Year = year,
                         });
 
@@ -401,8 +381,6 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         Datename.Add(new CalendarModel
                         {
                             Currentday = dayoftheweek, // 21, 22
-                            Month = month - 1,
-                            Year = year,
                         });
                     } //Day Week Name
 
@@ -412,7 +390,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         {
                             break;
                         }
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = r, // 21,22,23,24,25,26,27,28,29,30 start with the last month
                             Month = month - 1,
@@ -426,7 +404,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         {
                             break;
                         }
-                        CalendarDetails.Add(new CalendarModel
+                        ListCalendar.Add(new CalendarModel
                         {
                             Day = t,
                             Month = month,
@@ -442,216 +420,75 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             }
         }
 
+
         [RelayCommand]
-        public async Task DecreaseMonth()
+        public void DecreaseMonth()
         {
             if (IsBusy) return;
-            CalendarDetails.Clear();
             Datename.Clear();
             Monthname.Clear();
+            ListCalendar.Clear();
+            RejectedList.Clear();
             ReduceMonth();
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
             IsBusy = true;
-            await ColorStatus();
+            GetRejectedList();
             IsRefreshing = false;
             IsBusy = false;
         }
 
+
+
         [RelayCommand]
-        public async Task IncreaseMonth()
+        public void IncreaseMonth()
         {
             if (IsBusy) return;
-            CalendarDetails.Clear();
             Datename.Clear();
             Monthname.Clear();
+            ListCalendar.Clear();
+            RejectedList.Clear();
             AddMonth();
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
             IsBusy = true;
-            await ColorStatus();
+            GetRejectedList();
             IsRefreshing = false;
             IsBusy = false;
         }
 
         #endregion
 
-        #region Color
-
         [RelayCommand]
-        public async Task ColorStatus()
+        public async Task GetRejectedList()
         {
-            TotalHours = 0;
-            if (App.UserDetails.GroupName != "Unassigned")
+            IsBusy = true;
+            foreach (var cm in ListCalendar)
             {
-                foreach (var cm in CalendarDetails)
+                var getEmployeeSchedule = await _scheduleService.GetScheduleByEmployeeNumberandDate(new GetScheduleByEmployeeNumberandDateDTO
                 {
-                    var getEmployeeSchedule = await _scheduleServices.GetScheduleByEmployeeNumberandDate(new GetScheduleByEmployeeNumberandDateDTO
+                    DayMonthYear = cm.DayMonthYear,
+                    EmployeeNumber = App.UserDetails.EmployeeNumber,
+                });
+
+                if (getEmployeeSchedule != null)
+                {
+                    if (getEmployeeSchedule.IsRejected == true)
                     {
-                        DayMonthYear = cm.DayMonthYear,
-                        EmployeeNumber = App.UserDetails.EmployeeNumber,
-                    });
-
-                    var response = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
-                    {
-                        GroupName = App.UserDetails.GroupName,
-                        ScheduleDate = cm.DayMonthYear,
-                    });
-                    if(getEmployeeSchedule != null)
-                    {
-                        var convertedstring = getEmployeeSchedule.ScheduleDate.ToString("d/M/yyyy");
-                        if (convertedstring == cm.DayMonthYear)
+                        RejectedList.Add(new CalendarModel
                         {
-                            TotalHours = getEmployeeSchedule.Hours + TotalHours;
-                        }
-                    }
-
-                    if (response != null)
-                    {
-                        DateTime sDate = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
-
-                        var DayDifferences = (DateTime.Now - sDate.Date).Days;
-                        if (DayDifferences > 7 && response.Count() != 0 && getEmployeeSchedule != null)
-                        {
-
-                            cm.Color = Color.FromArgb("#FFA500");
-                            cm.IsBooked = true;
-
-                        }
-                        else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber == App.UserDetails.EmployeeNumber)
-                        {
-                            cm.Color = Color.FromArgb("#FFA500");
-
-                        }
-                        else if (DayDifferences < 7 && response.Count() != 0)
-                        {
-                            foreach (var hour in response)
-                            {
-                                cm.Hours = hour.Hours;
-                            }
-                            cm.Color = Color.FromArgb("#32CD32");
-                            cm.IsAvailable = true;
-
-                        }
-                        else if (response.Find(f => f.AvailablePaxs >= f.Paxs == true) != null
-                                && response.Count() == 0)
-                        {
-                            cm.Color = Color.FromArgb("#FF0000");
-                            cm.IsRejected = true;
-                        }
-                        else
-                        {
-                            cm.Color = Color.FromArgb("#778899");
-                            cm.IsAvailable = false;
-                        }
+                            Day = cm.Day,
+                            Month = cm.Month,
+                            Year = cm.Year,
+                            Rejectedreason = getEmployeeSchedule.RejectedReason,
+                            IsRejected = getEmployeeSchedule.IsRejected,
+                            RejectedBy = getEmployeeSchedule.RejectedBy,
+                        });
                     }
                 }
             }
-            else
-            {
-                await Shell.Current.DisplayAlert("You are Unassigned", "Please get a group to be assigned first.", "OK");
-
-            }
-        }
-
-        #endregion
-
-
-        [RelayCommand]
-        public void SubmitButtonSelected(CalendarModel selectedItem)
-        {
-            if (selectedItem != null)
-            {
-                foreach (var ccm in CalendarDetails)
-                {
-                    if (ccm.IsSelected == false &&
-                        ccm.DayMonthYear == selectedItem.DayMonthYear &&
-                        ccm.IsAvailable == true)
-                    {
-                        ccm.IsSelected = true;
-                        if (ccm.IsSelected == true)
-                        {
-                            TotalHours = selectedItem.Hours + TotalHours;
-                            ccm.Color = Color.FromArgb("#006400");
-
-                            Items.Add(new CalendarModel
-                            {
-                                DayMonthYear = selectedItem.DayMonthYear,
-                                Day = selectedItem.Day,
-                                Month = selectedItem.Month,
-                                Year = selectedItem.Year,
-                                IsSelected = true,
-                                EmployeeNumber = App.UserDetails.EmployeeName,
-                                GroupName = App.UserDetails.GroupName,
-                            });
-                        }
-                    }
-                }
-
-                //
-            }
-
-        }
-
-
-        [RelayCommand]
-        public async Task DeleteButtonSelected()
-        {
-            foreach (var ccm in CalendarDetails)
-            {
-                if (ccm.IsSelected == true)
-                {
-                    ccm.Color = Color.FromArgb("#32CD32");
-                    ccm.IsSelected = false;
-                }
-            }
-            Items.Clear();
-            CalendarDetails.Clear();
-            Datename.Clear();
-            Monthname.Clear();
-            DisplayDays();
-            await ColorStatus();
-        }
-
-        [RelayCommand]
-        public async Task SubmitRequest()
-        {
-            if (Items.Count != 0)
-            {
-                foreach (var rqt in Items)
-                {
-                    var response = await _scheduleServices.EmployeeAddSchedule(new EmployeeAddScheduleDTO
-                    {
-                        DayMonthYear = rqt.DayMonthYear,
-                        EmployeeNumber = App.UserDetails.EmployeeNumber,
-                        ScheduleDate = DateTime.ParseExact(rqt.DayMonthYear, "d/M/yyyy", null),
-                        GroupName = App.UserDetails.GroupName,
-                        Status = true,
-                    });
-                }
-                foreach (var ccm in CalendarDetails)
-                {
-                    if (ccm.IsSelected == true)
-                    {
-                        ccm.Color = Color.FromArgb("#FFA500");
-                    }
-                }
-                Items.Clear();
-                await ColorStatus();
-                await Shell.Current.DisplayAlert("Schedule Successfully", "Please wait the pending OT result.", "OK");
-                await Shell.Current.GoToAsync("..");
-            }
-            else
-            {
-                await Shell.Current.DisplayAlert("Schedule Unsuccesfull", "Please select the Available Date.", "OK");
-                await Shell.Current.GoToAsync("..");
-            }
+            isRefreshing = false;
+            IsBusy = false;
         }
     }
 }
-
-
-
-
-
-

@@ -59,24 +59,25 @@ builder.ConfigureLifecycleEvents(events =>
 #endif
         //Views
         builder.Services.AddSingleton<LoginPage>();
-        builder.Services.AddSingleton<DashboardPage>();
+        builder.Services.AddTransient<DashboardPage>();
         builder.Services.AddSingleton<LoadingPage>();
-        builder.Services.AddSingleton<ScheduleOT>();
-        builder.Services.AddSingleton<RejectedOT>();
+        builder.Services.AddTransient<ScheduleOT>();
+        builder.Services.AddTransient<RejectedOT>();
         builder.Services.AddSingleton<DisplayGroupPage>();
         builder.Services.AddTransient<UpdateSlotsDetails>();
         builder.Services.AddSingleton<CheckCalendarPage>();
-        builder.Services.AddSingleton<UpdateSlotsPage>();
+        builder.Services.AddTransient<UpdateSlotsPage>();
         builder.Services.AddSingleton<GenerateReportPage>();
         //View Models
+        builder.Services.AddSingleton<RejectViewModel>();
         builder.Services.AddSingleton<LoginPageViewModel>();
         builder.Services.AddSingleton<DashboardPageViewModel>();
         builder.Services.AddSingleton<LoadingPageViewModel>();
         builder.Services.AddTransient<UpdateSlotsDetailViewModel>();
-        builder.Services.AddSingleton<ScheduleViewModel>();
+        builder.Services.AddTransient<ScheduleViewModel>();
         builder.Services.AddSingleton<DisplayGroupViewModel>();
         builder.Services.AddSingleton<CheckCalendarViewModel>();
-        builder.Services.AddSingleton<UpdateSlotsViewModel>();
+        builder.Services.AddTransient<UpdateSlotsViewModel>();
         return builder.Build();
     }
 }

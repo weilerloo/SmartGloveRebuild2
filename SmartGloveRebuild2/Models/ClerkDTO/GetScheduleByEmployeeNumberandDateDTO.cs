@@ -10,10 +10,5 @@ namespace SmartGloveRebuild2.Models.ClerkDTO
     {
         public string EmployeeNumber { get; set; }
         public string DayMonthYear { get; set; }
-        public DateTime ConvertedDayMonthYear
-        {
-            get => DateTime.ParseExact(DayMonthYear, "d/M/yyyy", null);
-
-        }
     }
 }
