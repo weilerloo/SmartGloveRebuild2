@@ -2,11 +2,30 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Admin.DisplayGroupPage"
-             Title="DisplayGroupPage">
+             xmlns:models="clr-namespace:SmartGloveRebuild2.Models"
+             xmlns:viewModels="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             x:DataType="viewModels:DisplayGroupViewModel"
+             Title="Display Group">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .Display Group MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <!--<Entry Text="{Binding Entrygroupname}"/>
+        <Button Text="Test" Command="{Binding DisplayGroupMemberCommand}"/>
+
+        <StackLayout Margin="10">
+            <Picker FontSize="24" Title="GroupList" ItemsSource="{Binding GroupNameList}" ItemDisplayBinding="{Binding GroupName}" />
+            <ActivityIndicator IsRunning="True" IsVisible="{Binding IsRefreshing}"/>
+        </StackLayout>-->
+
+        <!--<CollectionView ItemsSource="{Binding displaygrp}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:UserBasicInfo">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding GroupName}" TextColor="Black" FontSize="21"/>
+                        <Label Text="{Binding EmployeeName}" TextColor="Black" FontSize="21"/>
+                        <Label Text="{Binding EmployeeNumber}" TextColor="Black" FontSize="21"/>
+                        <Label Text="{Binding TotalHour}" TextColor="Black" FontSize="21"/>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>-->
     </VerticalStackLayout>
 </ContentPage>

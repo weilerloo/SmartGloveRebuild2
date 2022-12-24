@@ -116,16 +116,9 @@
                     <!--Hour-->
 
                 </Grid>
-                <Button Margin="0,50,0,0" Text="Check Calender" Command="{Binding CheckCalendarCommand}">
-                    <Button.BindingContext>
-                        <viewmodel:CheckCalendarViewModel/>
-                    </Button.BindingContext>
-                </Button>                
-                <Button Margin="0,50,0,0" Text="Schedule OT" Command="{Binding DisplayGroupCommand}">
-                    <Button.BindingContext>
-                        <viewmodel:DisplayGroupViewModel/>
-                    </Button.BindingContext>
-                </Button>
+                <Button Margin="0,50,0,0" Text="Groups" Clicked="Button_Clicked_1"/>
+                <Button Margin="0,50,0,0" Text="Check Calender" Clicked="Button_Clicked_2"/>
+
                 <Image Source="sglogo.png" 
                        HeightRequest="20" 
                        WidthRequest="300" 

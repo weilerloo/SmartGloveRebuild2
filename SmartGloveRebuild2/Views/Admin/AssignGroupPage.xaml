@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartGloveRebuild2.Views.Admin.AssignGroupPage"
+             xmlns:model="clr-namespace:SmartGloveRebuild2.Models.Group"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             x:DataType="viewmodel:AssignGroupViewModel"
+             Title="Assign Group">
+    <VerticalStackLayout>
+        <Label Text="Hello Assign"/>
+
+    </VerticalStackLayout>
+</ContentPage>

@@ -8,6 +8,8 @@ namespace SmartGloveRebuild2.Models.GroupResponse
 {
     public class GroupResponse
     {
-
+        public bool IsSuccess { get; set; }
+        public string ErrorMessage { get; set; }
+        public object Content { get; set; }
     }
 }

@@ -119,18 +119,10 @@
                 <Grid RowDefinitions="*,*,*,*"
                       WidthRequest="300">
 
-                    <Button HeightRequest="50" Grid.Row="0" Margin="0,30,0,0" Text="Update Slots" Clicked="Button_Clicked_1">
-                    </Button>
-                    <Button HeightRequest="50" Grid.Row="1" Margin="0,10,0,0" Text="Check Calender" Command="{Binding CheckCalendarCommand}">
-                        <Button.BindingContext>
-                            <viewmodel:CheckCalendarViewModel/>
-                        </Button.BindingContext>
-                    </Button>
-                    <Button HeightRequest="50" Grid.Row="2" Margin="0,10,0,0" Text="Display Group" Command="{Binding DisplayGroupCommand}">
-                        <Button.BindingContext>
-                            <viewmodel:DisplayGroupViewModel/>
-                        </Button.BindingContext>
-                    </Button>
+                    <Button HeightRequest="50" Grid.Row="0" Margin="0,30,0,0" Text="Update Slots" Clicked="Button_Clicked_1"/>
+                    <Button HeightRequest="50" Grid.Row="1" Margin="0,10,0,0" Text="Check Calender" Clicked="Button_Clicked_2"/>
+                    <Button HeightRequest="50" Grid.Row="2" Margin="0,10,0,0" Text="Display Group" Clicked="Button_Clicked_3"/>
+
                     <Image Grid.Row="3"
                            Source="sglogo.png" 
                        HeightRequest="20" 

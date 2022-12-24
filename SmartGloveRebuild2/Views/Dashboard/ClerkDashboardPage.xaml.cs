@@ -5,9 +5,9 @@ namespace SmartGloveRebuild2.Views.Dashboard;
 public partial class ClerkDashboardPage : ContentPage
 {
 
-	public ClerkDashboardPage()
-	{
-		InitializeComponent();
+    public ClerkDashboardPage()
+    {
+        InitializeComponent();
 
         if (App.UserDetails != null)
         {
@@ -23,5 +23,13 @@ public partial class ClerkDashboardPage : ContentPage
     private async void Button_Clicked_1(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(UpdateSlotsPage));
+    }
+    private async void Button_Clicked_2(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(CheckCalendarPage));
+    }
+    private async void Button_Clicked_3(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(GroupPage));
     }
 }

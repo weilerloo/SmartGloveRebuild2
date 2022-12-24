@@ -97,7 +97,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             isBusy = true;
             foreach (var content in addedGroupSchedule)
             {
-                if (content.Paxs == 0 || content.Hours == 0 && content.Status == true)
+                if (content.Paxs == 0 && content.Hours == 0 && content.Status == true)
                 {
                     break;
                 }

@@ -16,7 +16,11 @@ namespace SmartGloveRebuild2.Services
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
-                var response = await client.DeleteAsync("http://172.16.12.149:7006/api/Group/AssignGroup");
+                string assignGroupDTOStr = JsonConvert.SerializeObject(assignGroupDTO);
+
+                var response = await client.PostAsync($"http://172.16.12.149:7006/api/Group/AssignGroup?GroupName={assignGroupDTO.GroupName}",
+                      new StringContent(assignGroupDTOStr, Encoding.UTF8,
+                      "application/json"));
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -28,14 +32,18 @@ namespace SmartGloveRebuild2.Services
                     return null;
                 }
             }
-        }
+        }  //Done
 
         public async Task<GroupResponse> CreateGroup(CreateGroupDTO createGroupDTO)
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
-                var response = await client.DeleteAsync("http://172.16.12.149:7006/api/Group/CreateGroup");
+                string createGroupDTOStr = JsonConvert.SerializeObject(createGroupDTO);
+
+                var response = await client.PostAsync($"http://172.16.12.149:7006/api/Group/CreateGroup?GroupName={createGroupDTO.GroupName}",
+                      new StringContent(createGroupDTOStr, Encoding.UTF8,
+                      "application/json"));
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -47,14 +55,16 @@ namespace SmartGloveRebuild2.Services
                     return null;
                 }
             }
-        }
+        } // Done
 
-        public async Task<GroupResponse> DeleteGroup(DeleteGroupDTO deleteGroupDTO)
+        public async Task<GroupResponse> DeleteGroup(DeleteGroupDTO deleteGroupDTO)  //Done
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
-                var response = await client.DeleteAsync("http://172.16.12.149:7006/api/Group/DeleteGroup");
+                string deleteGroupDTOStr = JsonConvert.SerializeObject(deleteGroupDTO);
+
+                var response = await client.DeleteAsync($"http://172.16.12.149:7006/api/Group/DeleteGroup?GroupName={deleteGroupDTO.GroupName}");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -67,13 +77,13 @@ namespace SmartGloveRebuild2.Services
                 }
             }
         }
-    
+
         public async Task<List<GroupList>> DisplayGroup()
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
-                var response = await client.GetAsync("http://172.16.12.149:7006/api/Group/GetGroup");
+                var response = await client.GetAsync($"http://172.16.12.149:7006/api/Group/GetGroup");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -86,13 +96,36 @@ namespace SmartGloveRebuild2.Services
                 }
             }
         }
-    
+
+        public async Task<List<GroupList>> DisplayGroupbyGroupName(CreateGroupDTO createGroupDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
+                var response = await client.GetAsync($"http://172.16.12.149:7006/api/Group/DisplayGroupbyGroupName?GroupName={createGroupDTO.GroupName}");
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<List<GroupList>>(json);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public async Task<GroupResponse> UpdateGroup(UpdateGroupDTO updateGroupDTO)
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
-                var response = await client.DeleteAsync("http://172.16.12.149:7006/api/Group/UpdateGroup");
+                string updateGroupDTOStr = JsonConvert.SerializeObject(updateGroupDTO);
+
+                var response = await client.PutAsync($"http://172.16.12.149:7006/api/Group/UpdateGroup?GroupName={updateGroupDTO.GroupName}",
+                    new StringContent(updateGroupDTOStr, Encoding.UTF8,
+                      "application/json"));
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {

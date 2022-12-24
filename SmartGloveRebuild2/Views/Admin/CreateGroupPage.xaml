@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartGloveRebuild2.Views.Admin.CreateGroupPage"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             x:DataType="viewmodel:CreateGroupViewModel"
+             Title="Create Groups Page">
+    <Grid RowDefinitions="Auto,*">
+        <Grid RowDefinitions="Auto,Auto" Margin="0,0,0,30">
+            <Label FontAttributes="Bold" Text="Create Groups" FontSize="24" Margin="20,20,0,10" TextColor="Black"/>
+            <Label Grid.Row="1" Text="Please type into the entry field." FontSize="24" Margin="20,0,0,10" TextColor="Black"/>
+        </Grid>
+        <VerticalStackLayout Grid.Row="1" Margin="30,0,30,0">
+            <Label FontSize="24" Text="Enter Group Name:"  Margin="0,10,10,0" />
+            <Entry FontSize="24" HeightRequest="50" Text="{Binding Creategroupname}" Placeholder="GroupName" Margin="0,10,10,0"/>
+            <Button HorizontalOptions="End" Text="Save" HeightRequest="50" WidthRequest="200" Command="{Binding CreateGroupCommand}" Margin="0,10,10,0"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

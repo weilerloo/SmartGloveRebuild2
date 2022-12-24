@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartGloveRebuild2.Views.Admin.GroupPage"
+             xmlns:model="clr-namespace:SmartGloveRebuild2.Models.Group"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             x:DataType="viewmodel:AssignGroupViewModel"
+             Title="Group Page">
+    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,10,0,10">
+
+        <Button HeightRequest="50" WidthRequest="200" Margin="0,20,0,20" Text="Group List" Clicked="Button_Clicked_1"/>
+        <Button HeightRequest="50" WidthRequest="200" Margin="0,20,0,20" Text="Assign Group" Clicked="Button_Clicked_2"/>
+        <Button HeightRequest="50" WidthRequest="200" Margin="0,20,0,20" Text="Create Group" Clicked="Button_Clicked_3"/>
+
+    </VerticalStackLayout>
+</ContentPage>

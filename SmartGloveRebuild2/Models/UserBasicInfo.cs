@@ -18,7 +18,7 @@ namespace SmartGloveRebuild2.Models
         public string Plant { get; set; }
         public string Department { get; set; }
         public int TotalOTDay { get; set; }
-        public int TotalHour { get; set; }
+        public double TotalHour { get; set; }
         public string Role { get; set; }
         public int? RoleID { get; set; }
 

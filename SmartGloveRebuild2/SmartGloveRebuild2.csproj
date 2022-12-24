@@ -59,6 +59,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\Admin\GroupPage.xaml.cs">
+	    <DependentUpon>GroupPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Admin\DisplayGroupPage.xaml.cs">
+	    <SubType>Code</SubType>
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Admin\GenerateReportPage.xaml.cs">
 	    <DependentUpon>GenerateReportPage.xaml</DependentUpon>
 	  </Compile>
@@ -74,6 +81,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\Admin\GroupPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Admin\AssignGroupPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Admin\CreateGroupPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Admin\DisplayGroupPage.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Admin\GenerateReportPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

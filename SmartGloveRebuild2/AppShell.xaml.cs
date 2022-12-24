@@ -11,6 +11,9 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
         this.BindingContext = new AppShellViewModel();
+        Routing.RegisterRoute(nameof(AssignGroupPage), typeof(AssignGroupPage));
+        Routing.RegisterRoute(nameof(CreateGroupPage), typeof(CreateGroupPage));
+        Routing.RegisterRoute(nameof(GroupPage), typeof(GroupPage));
         Routing.RegisterRoute(nameof(DisplayGroupPage), typeof(DisplayGroupPage));
         Routing.RegisterRoute(nameof(CheckCalendarPage), typeof(CheckCalendarPage));
         Routing.RegisterRoute(nameof(UpdateSlotsPage), typeof(UpdateSlotsPage));

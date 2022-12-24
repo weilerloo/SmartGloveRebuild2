@@ -1,86 +1,81 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using SmartGloveRebuild2.Models;
-using SmartGloveRebuild2.Services;
-using SmartGloveRebuild2.Views.Admin;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using SmartGloveRebuild2.Models;
+using SmartGloveRebuild2.Services;
+using SmartGloveRebuild2.Views;
+using System.Collections.ObjectModel;
+using SmartGloveRebuild2.Models.Group;
+using SmartGloveRebuild2.Views.Admin;
+using SmartGloveRebuild2.Models.ClerkDTO;
+using Microsoft.Maui.Controls;
 
 namespace SmartGloveRebuild2.ViewModels.Admin
 {
     public partial class DisplayGroupViewModel : BaseViewModel
     {
-        [RelayCommand]
-        private async void DisplayGroup()
+        public ObservableCollection<UserBasicInfo> displaygrp { get; set; } = new ObservableCollection<UserBasicInfo>();
+        public ObservableCollection<GroupList> GroupNameList { get; set; } = new ObservableCollection<GroupList>();
+
+        [ObservableProperty]
+        string entrygroupname;        
+        
+        [ObservableProperty]
+        bool isBusy, isRefreshing;
+
+        private readonly IGroupServices _groupServices;
+        public DisplayGroupViewModel(IGroupServices groupServices)
         {
-            await Shell.Current.GoToAsync(nameof(DisplayGroupPage));
+            _groupServices = groupServices;
+            //FetchGroupName();
         }
 
-        //[ObservableProperty]
-        //bool isRefreshing;
 
-        //IConnectivity connectivity;
-
-        //EmployeeServices employeeServices;
-        //public ObservableCollection<EmployeeModel> employeeModels { get; } = new();
-
-        //public DisplayGroupViewModel()
-        //{
-        //    DisplayEmployee();
-        //}
-
-        //public void DisplayEmployee()
-        //{
-
-        //}
-
-
-        //[RelayCommand]
-        //async Task GetEmployeeSchedule()
-        //{
-        //    if (IsBusy)
-        //        return;
-
-        //    try
+        //    [RelayCommand]
+        //    public async void FetchGroupName()
         //    {
-        //        if (connectivity.NetworkAccess != NetworkAccess.Internet)
+        //        isBusy = true;
+        //        var response = await _groupServices.DisplayGroup();
+        //        if (response.Count > 0)
         //        {
-        //            await Shell.Current.DisplayAlert("No connectivity!",
-        //                $"Please check internet and try again.", "OK");
-        //            return;
+        //            foreach (var grp in response)
+        //            {
+        //                GroupNameList.Add(response);
+        //            }
         //        }
+        //        isRefreshing= false;
+        //        isBusy = false;
+        //    }        
 
-        //        IsBusy = true;
-
-        //        var employees = await employeeServices.GetEmployees();
-
-        //        if (employeeModels.Count != 0)
-        //        {
-        //            employeeModels.Clear();
-        //        }
-
-        //        foreach (var employee in employees)
-        //        {
-        //            employeeModels.Add(employee);
-        //        }
-        //    }
-
-        //    catch (Exception ex)
+        //    [RelayCommand]
+        //    public async void DisplayGroupMember(CreateGroupDTO createGroupDTO)
         //    {
-        //        Debug.WriteLine($"Unable to get Employee Schedule: {ex.Message}");
-        //        await Shell.Current.DisplayAlert("Error!", ex.Message, "OK");
-        //    }
-        //    finally
-        //    {
-        //        IsBusy = false;
-        //        IsRefreshing = false;
-        //    }
+        //        isBusy = true;
+        //        var response = await _groupServices.DisplayGroupbyGroupName(new CreateGroupDTO
+        //        {
+        //            GroupName = entrygroupname,
+        //        });
 
-        //}
+        //        if (response != null)
+        //        {
+        //            foreach (var grp in response)
+        //            {
+        //                displaygrp.Add(new UserBasicInfo
+        //                {
+        //                    EmployeeName = grp.UserName,
+        //                    EmployeeNumber = grp.EmployeeName,
+        //                    GroupName = grp.GroupName,
+        //                    TotalHour = grp.TotalHour,
+        //                });
+        //            }
+        //        }
+        //        isRefreshing= false;
+        //        isBusy = false;
+        //    }
     }
+
 }
