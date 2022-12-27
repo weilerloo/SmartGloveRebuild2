@@ -2,30 +2,36 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Admin.DisplayGroupPage"
-             xmlns:models="clr-namespace:SmartGloveRebuild2.Models"
+             xmlns:models="clr-namespace:SmartGloveRebuild2.Models.Group"
              xmlns:viewModels="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewModels:DisplayGroupViewModel"
              Title="Display Group">
     <VerticalStackLayout>
         <!--<Entry Text="{Binding Entrygroupname}"/>
-        <Button Text="Test" Command="{Binding DisplayGroupMemberCommand}"/>
+        <Button Text="Test" Command="{Binding DisplayGroupMemberCommand}"/>-->
 
-        <StackLayout Margin="10">
-            <Picker FontSize="24" Title="GroupList" ItemsSource="{Binding GroupNameList}" ItemDisplayBinding="{Binding GroupName}" />
-            <ActivityIndicator IsRunning="True" IsVisible="{Binding IsRefreshing}"/>
-        </StackLayout>-->
-
-        <!--<CollectionView ItemsSource="{Binding displaygrp}">
+        <StackLayout Margin="10" HorizontalOptions="Center">
+            <Picker FontSize="24" TextColor="Black" WidthRequest="200" Title="GroupList" ItemsSource="{Binding GroupTitleList}" SelectedItem="{Binding SelectedGroupname}" ItemDisplayBinding="{Binding GroupName}" />
+            <ActivityIndicator IsRunning="True" IsVisible="{Binding IsRefreshing}" HeightRequest="25" WidthRequest="25"/>
+        </StackLayout>
+        <CollectionView ItemsSource="{Binding GroupNameList}">
+            <CollectionView.EmptyView>
+                <Label Text="No Logs Found"
+                           HorizontalOptions="FillAndExpand"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" />
+            </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:UserBasicInfo">
+                <DataTemplate x:DataType="models:GroupList">
                     <VerticalStackLayout>
                         <Label Text="{Binding GroupName}" TextColor="Black" FontSize="21"/>
                         <Label Text="{Binding EmployeeName}" TextColor="Black" FontSize="21"/>
-                        <Label Text="{Binding EmployeeNumber}" TextColor="Black" FontSize="21"/>
+                        <Label Text="{Binding UserName}" TextColor="Black" FontSize="21"/>
                         <Label Text="{Binding TotalHour}" TextColor="Black" FontSize="21"/>
                     </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-        </CollectionView>-->
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>

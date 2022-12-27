@@ -18,64 +18,87 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 {
     public partial class DisplayGroupViewModel : BaseViewModel
     {
-        public ObservableCollection<UserBasicInfo> displaygrp { get; set; } = new ObservableCollection<UserBasicInfo>();
         public ObservableCollection<GroupList> GroupNameList { get; set; } = new ObservableCollection<GroupList>();
+        public ObservableCollection<GroupList> GroupTitleList { get; set; } = new ObservableCollection<GroupList>();
 
         [ObservableProperty]
-        string entrygroupname;        
-        
+        string entrygroupname;
+
         [ObservableProperty]
         bool isBusy, isRefreshing;
+
+        private GroupList selectedgroupname;
+        public GroupList SelectedGroupname
+        {
+            get => selectedgroupname;
+            set
+            {
+                selectedgroupname = value;
+                DisplayGroupMember();
+            }
+        }
 
         private readonly IGroupServices _groupServices;
         public DisplayGroupViewModel(IGroupServices groupServices)
         {
             _groupServices = groupServices;
-            //FetchGroupName();
+            DisplayGroupMember();
         }
 
 
-        //    [RelayCommand]
-        //    public async void FetchGroupName()
-        //    {
-        //        isBusy = true;
-        //        var response = await _groupServices.DisplayGroup();
-        //        if (response.Count > 0)
-        //        {
-        //            foreach (var grp in response)
-        //            {
-        //                GroupNameList.Add(response);
-        //            }
-        //        }
-        //        isRefreshing= false;
-        //        isBusy = false;
-        //    }        
+        [RelayCommand]
+        public async void DisplayGroupMember()
+        {
+            isBusy = true;
+            var response = await _groupServices.DisplayGroupFromUsers();
 
-        //    [RelayCommand]
-        //    public async void DisplayGroupMember(CreateGroupDTO createGroupDTO)
-        //    {
-        //        isBusy = true;
-        //        var response = await _groupServices.DisplayGroupbyGroupName(new CreateGroupDTO
-        //        {
-        //            GroupName = entrygroupname,
-        //        });
+            if (response.Count > 0)
+            {
+                foreach (var grp in response)
+                {
+                    var res = GroupTitleList.Where(f => f.GroupName.Contains(grp.GroupName)).FirstOrDefault();
+                    if (res != null)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        GroupTitleList.Add(new GroupList
+                        {
+                            GroupName = grp.GroupName,
+                        });
+                    }
+                }
+            }
 
-        //        if (response != null)
-        //        {
-        //            foreach (var grp in response)
-        //            {
-        //                displaygrp.Add(new UserBasicInfo
-        //                {
-        //                    EmployeeName = grp.UserName,
-        //                    EmployeeNumber = grp.EmployeeName,
-        //                    GroupName = grp.GroupName,
-        //                    TotalHour = grp.TotalHour,
-        //                });
-        //            }
-        //        }
-        //        isRefreshing= false;
-        //        isBusy = false;
-        //    }
+            if (SelectedGroupname != null)
+            {
+                if(GroupNameList.Count > 0)
+                {
+                    GroupNameList.Clear();
+                }
+
+                foreach (var grp in response)
+                {
+                    var res = GroupTitleList.Where(f => f.GroupName.Contains(SelectedGroupname.GroupName));
+                    if (res != null)
+                    {
+                        if (grp.GroupName == SelectedGroupname.GroupName)
+                        {
+                            GroupNameList.Add(new GroupList
+                            {
+                                GroupName = grp.GroupName,
+                                EmployeeName = grp.EmployeeName,
+                                TotalHour = grp.TotalHour,
+                                UserName = grp.UserName,
+
+                            });
+                        }
+                    }
+                }
+            }
+            isRefreshing = false;
+            isBusy = false;
+        }
     }
-
 }

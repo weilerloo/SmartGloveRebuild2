@@ -12,7 +12,8 @@ namespace SmartGloveRebuild2.Services
     {
         Task<GroupResponse> CreateGroup(CreateGroupDTO createGroupDTO);
         Task<GroupResponse> DeleteGroup(DeleteGroupDTO deleteGroupDTO);
-        Task<List<GroupList>> DisplayGroupbyGroupName(CreateGroupDTO createGroupDTO);
+        Task<List<GroupList>> DisplayGroupbyGroupName(string GroupName);
+        Task<List<GroupList>> DisplayGroupFromUsers();
         Task<List<GroupList>> DisplayGroup();
         Task<GroupResponse> UpdateGroup(UpdateGroupDTO updateGroupDTO);
         Task<GroupResponse> AssignGroup(AssignGroupDTO assignGroupDTO);
