@@ -11,25 +11,220 @@ using SmartGloveRebuild2.Views;
 using System.Collections.ObjectModel;
 using SmartGloveRebuild2.Models.Group;
 using SmartGloveRebuild2.Views.Admin;
+using SmartGloveRebuild2.Models.Schedule;
+using Microsoft.IdentityModel.Tokens;
+using SmartGloveRebuild2.Views.Dashboard;
 
 namespace SmartGloveRebuild2.ViewModels.Admin
 {
+    [QueryProperty(nameof(GroupList), nameof(GroupList))]
     public partial class AssignGroupViewModel : BaseViewModel
     {
-        public static ObservableCollection<AssignGroupDTO> GroupList { get; set; } = new ObservableCollection<AssignGroupDTO>();
+        public ObservableCollection<GroupList> EditGroupList { get; set; } = new ObservableCollection<GroupList>();
+        public IList<CreateGroupDTO> NameGroupList { get; set; } = new List<CreateGroupDTO>();
+
+        [ObservableProperty]
+        bool isRefreshing;
 
 
         [ObservableProperty]
-        string existedgroupname;
+        GroupList groupList;
 
-        [ObservableProperty]
-        string existedemployeenumber;
 
         private readonly IGroupServices _groupService;
         public AssignGroupViewModel(IGroupServices groupService)
         {
             _groupService = groupService;
+            DisplayGroupMember();
         }
 
+        public async void CheckUnassignedGroup()
+        {
+            var response = await _groupService.DisplayGroup();
+            var create = response.Where(f => f.GroupName.Contains("Unassigned"));
+
+            if (create != null)
+            {
+                var creategroupUnassigned = await _groupService.CreateGroup(new CreateGroupDTO
+                {
+                    GroupName = "Unassigned",
+                });
+            }
+        }
+
+
+
+        public async void DisplayGroupMember()
+        {
+            CheckUnassignedGroup();
+
+            var response = await _groupService.DisplayGroup();
+            if (response.Count > 0)
+            {
+                foreach (var grp in response)
+                {
+                    NameGroupList.Add(new CreateGroupDTO
+                    {
+                        GroupName = grp.GroupName,
+                    });
+                }
+            }
+
+
+            foreach (var groups in DisplayGroupViewModel.DisplayGroupList)
+            {
+                EditGroupList.Add(new GroupList
+                {
+                    GroupName = groups.GroupName,
+                    UserName = groups.UserName,
+                    EmployeeName = groups.EmployeeName,
+                    TotalHour = groups.TotalHour,
+                    TitleGroup = NameGroupList,
+                    SelectedIndex = NameGroupList.IndexOf(new CreateGroupDTO
+                    {
+                        GroupName = groups.GroupName,
+                    }),
+                });
+            }
+        }
+
+        public async Task CreateUnassigned()
+        {
+
+            var newgroup = await _groupService.CreateGroup(new CreateGroupDTO
+            {
+                GroupName = "Unassigned",
+            });
+        }
+
+
+        [RelayCommand]
+        public async Task SaveGroupChanges()
+        {
+            if (IsBusy) { return; }
+
+            IsBusy = true;
+            var checkgroup = await _groupService.DisplayGroupbyGroupName("Unassigned");
+            if (checkgroup == null)
+            {
+                await CreateUnassigned();
+            }
+
+            foreach (var items in EditGroupList)
+            {
+                int gnmpindex = items.SelectedIndex;
+                var gnmp = items.TitleGroup[gnmpindex];
+                if (items.SelectedGroup == null)
+                {
+                    var response = await _groupService.AssignGroup(new AssignGroupDTO
+                    {
+                        EmployeeNumber = items.UserName,
+                        GroupName = gnmp.GroupName,
+                    });
+                    if (response.IsSuccess == false)
+                    {
+                        IsRefreshing = false;
+                        IsBusy = false;
+                        await Shell.Current.DisplayAlert("Messages", "Internal Error.", "OK");
+                        return;
+                    }
+                }
+                else
+                {
+                    var response = await _groupService.AssignGroup(new AssignGroupDTO
+                    {
+                        EmployeeNumber = items.UserName,
+                        GroupName = items.SelectedGroup.GroupName,
+                    });
+                    if (response.IsSuccess == false)
+                    {
+                        IsRefreshing = false;
+                        IsBusy = false;
+                        await Shell.Current.DisplayAlert("Messages", "Internal Error.", "OK");
+                        return;
+                    }
+                }
+            }
+            IsRefreshing = false;
+            IsBusy = false;
+            await Shell.Current.DisplayAlert("Messages", "Group Updated.", "OK");
+            await Shell.Current.GoToAsync("../..");
+        }
+
+        [RelayCommand]
+        public async Task DeleteGroups()
+        {
+            if (IsBusy) { return; }
+            var action = await Shell.Current.DisplayAlert("Messages", "Are you sure to delete?", "Yes", "No");
+            if (action)
+            {
+                IsBusy = true;
+                var checkgroup = await _groupService.DisplayGroupbyGroupName("Unassigned");
+                if (checkgroup == null)
+                {
+                    await CreateUnassigned();
+                }
+
+                foreach (var items in EditGroupList)
+                {
+                    int gnmpindex = items.SelectedIndex;
+                    var gnmp = items.TitleGroup[gnmpindex];
+                    if (items.SelectedGroup == null)
+                    {
+                        var response = await _groupService.AssignGroup(new AssignGroupDTO
+                        {
+                            EmployeeNumber = items.UserName,
+                            GroupName = "Unassigned",
+                        });
+                        if (response.IsSuccess == false)
+                        {
+                            await Shell.Current.DisplayAlert("Messages", "Internal Error.", "OK");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        var response = await _groupService.AssignGroup(new AssignGroupDTO
+                        {
+                            EmployeeNumber = items.UserName,
+                            GroupName = "Unassigned",
+                        });
+                        if (response.IsSuccess == false)
+                        {
+                            await Shell.Current.DisplayAlert("Messages", "Internal Error.", "OK");
+                            return;
+                        }
+                    }
+                }
+                foreach (var ies in EditGroupList)
+                {
+                    int gnmpindex = ies.SelectedIndex;
+                    var gnmp = ies.TitleGroup[gnmpindex];
+
+                    var fordelelte = await _groupService.DeleteGroup(new DeleteGroupDTO
+                    {
+                        GroupName = gnmp.GroupName,
+                    });
+
+                    if (fordelelte.IsSuccess == false)
+                    {
+                        await Shell.Current.DisplayAlert("Messages", "Unable to delete. Grouping Error.", "OK");
+
+                    }
+                    else
+                    {
+                        await Shell.Current.DisplayAlert("Messages", "Group Deleted.", "OK");
+                    }
+                    break;
+                }
+                await Shell.Current.GoToAsync("../..");
+                IsRefreshing = false;
+                IsBusy = false;
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 }

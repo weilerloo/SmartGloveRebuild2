@@ -8,6 +8,7 @@ public partial class AssignGroupPage : ContentPage
     {
         InitializeComponent();
         this.BindingContext = viewModel;
+
     }
 
 }

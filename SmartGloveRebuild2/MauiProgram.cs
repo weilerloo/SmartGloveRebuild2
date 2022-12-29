@@ -66,23 +66,22 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddTransient<CreateGroupPage>();
         builder.Services.AddTransient<GroupPage>();
         builder.Services.AddTransient<RejectedOT>();
-        builder.Services.AddSingleton<DisplayGroupPage>();
+        builder.Services.AddTransient<DisplayGroupPage>();
         builder.Services.AddTransient<UpdateSlotsDetails>();
         builder.Services.AddSingleton<CheckCalendarPage>();
         builder.Services.AddTransient<UpdateSlotsPage>();
         builder.Services.AddSingleton<GenerateReportPage>();
         //View Models
         builder.Services.AddSingleton<GroupViewModel>();
-        builder.Services.AddSingleton<AssignGroupViewModel>();
-        builder.Services.AddSingleton<DisplayGroupViewModel>();
-        builder.Services.AddSingleton<CreateGroupViewModel>();
-        builder.Services.AddSingleton<RejectViewModel>();
+        builder.Services.AddTransient<AssignGroupViewModel>();
+        builder.Services.AddTransient<DisplayGroupViewModel>();
+        builder.Services.AddTransient<CreateGroupViewModel>();
+        builder.Services.AddTransient<RejectViewModel>();
         builder.Services.AddSingleton<LoginPageViewModel>();
         builder.Services.AddSingleton<DashboardPageViewModel>();
         builder.Services.AddSingleton<LoadingPageViewModel>();
         builder.Services.AddTransient<UpdateSlotsDetailViewModel>();
         builder.Services.AddTransient<ScheduleViewModel>();
-        builder.Services.AddSingleton<DisplayGroupViewModel>();
         builder.Services.AddSingleton<CheckCalendarViewModel>();
         builder.Services.AddTransient<UpdateSlotsViewModel>();
         return builder.Build();

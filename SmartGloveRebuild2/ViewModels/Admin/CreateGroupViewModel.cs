@@ -37,6 +37,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             if (FindGroup.IsSuccess == true)
             {
                 await Shell.Current.DisplayAlert("New Group added", "Group added succesfully", "Ok");
+                await Shell.Current.GoToAsync("..");
             }
             else
             {

@@ -18,7 +18,7 @@ namespace SmartGloveRebuild2.Services
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string assignGroupDTOStr = JsonConvert.SerializeObject(assignGroupDTO);
 
-                var response = await client.PostAsync($"http://172.16.12.149:7006/api/Group/AssignGroup?GroupName={assignGroupDTO.GroupName}",
+                var response = await client.PutAsync($"http://172.16.12.149:7006/api/Group/AssignGroup?GroupName={assignGroupDTO.GroupName}&EmployeeNumber={assignGroupDTO.EmployeeNumber}",
                       new StringContent(assignGroupDTOStr, Encoding.UTF8,
                       "application/json"));
 

@@ -13,6 +13,8 @@ using SmartGloveRebuild2.Models.Group;
 using SmartGloveRebuild2.Views.Admin;
 using SmartGloveRebuild2.Models.ClerkDTO;
 using Microsoft.Maui.Controls;
+using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace SmartGloveRebuild2.ViewModels.Admin
 {
@@ -20,12 +22,16 @@ namespace SmartGloveRebuild2.ViewModels.Admin
     {
         public ObservableCollection<GroupList> GroupNameList { get; set; } = new ObservableCollection<GroupList>();
         public ObservableCollection<GroupList> GroupTitleList { get; set; } = new ObservableCollection<GroupList>();
+        public static ObservableCollection<GroupList> DisplayGroupList { get; set; } = new ObservableCollection<GroupList>();
 
         [ObservableProperty]
         string entrygroupname;
 
         [ObservableProperty]
-        bool isBusy, isRefreshing;
+        bool isRefreshing;
+
+        [ObservableProperty]
+        int selectedindex;
 
         private GroupList selectedgroupname;
         public GroupList SelectedGroupname
@@ -34,6 +40,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             set
             {
                 selectedgroupname = value;
+                OnPropertyChanged();
                 DisplayGroupMember();
             }
         }
@@ -49,14 +56,16 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public async void DisplayGroupMember()
         {
-            isBusy = true;
+            if (IsBusy) { return; }
+
+            IsBusy = true;
             var response = await _groupServices.DisplayGroupFromUsers();
 
             if (response.Count > 0)
             {
                 foreach (var grp in response)
                 {
-                    var res = GroupTitleList.Where(f => f.GroupName.Contains(grp.GroupName)).FirstOrDefault();
+                    var res = GroupTitleList.Where(f => f.GroupName.Equals(grp.GroupName)).FirstOrDefault();
                     if (res != null)
                     {
                         continue;
@@ -69,11 +78,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         });
                     }
                 }
+                selectedindex= 0;
             }
 
             if (SelectedGroupname != null)
             {
-                if(GroupNameList.Count > 0)
+                if (GroupNameList.Count > 0)
                 {
                     GroupNameList.Clear();
                 }
@@ -97,8 +107,45 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                 }
             }
-            isRefreshing = false;
-            isBusy = false;
+            IsRefreshing = false;
+            IsBusy = false;
+        }
+
+        [RelayCommand]
+        public async void EditGroup()
+        {
+
+            if (selectedgroupname == null)
+            {
+                return;
+            }
+            IsBusy = true;
+
+            if (DisplayGroupList.Count > 0)
+            {
+                DisplayGroupList.Clear();
+            }
+            var response = await _groupServices.DisplayGroupbyGroupName(selectedgroupname.GroupName);
+            if (response != null)
+            {
+                foreach (var employee in response)
+                {
+                    DisplayGroupList.Add(new GroupList
+                    {
+                        GroupName = employee.GroupName,
+                        EmployeeName = employee.EmployeeName,
+                        TotalHour = employee.TotalHour,
+                        UserName = employee.UserName,
+                    });
+                }
+            }
+            IsRefreshing = false;
+            IsBusy = false;
+
+            await Shell.Current.GoToAsync($"{nameof(AssignGroupPage)}?", true, new Dictionary<string, object>
+            {
+                [nameof(GroupList)] = selectedgroupname
+            });
         }
     }
 }
