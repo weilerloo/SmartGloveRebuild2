@@ -4,10 +4,10 @@ namespace SmartGloveRebuild2.Views.Admin;
 
 public partial class CheckCalendarPage : ContentPage
 {
-	CheckCalendarViewModel CheckCalendarViewModel;
-	public CheckCalendarPage()
+	public CheckCalendarPage(CheckCalendarViewModel viewmodel)
 	{
 		InitializeComponent();
-		this.BindingContext = CheckCalendarViewModel = new CheckCalendarViewModel();
+		this.BindingContext = viewmodel;
 	}
+
 }

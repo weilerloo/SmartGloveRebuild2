@@ -2,11 +2,109 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Admin.CheckCalendarPage"
-             Title="CheckCalendarPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .Check Calendar MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="{Binding Title}"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:model="clr-namespace:SmartGloveRebuild2.Models"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             x:DataType="viewmodel:CheckCalendarViewModel">
+    <ScrollView>
+        <Grid RowDefinitions="*,Auto">
+            <VerticalStackLayout>
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto" Margin="0,0,0,30">
+                    <Label Text="Calendar" FontSize="24" Margin="20,20,0,10" TextColor="Black"/>
+                    
+                    <CollectionView Grid.Row="1" ItemsSource="{Binding Monthname}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:CalendarModel">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label Text="{Binding LastCurrentMonth}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center" Margin="20,0,0,0"/>
+                                    <Label Grid.Column="1" Text="{Binding Year}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center" Margin="10,0,0,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <!--<ImageButton Grid.Row="2" Grid.Column="2" Source="leftpage.png" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="0,0,5,0" Command="{Binding DecreaseMonthCommand}"/>
+                    <ImageButton Grid.Row="2" Grid.Column="2" Source="leftpage.png" Opacity="10" Rotation="180" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="70,0,20,0" Command="{Binding IncreaseMonthCommand}" />-->
+                    <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="2" Text="-" Margin="2" Command="{Binding DecreaseMonthCommand}"/>
+                    <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2" Command="{Binding IncreaseMonthCommand}"/>
+                    <Button Grid.Row="2" Grid.Column="4" Text="Reset" Margin="2" Command="{Binding DeleteButtonSelectedCommand}"/>
+                </Grid>
+                <CollectionView ItemsSource="{Binding Datename}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="7"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:CalendarModel">
+                            <Grid RowDefinitions="*,Auto, Auto,*">
+                                <Label Grid.Row="1" Text="{Binding Currentday}" HorizontalOptions="Center" FontAttributes="Bold"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                                 Command="{Binding ColorStatusCommand}">
+                    <Grid IsEnabled="False">
+                        <CollectionView x:Name="CalendarDetails" 
+                                        ItemsSource="{Binding CalendarDetails}"
+                                        SelectedItem="{Binding Items}"
+                                        SelectionMode="None">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical" Span="7"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:CalendarModel">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup Name="CommonStates">
+                                                <VisualState Name="Normal" />
+                                                <VisualState Name="Selected">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="BackgroundColor" Value="Transparent" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <!--<Button BackgroundColor="{Binding Color}" Padding="0" x:Name="DateButton" HeightRequest="50" Margin="5" Text="{Binding Day}" CornerRadius="10">
+                                            <Button.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ScheduleViewModel}},Path=SubmitButtonSelectedCommand}" CommandParameter="{Binding .}"/>
+                                            </Button.GestureRecognizers>
+                                        </Button>-->
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+                </RefreshView>
+                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto,Auto,Auto,Auto,*" Margin="10">
+                    <Ellipse 
+                            Stroke="Blue"
+                            StrokeThickness="4"
+                            HeightRequest="10"
+                            WidthRequest="10"
+                            Fill="Blue"
+                            Grid.Column="1"/>
+                    <Label Grid.Column="2" Margin="10,0,40,0" Text="Avaiable"/>
+                    <Ellipse 
+                            Stroke="Red"
+                            StrokeThickness="4"
+                            HeightRequest="10"
+                            WidthRequest="10"
+                            Fill="Red"
+                            Grid.Column="3"/>
+                    <Label Grid.Column="4" Margin="10,0,40,0" Text="Avaiable"/>
+                    <Ellipse 
+                            Stroke="Brown"
+                            StrokeThickness="4"
+                            HeightRequest="10"
+                            WidthRequest="10"
+                            Fill="Brown"
+                            Grid.Column="1"
+                            Grid.Row="1"/>
+                    <Label Grid.Column="2" Grid.Row="1" Margin="10,0,40,0" Text="Avaiable"/>
+                </Grid>
+                <Button Text="Adjust Slots" WidthRequest="200" HeightRequest="50" Command="{Binding AdjustSlotsCommand}"></Button>
+            </VerticalStackLayout>
+            <ImageButton Command="{Binding SubmitRequestCommand}" Grid.Row="1" Source="tick.png" HeightRequest="50" WidthRequest="50" HorizontalOptions="End" Margin="0,20,40,20"/>
+        </Grid>
+    </ScrollView>
 </ContentPage>
