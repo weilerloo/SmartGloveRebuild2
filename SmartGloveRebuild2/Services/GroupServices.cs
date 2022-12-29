@@ -18,7 +18,7 @@ namespace SmartGloveRebuild2.Services
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string assignGroupDTOStr = JsonConvert.SerializeObject(assignGroupDTO);
 
-                var response = await client.PutAsync($"http://172.16.12.151:7006/api/Group/AssignGroup?GroupName={assignGroupDTO.GroupName}&EmployeeNumber={assignGroupDTO.EmployeeNumber}",
+                var response = await client.PutAsync($"http://172.16.12.149:7006/api/Group/AssignGroup?GroupName={assignGroupDTO.GroupName}&EmployeeNumber={assignGroupDTO.EmployeeNumber}",
                       new StringContent(assignGroupDTOStr, Encoding.UTF8,
                       "application/json"));
 
@@ -41,7 +41,7 @@ namespace SmartGloveRebuild2.Services
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string createGroupDTOStr = JsonConvert.SerializeObject(createGroupDTO);
 
-                var response = await client.PostAsync($"http://172.16.12.151:7006/api/Group/CreateGroup?GroupName={createGroupDTO.GroupName}",
+                var response = await client.PostAsync($"http://172.16.12.149:7006/api/Group/CreateGroup?GroupName={createGroupDTO.GroupName}",
                       new StringContent(createGroupDTOStr, Encoding.UTF8,
                       "application/json"));
 
@@ -64,7 +64,7 @@ namespace SmartGloveRebuild2.Services
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string deleteGroupDTOStr = JsonConvert.SerializeObject(deleteGroupDTO);
 
-                var response = await client.DeleteAsync($"http://172.16.12.151:7006/api/Group/DeleteGroup?GroupName={deleteGroupDTO.GroupName}");
+                var response = await client.DeleteAsync($"http://172.16.12.149:7006/api/Group/DeleteGroup?GroupName={deleteGroupDTO.GroupName}");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -83,7 +83,7 @@ namespace SmartGloveRebuild2.Services
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
-                var response = await client.GetAsync($"http://172.16.12.151:7006/api/Group/GetGroup");
+                var response = await client.GetAsync($"http://172.16.12.149:7006/api/Group/GetGroup");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -102,7 +102,7 @@ namespace SmartGloveRebuild2.Services
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
-                var response = await client.GetAsync($"http://172.16.12.151:7006/api/Group/DisplayGroupbyGroupName?GroupName={GroupName}");
+                var response = await client.GetAsync($"http://172.16.12.149:7006/api/Group/DisplayGroupbyGroupName?GroupName={GroupName}");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -121,7 +121,7 @@ namespace SmartGloveRebuild2.Services
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
-                var response = await client.GetAsync("http://172.16.12.151:7006/api/Group/DisplayGroupFromUsers");
+                var response = await client.GetAsync("http://172.16.12.149:7006/api/Group/DisplayGroupFromUsers");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -142,7 +142,7 @@ namespace SmartGloveRebuild2.Services
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string updateGroupDTOStr = JsonConvert.SerializeObject(updateGroupDTO);
 
-                var response = await client.PutAsync($"http://172.16.12.151:7006/api/Group/UpdateGroup?GroupName={updateGroupDTO.GroupName}",
+                var response = await client.PutAsync($"http://172.16.12.149:7006/api/Group/UpdateGroup?GroupName={updateGroupDTO.GroupName}",
                     new StringContent(updateGroupDTOStr, Encoding.UTF8,
                       "application/json"));
 

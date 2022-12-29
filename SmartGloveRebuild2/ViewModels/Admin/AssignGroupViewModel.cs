@@ -24,7 +24,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public IList<CreateGroupDTO> NameGroupList { get; set; } = new List<CreateGroupDTO>();
 
         [ObservableProperty]
-        bool isRefreshing;
+        bool isRefreshing, cannotdelete;
 
 
         [ObservableProperty]
@@ -38,12 +38,24 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             DisplayGroupMember();
         }
 
-        public async void CheckUnassignedGroup()
+
+        public async Task CheckUnassignedGroup()
         {
             var response = await _groupService.DisplayGroup();
-            var create = response.Where(f => f.GroupName.Contains("Unassigned"));
+            var create = response.Where(f => f.GroupName.Equals("Unassigned"));
 
-            if (create != null)
+            int count = 0;
+            foreach (var s in create)
+            {
+                if (s != null && s.GroupName.Equals("Unassigned")) count++;
+            }
+
+
+            if (count == 1)
+            {
+                cannotdelete = true;
+            }
+            else
             {
                 var creategroupUnassigned = await _groupService.CreateGroup(new CreateGroupDTO
                 {
@@ -53,10 +65,10 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         }
 
 
-
         public async void DisplayGroupMember()
         {
-            CheckUnassignedGroup();
+
+            await CheckUnassignedGroup();
 
             var response = await _groupService.DisplayGroup();
             if (response.Count > 0)

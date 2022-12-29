@@ -6,8 +6,8 @@
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewmodel:AssignGroupViewModel"
              Title="Assign Group Page">
-        <Grid RowDefinitions="*,Auto">
-    <ScrollView>
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView>
             <VerticalStackLayout>
                 <Grid RowDefinitions="Auto,Auto" Margin="0,0,0,30">
                     <Label FontAttributes="Bold" Text="Assign Groups" FontSize="22" Margin="20,20,0,10" TextColor="Black"/>
@@ -20,36 +20,36 @@
                     </Grid>
                 </Frame>
                 <CollectionView ItemsSource="{Binding EditGroupList}">
-                        <CollectionView.EmptyView>
-                            <Label Text="No Groups Found"
+                    <CollectionView.EmptyView>
+                        <Label Text="No Groups Found"
                            HorizontalOptions="FillAndExpand"
                            HorizontalTextAlignment="Center"
                            VerticalOptions="FillAndExpand"
                            VerticalTextAlignment="Center" />
-                        </CollectionView.EmptyView>
-                        <CollectionView.ItemTemplate Grid.Row="1">
-                            <DataTemplate x:DataType="model:GroupList">
-                                <Grid ColumnDefinitions="*,*">
-                                    <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto, Auto">
-                                        <Label Margin="20,0,0,0" HorizontalOptions="Start" Grid.Row="0" Text="{Binding EmployeeName}" TextColor="Black" FontSize="18"/>
-                                        <Label Margin="20,0,0,0" HorizontalOptions="Start" Grid.Row="1" Text="{Binding UserName}" TextColor="Blue" FontSize="16"/>
-                                        <Label Margin="10,0,0,0" HorizontalOptions="End" Grid.Column="1" Text="{Binding GroupName}" TextColor="Red" FontSize="16"/>
-                                    </Grid>
-                                    <StackLayout Grid.Column="1" Margin="10" HorizontalOptions="Center">
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate Grid.Row="1">
+                        <DataTemplate x:DataType="model:GroupList">
+                            <Grid ColumnDefinitions="*,*">
+                                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto, Auto">
+                                    <Label Margin="20,0,0,0" HorizontalOptions="Start" Grid.Row="0" Text="{Binding EmployeeName}" TextColor="Black" FontSize="18"/>
+                                    <Label Margin="20,0,0,0" HorizontalOptions="Start" Grid.Row="1" Text="{Binding UserName}" TextColor="Blue" FontSize="16"/>
+                                    <Label Margin="100,0,0,0" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Text="{Binding GroupName}" TextColor="Red" FontSize="16"/>
+                                </Grid>
+                                <StackLayout Grid.Column="1" Margin="10" HorizontalOptions="Center">
                                     <Picker FontSize="18" HorizontalTextAlignment="Center" TextColor="DarkGreen" WidthRequest="140" ItemsSource="{Binding TitleGroup}"
                                                 ItemDisplayBinding="{Binding GroupName}" 
                                                 SelectedItem="{Binding SelectedGroup}"
                                                 SelectedIndex="{Binding SelectedIndex}"/>
-                                    </StackLayout>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                                </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </VerticalStackLayout>
-    </ScrollView>
-            <Grid ColumnDefinitions="*,*" Grid.Row="1" Margin="10,0,10,25">
-            <Button HeightRequest="50" Grid.Column="0" Command="{Binding SaveGroupChangesCommand}" Text="Save Changes"/>
-            <Button HeightRequest="50" Grid.Column="1" Command="{Binding DeleteGroupsCommand}" Text="Delete Groups"/>
-            </Grid>
+        </ScrollView>
+        <Grid ColumnDefinitions="*,*" Grid.Row="1" Margin="10,0,10,25">
+            <Button HeightRequest="50" WidthRequest="150" Grid.Column="0" Command="{Binding SaveGroupChangesCommand}" Text="Save Changes"/>
+            <Button HeightRequest="50" WidthRequest="150" Grid.Column="1" IsVisible="{Binding }" Command="{Binding DeleteGroupsCommand}" Text="Delete Group"/>
         </Grid>
+    </Grid>
 </ContentPage>

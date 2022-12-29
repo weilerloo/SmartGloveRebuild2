@@ -97,13 +97,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         int paxs;
 
         [ObservableProperty]
-        bool isBusy, isRefreshing;
+        bool isRefreshing;
 
 
         [RelayCommand]
         public async Task UpdateStatus()
         {
-            isBusy = true;
+            IsBusy = true;
             foreach (var content in addedGroupSchedule)
             {
                 if (content.Paxs == 0 && content.Hours == 0 && content.Status == true)
@@ -121,7 +121,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             }
 
             IsRefreshing = false;
-            isBusy = false;
+            IsBusy = false;
             await Shell.Current.DisplayAlert("Messages", "Schedule Updated.", "OK");
             await Shell.Current.GoToAsync("..");
         }
@@ -159,6 +159,10 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             addedGroupSchedule.Clear();
             foreach (var groups in UpdateSlotsViewModel.GroupSchedule)
             {
+                if (groups.GroupName == "Unassigned")
+                {
+                    continue;
+                }
                 Color color;
                 string statonoff;
                 if (groups.Status == true)
