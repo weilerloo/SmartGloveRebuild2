@@ -41,6 +41,13 @@
                     ItemsSource="{Binding addedGroupSchedule}"
                     SelectedItem="{Binding Items}"
                     SelectionMode="Multiple">
+                <CollectionView.EmptyView>
+                    <Label Text="No Logs Found"
+                           HorizontalOptions="FillAndExpand"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" />
+                </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:GroupScheduleModel">
                         <Grid HeightRequest="70" ColumnDefinitions="*,*,*,*">
