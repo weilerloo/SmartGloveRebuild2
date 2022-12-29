@@ -100,12 +100,6 @@ namespace SmartGloveRebuild2.Models
                                 },
                                 new ShellContent
                                 {
-                                    Icon = Icons.UpdateSlots,
-                                    Title = "Update Slots",
-                                    ContentTemplate = new DataTemplate(typeof(UpdateSlotsPage)),  //Its here, in case we need supervisor to update slots
-                                },
-                                new ShellContent
-                                {
                                     Icon = Icons.CheckCalendar,
                                     Title = "Check Calendar",
                                     ContentTemplate = new DataTemplate(typeof(CheckCalendarPage)),
@@ -114,7 +108,7 @@ namespace SmartGloveRebuild2.Models
                                 {
                                     Icon = Icons.Groups,
                                     Title = "Groups",
-                                    ContentTemplate = new DataTemplate(typeof(DisplayGroupPage)),
+                                    ContentTemplate = new DataTemplate(typeof(GroupPage)),
                                 },
                                 
                    }
@@ -149,7 +143,7 @@ namespace SmartGloveRebuild2.Models
                                 new ShellContent
                                 {
                                     Icon = Icons.Dashboard,
-                                    Title = "Supervisor Dashboard",
+                                    Title = "Clerk Dashboard",
                                     ContentTemplate = new DataTemplate(typeof(ClerkDashboardPage)),
                                 },
                                 new ShellContent
@@ -163,12 +157,6 @@ namespace SmartGloveRebuild2.Models
                                     Icon = Icons.CheckCalendar,
                                     Title = "Check Calendar",
                                     ContentTemplate = new DataTemplate(typeof(CheckCalendarPage)),
-                                },
-                                new ShellContent
-                                {
-                                    Icon = Icons.Groups,
-                                    Title = "Groups",
-                                    ContentTemplate = new DataTemplate(typeof(DisplayGroupPage)),
                                 },
 
                    }

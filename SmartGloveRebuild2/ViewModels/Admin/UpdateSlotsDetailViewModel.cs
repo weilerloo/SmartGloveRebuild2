@@ -46,33 +46,42 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             _scheduleServices = scheduleServices;
             foreach (var groups in UpdateSlotsViewModel.GroupSchedule)
             {
-                Color color;
-                string statonoff;
-                if (groups.Status == true)
+                if (groups.GroupName == "Unassigned")
                 {
-                    color = Color.FromArgb("#7CFC00");
-                    statonoff = "ON";
+                    continue;
                 }
                 else
                 {
-                    color = Color.FromArgb("#FF0000");
-                    statonoff = "OFF";
-                }
+                    Color color;
+                    string statonoff;
+                    if (groups.Status == true)
+                    {
+                        color = Color.FromArgb("#7CFC00");
+                        statonoff = "ON";
+                    }
+                    else
+                    {
+                        color = Color.FromArgb("#FF0000");
+                        statonoff = "OFF";
+                    }
 
-                addedGroupSchedule.Add(new GroupScheduleModel
-                {
-                    GroupName = groups.GroupName,
-                    Hours = groups.Hours,
-                    Paxs = groups.Paxs,
-                    Status = groups.Status,
-                    DayMonthYear = groups.DayMonthYear,
-                    Color = color,
-                    OnOff = statonoff,
-                });
-                daymonthyear = groups.DayMonthYear;
+                    addedGroupSchedule.Add(new GroupScheduleModel
+                    {
+                        GroupName = groups.GroupName,
+                        Hours = groups.Hours,
+                        Paxs = groups.Paxs,
+                        Status = groups.Status,
+                        DayMonthYear = groups.DayMonthYear,
+                        Color = color,
+                        OnOff = statonoff,
+                    });
+                    daymonthyear = groups.DayMonthYear;
+                }
+                Items = new ObservableCollection<GroupScheduleModel>();
+                SelectedItem = new GroupScheduleModel();
+
             }
-            Items = new ObservableCollection<GroupScheduleModel>();
-            SelectedItem = new GroupScheduleModel();
+
         }
 
         [ObservableProperty]

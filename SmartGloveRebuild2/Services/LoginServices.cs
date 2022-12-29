@@ -19,7 +19,7 @@ namespace SmartGloveRebuild2.Services
             {
                 string loginRequestStr = JsonConvert.SerializeObject(loginRequest);
 
-                var response = await client.PostAsync("http://172.16.12.149:7006/api/Users/AuthenticateUser",
+                var response = await client.PostAsync("http://172.16.12.151:7006/api/Users/AuthenticateUser",
                       new StringContent(loginRequestStr, Encoding.UTF8,
                       "application/json"));
 

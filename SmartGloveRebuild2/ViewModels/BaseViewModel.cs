@@ -14,5 +14,7 @@ namespace SmartGloveRebuild2.ViewModels
 
         [ObservableProperty]
         private string _title;
+
+        public bool IsNotBusy => !IsBusy;
     }
 }

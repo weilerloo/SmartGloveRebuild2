@@ -21,12 +21,8 @@ public partial class SupervisorDashboardPage : ContentPage
 
     }
 
-    private void Button_Clicked_1(object sender, EventArgs e)
+    private async void Button_Clicked_1(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync(nameof(GroupPage));
-    }
-    private void Button_Clicked_2(object sender, EventArgs e)
-    {
-        Shell.Current.GoToAsync(nameof(CheckCalendarPage));
+        await Shell.Current.GoToAsync(nameof(GroupPage));
     }
 }

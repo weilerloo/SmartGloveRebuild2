@@ -119,15 +119,9 @@
                 <Grid RowDefinitions="*,*,*,*"
                       WidthRequest="300">
 
-                    <Button HeightRequest="50" Grid.Row="0" Margin="0,30,0,0" Text="Update Slots" Clicked="Button_Clicked_1"/>
-                    <Button HeightRequest="50" Grid.Row="1" Margin="0,10,0,0" Text="Check Calender" Clicked="Button_Clicked_2"/>
-                    <Button HeightRequest="50" Grid.Row="2" Margin="0,10,0,0" Text="Display Group" Clicked="Button_Clicked_3"/>
-
-                    <Image Grid.Row="3"
-                           Source="sglogo.png" 
-                       HeightRequest="20" 
-                       WidthRequest="300" 
-                       Margin="0,90,0,0"/>
+                    <Button HeightRequest="50" Grid.Row="0" Margin="0,20,0,10" Text="Update Slots" Clicked="Button_Clicked_1"/>
+                    <Button HeightRequest="50" Grid.Row="1" Margin="0,20,0,10" Text="Check Calender" Clicked="Button_Clicked_2"/>
+                    <Button HeightRequest="50" Grid.Row="2" Margin="0,20,0,10" Text="Manage Group" Clicked="Button_Clicked_3"/>
                 </Grid>
             </VerticalStackLayout>
 
