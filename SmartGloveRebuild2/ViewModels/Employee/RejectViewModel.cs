@@ -60,11 +60,12 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         #endregion
 
         private readonly IScheduleServices _scheduleService;
+        private readonly Task Init;
         public RejectViewModel(IScheduleServices scheduleServices)
         {
             _scheduleService = scheduleServices;
             DisplayDays();
-            GetRejectedList();
+            this.Init = GetRejectedList();
             Title = "Update Slots";
         }
 
@@ -422,7 +423,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
 
         [RelayCommand]
-        public void DecreaseMonth()
+        public async Task DecreaseMonth()
         {
             if (IsBusy) return;
             Datename.Clear();
@@ -433,7 +434,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
             IsBusy = true;
-            GetRejectedList();
+            await GetRejectedList();
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -441,7 +442,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
 
         [RelayCommand]
-        public void IncreaseMonth()
+        public async Task IncreaseMonth()
         {
             if (IsBusy) return;
             Datename.Clear();
@@ -452,7 +453,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
             IsBusy = true;
-            GetRejectedList();
+            await GetRejectedList();
             IsRefreshing = false;
             IsBusy = false;
         }

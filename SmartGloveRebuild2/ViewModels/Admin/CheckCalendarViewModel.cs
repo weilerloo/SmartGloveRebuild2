@@ -22,6 +22,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         #region Properties
         private readonly IScheduleServices _scheduleServices;
         private readonly IGroupServices _groupServices;
+        private readonly Task InIt;
 
         [ObservableProperty]
         DateTime now = DateTime.Now;
@@ -92,7 +93,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             _groupServices = groupServices;
             DisplayDays();
             DisplayGroupMember();
-            ColorStatus();
+            InIt = ColorStatus();
             Title = "Check Calendar";
             Items = new ObservableCollection<CalendarModel>();
             SelectedItem = new CalendarModel();
@@ -565,7 +566,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 foreach (var grp in response)
                 {
                     var res = GroupTitleList.Where(f => f.GroupName.Equals(grp.GroupName)).FirstOrDefault();
+                    var res2 = GroupTitleList.Where(f => f.GroupName.Equals("Unassigned")).FirstOrDefault();
                     if (res != null)
+                    {
+                        continue;
+                    }
+                    else if (res2 != null)
                     {
                         continue;
                     }
@@ -574,7 +580,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         GroupTitleList.Add(new GroupList
                         {
                             GroupName = grp.GroupName,
-                            SelectedIndex= GroupTitleList.IndexOf(new GroupList
+                            SelectedIndex = GroupTitleList.IndexOf(new GroupList
                             {
                                 GroupName = grp.GroupName,
                             }),

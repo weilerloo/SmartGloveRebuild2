@@ -14,6 +14,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
     {
         #region Properties
         private readonly IScheduleServices _scheduleServices;
+        private readonly Task Init;
 
         [ObservableProperty]
         DateTime now = DateTime.Now;
@@ -70,7 +71,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         {
             _scheduleServices = scheduleServices;
             DisplayDays();
-            ColorStatus();
+            Init = ColorStatus();
             Title = "Your OT Schedule";
             Items = new ObservableCollection<CalendarModel>();
             SelectedItem = new CalendarModel();
@@ -481,6 +482,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         [RelayCommand]
         public async Task ColorStatus()
         {
+            IsBusy = true;
             TotalHours = 0;
             if (App.UserDetails.GroupName != "Unassigned")
             {
@@ -556,6 +558,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                 await Shell.Current.DisplayAlert("You are Unassigned", "Please get a group to be assigned first.", "OK");
 
             }
+            IsRefreshing = false;
+            IsBusy = false;
         }
 
         #endregion
