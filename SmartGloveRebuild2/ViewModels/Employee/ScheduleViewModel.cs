@@ -497,7 +497,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         GroupName = App.UserDetails.GroupName,
                         ScheduleDate = cm.DayMonthYear,
                     });
-                    if(getEmployeeSchedule != null)
+                    if (getEmployeeSchedule != null)
                     {
                         var convertedstring = getEmployeeSchedule.ScheduleDate.ToString("d/M/yyyy");
                         if (convertedstring == cm.DayMonthYear)
@@ -509,9 +509,15 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     if (response != null)
                     {
                         DateTime sDate = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
-
                         var DayDifferences = (DateTime.Now - sDate.Date).Days;
-                        if (DayDifferences > 7 && response.Count() != 0 && getEmployeeSchedule != null)
+                        var checkIsFull = response.Find(f => f.AvailablePaxs >= f.Paxs);
+
+                        if (getEmployeeSchedule != null && getEmployeeSchedule.IsRejected == true)
+                        {
+                            cm.Color = Color.FromArgb("#FF0000");
+                            cm.IsRejected = true;
+                        }
+                        else if (DayDifferences > 7 && response.Count() != 0 && getEmployeeSchedule != null)
                         {
 
                             cm.Color = Color.FromArgb("#FFA500");
@@ -523,6 +529,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                             cm.Color = Color.FromArgb("#FFA500");
 
                         }
+                        else if (checkIsFull != null)
+                        {
+                            cm.Color = Color.FromArgb("#FF0000");
+                        }
                         else if (DayDifferences < 7 && response.Count() != 0)
                         {
                             foreach (var hour in response)
@@ -532,12 +542,6 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                             cm.Color = Color.FromArgb("#32CD32");
                             cm.IsAvailable = true;
 
-                        }
-                        else if (response.Find(f => f.AvailablePaxs >= f.Paxs == true) != null
-                                && response.Count() == 0)
-                        {
-                            cm.Color = Color.FromArgb("#FF0000");
-                            cm.IsRejected = true;
                         }
                         else
                         {
