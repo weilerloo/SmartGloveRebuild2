@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Models.ClerkDTO;
+using SmartGloveRebuild2.Models.Group;
 using SmartGloveRebuild2.Models.Schedule;
 using SmartGloveRebuild2.Services;
 using SmartGloveRebuild2.Views.Admin;
@@ -20,6 +21,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
         #region Properties
         private readonly IScheduleServices _scheduleServices;
+        private readonly IGroupServices _groupServices;
 
         [ObservableProperty]
         DateTime now = DateTime.Now;
@@ -44,6 +46,20 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [ObservableProperty]
         bool isRefreshing, status = true, isBooked, isAvailable, isRejected;
 
+        [ObservableProperty]
+        int selectedindex;
+
+        private GroupList selectedgroupname;
+        public GroupList SelectedGroupname
+        {
+            get => selectedgroupname;
+            set
+            {
+                selectedgroupname = value;
+                OnPropertyChanged();
+                DisplayGroupMember();
+            }
+        }
 
         public CalendarModel selectedItem;
         public CalendarModel SelectedItem
@@ -64,19 +80,21 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
         #endregion
 
-        #region ObservableCollection  
+        #region ObservableCollection and List
         public ObservableCollection<CalendarModel> CalendarDetails { get; set; } = new ObservableCollection<CalendarModel>();
         public ObservableCollection<CalendarModel> Items { get; set; } = new ObservableCollection<CalendarModel>();
         public ObservableCollection<CalendarModel> Datename { get; set; } = new ObservableCollection<CalendarModel>();
         public ObservableCollection<CalendarModel> Monthname { get; set; } = new ObservableCollection<CalendarModel>();
-
+        public ObservableCollection<GroupList> GroupNameList { get; set; } = new ObservableCollection<GroupList>();
+        public ObservableCollection<GroupList> GroupTitleList { get; set; } = new ObservableCollection<GroupList>();
         #endregion
 
-        public CheckCalendarViewModel(IScheduleServices scheduleServices)
+        public CheckCalendarViewModel(IScheduleServices scheduleServices, IGroupServices groupServices)
         {
             _scheduleServices = scheduleServices;
+            _groupServices = groupServices;
             DisplayDays();
-            ColorStatus();
+            DisplayGroupMember();
             Title = "Check Calendar";
             Items = new ObservableCollection<CalendarModel>();
             SelectedItem = new CalendarModel();
@@ -465,7 +483,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
             IsBusy = true;
-            await ColorStatus();
+            DisplayGroupMember();
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -481,7 +499,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
             IsBusy = true;
-            await ColorStatus();
+            DisplayGroupMember();
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -491,65 +509,63 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         #region Color
 
         [RelayCommand]
-        public async Task ColorStatus()
+        public async void DisplayGroupMember()
         {
-            TotalHours = 0;
-            if (App.UserDetails.GroupName != "Unassigned")
+            if (IsBusy) { return; }
+
+            IsBusy = true;
+            var response = await _groupServices.DisplayGroupFromUsers();
+
+            if (response.Count > 0)
             {
+                foreach (var grp in response)
+                {
+                    var res = GroupTitleList.Where(f => f.GroupName.Equals(grp.GroupName)).FirstOrDefault();
+                    if (res != null)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        GroupTitleList.Add(new GroupList
+                        {
+                            GroupName = grp.GroupName,
+                        });
+                    }
+                }
+                selectedindex = 0;
+            }
+            if (SelectedGroupname != null)
+            {
+                if (GroupNameList.Count > 0)
+                {
+                    GroupNameList.Clear();
+                }
                 foreach (var cm in CalendarDetails)
                 {
-                    var getEmployeeSchedule = await _scheduleServices.GetScheduleByEmployeeNumberandDate(new GetScheduleByEmployeeNumberandDateDTO
+                    var GetSchedulebyGroupandDateresponse = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
                     {
-                        DayMonthYear = cm.DayMonthYear,
-                        EmployeeNumber = App.UserDetails.EmployeeNumber,
-                    });
-
-                    var response = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
-                    {
-                        GroupName = App.UserDetails.GroupName,
+                        GroupName = SelectedGroupname.GroupName,
                         ScheduleDate = cm.DayMonthYear,
                     });
-                    if (getEmployeeSchedule != null)
+
+                    if (GetSchedulebyGroupandDateresponse != null)
                     {
-                        var convertedstring = getEmployeeSchedule.ScheduleDate.ToString("d/M/yyyy");
-                        if (convertedstring == cm.DayMonthYear)
+                        var checkIsFull = GetSchedulebyGroupandDateresponse.Find(f => f.AvailablePaxs >= f.Paxs);
+                        var checkIsNotFull = GetSchedulebyGroupandDateresponse.Find(f => (f.AvailablePaxs / f.Paxs) * 100 >= 80.00);
+                        var checkIsOFF = GetSchedulebyGroupandDateresponse.Find(f => f.Status == false);
+
+                        if (checkIsFull != null)
                         {
-                            TotalHours = getEmployeeSchedule.Hours + TotalHours;
+                            cm.Color = Color.FromArgb("#0000FF");
                         }
-                    }
-
-                    if (response != null)
-                    {
-                        DateTime sDate = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
-
-                        var DayDifferences = (DateTime.Now - sDate.Date).Days;
-                        if (DayDifferences > 7 && response.Count() != 0 && getEmployeeSchedule != null)
+                        else if (checkIsNotFull != null)
                         {
-
-                            cm.Color = Color.FromArgb("#FFA500");
-                            cm.IsBooked = true;
-
+                            cm.Color = Color.FromArgb("#A52A2A");
                         }
-                        else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber == App.UserDetails.EmployeeNumber)
-                        {
-                            cm.Color = Color.FromArgb("#FFA500");
-
-                        }
-                        else if (DayDifferences < 7 && response.Count() != 0)
-                        {
-                            foreach (var hour in response)
-                            {
-                                cm.Hours = hour.Hours;
-                            }
-                            cm.Color = Color.FromArgb("#32CD32");
-                            cm.IsAvailable = true;
-
-                        }
-                        else if (response.Find(f => f.AvailablePaxs >= f.Paxs == true) != null
-                                && response.Count() == 0)
+                        else if (checkIsOFF != null)
                         {
                             cm.Color = Color.FromArgb("#FF0000");
-                            cm.IsRejected = true;
                         }
                         else
                         {
@@ -559,106 +575,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                 }
             }
-            else
-            {
-                await Shell.Current.DisplayAlert("You are Unassigned", "Please get a group to be assigned first.", "OK");
-
-            }
+            IsRefreshing = false;
+            IsBusy = false;
         }
-
         #endregion
-
-
-        [RelayCommand]
-        public void SubmitButtonSelected(CalendarModel selectedItem)
-        {
-            if (selectedItem != null)
-            {
-                foreach (var ccm in CalendarDetails)
-                {
-                    if (ccm.IsSelected == false &&
-                        ccm.DayMonthYear == selectedItem.DayMonthYear &&
-                        ccm.IsAvailable == true)
-                    {
-                        ccm.IsSelected = true;
-                        if (ccm.IsSelected == true)
-                        {
-                            TotalHours = selectedItem.Hours + TotalHours;
-                            ccm.Color = Color.FromArgb("#006400");
-
-                            Items.Add(new CalendarModel
-                            {
-                                DayMonthYear = selectedItem.DayMonthYear,
-                                Day = selectedItem.Day,
-                                Month = selectedItem.Month,
-                                Year = selectedItem.Year,
-                                IsSelected = true,
-                                EmployeeNumber = App.UserDetails.EmployeeName,
-                                GroupName = App.UserDetails.GroupName,
-                            });
-                        }
-                    }
-                }
-
-                //
-            }
-
-        }
-
-
-        [RelayCommand]
-        public async Task DeleteButtonSelected()
-        {
-            foreach (var ccm in CalendarDetails)
-            {
-                if (ccm.IsSelected == true)
-                {
-                    ccm.Color = Color.FromArgb("#32CD32");
-                    ccm.IsSelected = false;
-                }
-            }
-            Items.Clear();
-            CalendarDetails.Clear();
-            Datename.Clear();
-            Monthname.Clear();
-            DisplayDays();
-            await ColorStatus();
-        }
-
-        [RelayCommand]
-        public async Task SubmitRequest()
-        {
-            if (Items.Count != 0)
-            {
-                foreach (var rqt in Items)
-                {
-                    var response = await _scheduleServices.EmployeeAddSchedule(new EmployeeAddScheduleDTO
-                    {
-                        DayMonthYear = rqt.DayMonthYear,
-                        EmployeeNumber = App.UserDetails.EmployeeNumber,
-                        ScheduleDate = DateTime.ParseExact(rqt.DayMonthYear, "d/M/yyyy", null),
-                        GroupName = App.UserDetails.GroupName,
-                        Status = true,
-                    });
-                }
-                foreach (var ccm in CalendarDetails)
-                {
-                    if (ccm.IsSelected == true)
-                    {
-                        ccm.Color = Color.FromArgb("#FFA500");
-                    }
-                }
-                Items.Clear();
-                await ColorStatus();
-                await Shell.Current.DisplayAlert("Schedule Successfully", "Please wait the pending OT result.", "OK");
-                await Shell.Current.GoToAsync("..");
-            }
-            else
-            {
-                await Shell.Current.DisplayAlert("Schedule Unsuccesfull", "Please select the Available Date.", "OK");
-                await Shell.Current.GoToAsync("..");
-            }
-        }
-
     }
 }
