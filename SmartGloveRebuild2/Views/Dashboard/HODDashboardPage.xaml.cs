@@ -17,6 +17,7 @@ public partial class HODDashboardPage : ContentPage
             Payroll.Text = App.UserDetails.Payroll;
             TotalDayOT.Text = App.UserDetails.TotalOTDay.ToString();
             TotalHour.Text = App.UserDetails.TotalHour.ToString();
+            Group.Text = App.UserDetails.GroupName;
         }
     }
     private async void Button_Clicked_1(object sender, EventArgs e)

@@ -30,8 +30,17 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [ObservableProperty]
         bool isRefreshing;
 
-        [ObservableProperty]
-        int selectedindex;
+        private int totalworker;
+        public int TotalWorker
+        {
+            get { return totalworker; }
+            set
+            {
+                totalworker = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         private GroupList selectedgroupname;
         public GroupList SelectedGroupname
@@ -78,7 +87,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         });
                     }
                 }
-                selectedindex= 0;
             }
 
             if (SelectedGroupname != null)
@@ -86,6 +94,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 if (GroupNameList.Count > 0)
                 {
                     GroupNameList.Clear();
+                    TotalWorker = 0;
                 }
 
                 foreach (var grp in response)
@@ -103,6 +112,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                 UserName = grp.UserName,
 
                             });
+
+                            TotalWorker++;
                         }
                     }
                 }

@@ -100,7 +100,7 @@
                                         ValidStyle="{StaticResource ValidEntryStyle}"
                                         Flags="ValidateOnValueChanged"
                                         MinimumValue="0.1"
-                                        MaximumValue="7.0"
+                                        MaximumValue="1000.0"
                                         MaximumDecimalPlaces="2" />
                             </Entry.Behaviors>
                         </Entry>

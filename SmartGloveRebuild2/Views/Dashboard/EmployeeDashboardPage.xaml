@@ -8,8 +8,11 @@
         <Grid BackgroundColor="Transparent">
 
             <VerticalStackLayout Margin="20,0,20,20" Spacing="20">
-                <Image Source="employee.png" HeightRequest="60" WidthRequest="300" Margin="0,50,0,0"/>
-                <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*,*" RowSpacing="10">
+                <Grid ColumnDefinitions="*,*" Margin="0,40,0,20">
+                    <Image Source="admin.png" HeightRequest="60" WidthRequest="300"/>
+                    <Label FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" Grid.Column="1" x:Name="EmployeeName"/>
+                </Grid>
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
                     <Label Grid.Column="0" 
                            Grid.Row="0" 
                            FontSize="16" 
@@ -29,13 +32,13 @@
                            Grid.Row="1" 
                            FontSize="16" 
                            HorizontalOptions="Start" 
-                           VerticalOptions="Center">Employee Name</Label>
+                           VerticalOptions="Center">Groups</Label>
                     <Frame Padding="10"
                            BorderColor="Black"
                            Grid.Row="1"
                            Grid.Column="1">
 
-                        <Label x:Name="EmployeeName" HorizontalOptions="Center"/>
+                        <Label x:Name="Group" HorizontalOptions="Center"/>
 
 
                     </Frame>
@@ -116,7 +119,7 @@
                     <!--Hour-->
 
                 </Grid>
-                <Button x:Name="ScheduleButton" Clicked="ScheduleButton_Clicked" Margin="0,50,0,0" Text="Schedule OT"/>
+                <Button x:Name="ScheduleButton" HeightRequest="50" Clicked="ScheduleButton_Clicked" Margin="0,50,0,0" Text="Schedule OT"/>
                 <Image Source="sglogo.png" 
                        HeightRequest="20" 
                        WidthRequest="300" 

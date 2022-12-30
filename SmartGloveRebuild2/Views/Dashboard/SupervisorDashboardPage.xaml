@@ -8,8 +8,11 @@
         <Grid BackgroundColor="Transparent">
 
             <VerticalStackLayout Margin="20,0,20,20" Spacing="20">
-                <Image Source="admin.png" HeightRequest="60" WidthRequest="300" Margin="0,50,0,0"/>
-                <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*,*" RowSpacing="10">
+                <Grid ColumnDefinitions="*,*" Margin="0,40,0,20">
+                    <Image Source="admin.png" HeightRequest="60" WidthRequest="300"/>
+                    <Label FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" Grid.Column="1" x:Name="EmployeeName"/>
+                </Grid>
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
                     <Label Grid.Column="0" 
                            Grid.Row="0" 
                            FontSize="16" 
@@ -29,13 +32,13 @@
                            Grid.Row="1" 
                            FontSize="16" 
                            HorizontalOptions="Start" 
-                           VerticalOptions="Center">Employee Name</Label>
+                           VerticalOptions="Center">Groups</Label>
                     <Frame Padding="10"
                            BorderColor="Black"
                            Grid.Row="1"
                            Grid.Column="1">
 
-                        <Label x:Name="EmployeeName" HorizontalOptions="Center"/>
+                        <Label x:Name="Group" HorizontalOptions="Center"/>
 
 
                     </Frame>
@@ -116,12 +119,10 @@
                     <!--Hour-->
 
                 </Grid>
-
-                <Grid RowDefinitions="*,*"
-                      WidthRequest="300">
-
-                    <Button HeightRequest="50" Margin="0,20,0,10" Text="Check Calender"/>
-                    <Button HeightRequest="50" Grid.Row="1" Margin="0,20,0,10" Text="Manage Group" Clicked="Button_Clicked_1"/>
+                <Grid RowDefinitions="*,*,*" Margin="10,20,10,0" RowSpacing="10">
+                    <Button HeightRequest="60" Grid.Row="0" Text="Schedule OT" Clicked="Button_Clicked_1"/>
+                    <Button HeightRequest="60" Grid.Row="1" Text="Manage Group" Clicked="Button_Clicked_2"/>
+                    <Button HeightRequest="60" Grid.Row="2" Text="Check Calendar" Clicked="Button_Clicked_3"/>
                 </Grid>
             </VerticalStackLayout>
 

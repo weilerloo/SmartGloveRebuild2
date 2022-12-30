@@ -17,6 +17,7 @@ public partial class EmployeeDashboardPage : ContentPage
             Payroll.Text = App.UserDetails.Payroll;
             TotalDayOT.Text = App.UserDetails.TotalOTDay.ToString();
             TotalHour.Text = App.UserDetails.TotalHour.ToString();
+            Group.Text = App.UserDetails.GroupName;
         }
     }
 

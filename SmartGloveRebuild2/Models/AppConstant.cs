@@ -28,14 +28,14 @@ namespace SmartGloveRebuild2.Models
             if (HODDashboard != null) AppShell.Current.Items.Remove(HODDashboard);
 
             var HRDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(HRDashboardPage)).FirstOrDefault();
-            if (HRDashboardInfo != null) AppShell.Current.Items.Remove(HRDashboardInfo);             
-            
+            if (HRDashboardInfo != null) AppShell.Current.Items.Remove(HRDashboardInfo);
+
             var ClerkDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(ClerkDashboardPage)).FirstOrDefault();
-            if (ClerkDashboardInfo != null) AppShell.Current.Items.Remove(ClerkDashboardInfo);            
-            
+            if (ClerkDashboardInfo != null) AppShell.Current.Items.Remove(ClerkDashboardInfo);
 
 
-            if (App.UserDetails.RoleID == (int)RoleDetails.Employee || App.UserDetails.RoleID == (int)RoleDetails.Technician )
+
+            if (App.UserDetails.RoleID == (int)RoleDetails.Employee || App.UserDetails.RoleID == (int)RoleDetails.Technician)
             {
                 var flyoutItem = new FlyoutItem()
                 {
@@ -110,7 +110,13 @@ namespace SmartGloveRebuild2.Models
                                     Title = "Groups",
                                     ContentTemplate = new DataTemplate(typeof(GroupPage)),
                                 },
-                                
+                                new ShellContent
+                                {
+                                    Icon = Icons.ScheduleOT,
+                                    Title = "Schdedule OT",
+                                    ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
+                                },
+
                    }
                 };
 
@@ -157,6 +163,12 @@ namespace SmartGloveRebuild2.Models
                                     Icon = Icons.CheckCalendar,
                                     Title = "Check Calendar",
                                     ContentTemplate = new DataTemplate(typeof(CheckCalendarPage)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.ScheduleOT,
+                                    Title = "Schdedule OT",
+                                    ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
                                 },
 
                    }

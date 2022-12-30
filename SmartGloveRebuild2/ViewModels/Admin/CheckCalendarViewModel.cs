@@ -46,9 +46,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [ObservableProperty]
         bool isRefreshing, status = true, isBooked, isAvailable, isRejected;
 
-        [ObservableProperty]
-        int selectedindex;
-
         private GroupList selectedgroupname;
         public GroupList SelectedGroupname
         {
@@ -57,7 +54,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             {
                 selectedgroupname = value;
                 OnPropertyChanged();
-                DisplayGroupMember();
+                ColorStatus();
             }
         }
 
@@ -95,6 +92,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             _groupServices = groupServices;
             DisplayDays();
             DisplayGroupMember();
+            ColorStatus();
             Title = "Check Calendar";
             Items = new ObservableCollection<CalendarModel>();
             SelectedItem = new CalendarModel();
@@ -483,7 +481,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
             IsBusy = true;
-            DisplayGroupMember();
+            await ColorStatus();
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -499,7 +497,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
             IsBusy = true;
-            DisplayGroupMember();
+            await ColorStatus();
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -507,34 +505,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         #endregion
 
         #region Color
-
-        [RelayCommand]
-        public async void DisplayGroupMember()
+        public async Task ColorStatus()
         {
-            if (IsBusy) { return; }
-
-            IsBusy = true;
-            var response = await _groupServices.DisplayGroupFromUsers();
-
-            if (response.Count > 0)
-            {
-                foreach (var grp in response)
-                {
-                    var res = GroupTitleList.Where(f => f.GroupName.Equals(grp.GroupName)).FirstOrDefault();
-                    if (res != null)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        GroupTitleList.Add(new GroupList
-                        {
-                            GroupName = grp.GroupName,
-                        });
-                    }
-                }
-                selectedindex = 0;
-            }
             if (SelectedGroupname != null)
             {
                 if (GroupNameList.Count > 0)
@@ -572,6 +544,41 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             cm.Color = Color.FromArgb("#778899");
                             cm.IsAvailable = false;
                         }
+                    }
+                }
+            }
+        }
+        #endregion
+
+
+        #region PickerList
+        [RelayCommand]
+        public async void DisplayGroupMember()
+        {
+            if (IsBusy) { return; }
+
+            IsBusy = true;
+            var response = await _groupServices.DisplayGroupFromUsers();
+
+            if (response.Count > 0)
+            {
+                foreach (var grp in response)
+                {
+                    var res = GroupTitleList.Where(f => f.GroupName.Equals(grp.GroupName)).FirstOrDefault();
+                    if (res != null)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        GroupTitleList.Add(new GroupList
+                        {
+                            GroupName = grp.GroupName,
+                            SelectedIndex= GroupTitleList.IndexOf(new GroupList
+                            {
+                                GroupName = grp.GroupName,
+                            }),
+                        });
                     }
                 }
             }
