@@ -104,12 +104,12 @@
                                         MaximumDecimalPlaces="2" />
                             </Entry.Behaviors>
                         </Entry>
-                        <Button x:Name="statusbutton" FontSize="18" WidthRequest="80" BackgroundColor="{Binding Color}" Text="{Binding OnOff}" HeightRequest="50" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="3"  IsEnabled="{Binding Status, Converter={StaticResource InvertedBoolConverter}}">
+                        <Button x:Name="statusbutton" FontSize="18" WidthRequest="80" Background="{Binding Color}" Text="{Binding OnOff}" HeightRequest="50" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="3"  IsEnabled="{Binding Status, Converter={StaticResource InvertedBoolConverter}}">
                             <Button.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:UpdateSlotsDetailViewModel}},Path=UpdateButtonCommand}" CommandParameter="{Binding .}"/>
                             </Button.GestureRecognizers>
                         </Button>
-                        <Button FontSize="18" WidthRequest="80" BackgroundColor="{Binding Color}" Text="{Binding OnOff}" HeightRequest="50" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="3" IsVisible="{Binding Status}" IsEnabled="{Binding Status}">
+                        <Button FontSize="18" WidthRequest="80" Background="{Binding Color}" Text="{Binding OnOff}" HeightRequest="50" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="3" IsVisible="{Binding Status}" IsEnabled="{Binding Status}">
                             <Button.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:UpdateSlotsDetailViewModel}},Path=UpdateButtonCommand}" CommandParameter="{Binding .}"/>
                             </Button.GestureRecognizers>

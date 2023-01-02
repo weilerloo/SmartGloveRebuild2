@@ -108,7 +108,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             {
                 if (content.Paxs == 0 && content.Hours == 0 && content.Status == true)
                 {
-                    break;
+                    content.Status = false;
+                    content.OnOff = "OFF";
                 }
                 var response = await _scheduleServices.updateScheduleStatusByGroupName(new UpdateScheduleStatusByGroupNameDTO
                 {
