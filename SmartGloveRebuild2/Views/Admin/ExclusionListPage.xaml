@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartGloveRebuild2.Views.Admin.ExclusionListPage"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:model="clr-namespace:SmartGloveRebuild2.Models"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             x:DataType="viewmodel:ExclusionListViewModel"
+             Title="Exclude Staff from List">
+    <Grid RowDefinitions="Auto,*,*">
+        <Label Text="{Binding CalendarModel.DayMonthYear}" />
+        <Label Grid.Row="1" Text="{Binding CalendarModel.GroupName}" />
+    </Grid>
+</ContentPage>

@@ -15,6 +15,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(AdjustSlotsPage), typeof(AdjustSlotsPage));
         Routing.RegisterRoute(nameof(ExclusionDayPage), typeof(ExclusionDayPage));
         Routing.RegisterRoute(nameof(ExclusionMultipleDayPage), typeof(ExclusionMultipleDayPage));
+        Routing.RegisterRoute(nameof(ExclusionListPage), typeof(ExclusionListPage));
         Routing.RegisterRoute(nameof(CreateGroupPage), typeof(CreateGroupPage));
         Routing.RegisterRoute(nameof(GroupPage), typeof(GroupPage));
         Routing.RegisterRoute(nameof(DisplayGroupPage), typeof(DisplayGroupPage));

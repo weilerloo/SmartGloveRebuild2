@@ -4,8 +4,9 @@ namespace SmartGloveRebuild2.Views.Admin;
 
 public partial class ExclusionMultipleDayPage : ContentPage
 {
-    public ExclusionMultipleDayPage()
+    public ExclusionMultipleDayPage(ExclusionMultipleDayViewModel viewModel)
     {
         InitializeComponent();
+        this.BindingContext = viewModel;
     }
 }

@@ -64,6 +64,9 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddTransient<ScheduleOT>();
         builder.Services.AddTransient<AssignGroupPage>();
         builder.Services.AddTransient<CreateGroupPage>();
+        builder.Services.AddTransient<ExclusionDayPage>();
+        builder.Services.AddTransient<ExclusionMultipleDayPage>();
+        builder.Services.AddTransient<ExclusionListPage>();
         builder.Services.AddTransient<GroupPage>();
         builder.Services.AddTransient<RejectedOT>();
         builder.Services.AddTransient<DisplayGroupPage>();
@@ -79,6 +82,10 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddTransient<RejectViewModel>();
         builder.Services.AddSingleton<LoginPageViewModel>();
         builder.Services.AddSingleton<DashboardPageViewModel>();
+        builder.Services.AddSingleton<LoadingPageViewModel>();
+        builder.Services.AddTransient<ExclusionMultipleDayViewModel>();
+        builder.Services.AddTransient<ExclusionDayViewModel>();
+        builder.Services.AddTransient<ExclusionListViewModel>();
         builder.Services.AddSingleton<LoadingPageViewModel>();
         builder.Services.AddTransient<UpdateSlotsDetailViewModel>();
         builder.Services.AddTransient<ScheduleViewModel>();

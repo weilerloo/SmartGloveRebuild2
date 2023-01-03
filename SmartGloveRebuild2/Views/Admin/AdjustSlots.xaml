@@ -5,7 +5,7 @@
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:model="clr-namespace:SmartGloveRebuild2.Models"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
-             x:DataType="viewmodel:CheckCalendarViewModel"
+             x:DataType="viewmodel:AdjustSlotsViewModel"
              Title="Adjust Slots Page">
     <Grid RowDefinitions="*,*">
         <Button Text="Exclusion Staff by Day" VerticalOptions="Center" WidthRequest="200" HeightRequest="100" Clicked="Button_Clicked_1"/>

@@ -8,8 +8,6 @@ public partial class AdjustSlotsPage : ContentPage
     {
         InitializeComponent();
     }
-
-
     private void Button_Clicked_1(object sender, EventArgs e)
     {
         Shell.Current.GoToAsync(nameof(ExclusionDayPage));

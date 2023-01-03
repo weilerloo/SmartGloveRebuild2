@@ -62,6 +62,9 @@
 	  <Compile Update="Views\Admin\AdjustSlots.xaml.cs">
 	    <DependentUpon>AdjustSlots.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\Admin\ExclusionListPage.xaml.cs">
+	    <DependentUpon>ExclusionListPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Admin\ExclusionMultipleDayPage.xaml.cs">
 	    <DependentUpon>ExclusionMultipleDayPage.xaml</DependentUpon>
 	  </Compile>
@@ -91,6 +94,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\Admin\AdjustSlots.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Admin\ExclusionListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Admin\ExclusionMultipleDayPage.xaml">

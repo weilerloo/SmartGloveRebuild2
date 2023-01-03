@@ -2,11 +2,100 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Admin.ExclusionDayPage"
-             Title="ExclusionDayPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .ExclusionDayPage MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:model="clr-namespace:SmartGloveRebuild2.Models"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             x:DataType="viewmodel:ExclusionDayViewModel"
+             Title="{Binding Title}">
+    <Grid RowDefinitions="Auto,*,*">
+        <VerticalStackLayout Grid.Row="0">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="0,0,0,30">
+                <Label Text="Select A Date" FontSize="24" Margin="20,20,0,10" TextColor="Black"/>
+                <HorizontalStackLayout Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Click me to Choose." 
+                            ItemsSource="{Binding GroupTitleList}" 
+                            SelectedItem="{Binding SelectedGroupname}"
+                            ItemDisplayBinding="{Binding GroupName}"/>
+                    <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+                </HorizontalStackLayout>
+                <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="2" Text="-" Margin="2" Command="{Binding DecreaseMonthCommand}"/>
+                <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2" Command="{Binding IncreaseMonthCommand}"/>
+                <CollectionView Grid.Row="3" ItemsSource="{Binding Monthname}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:CalendarModel">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Label Text="{Binding LastCurrentMonth}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center" Margin="20,0,0,0"/>
+                                <Label Grid.Column="1" Text="{Binding Year}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center" Margin="10,0,0,0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+            <CollectionView ItemsSource="{Binding Datename}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="7"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:CalendarModel">
+                        <Grid RowDefinitions="*,Auto, Auto,*">
+                            <Label Grid.Row="1" Text="{Binding Currentday}" HorizontalOptions="Center" FontAttributes="Bold"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+        <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}"
+                                 Command="{Binding DisplayGroupMemberCommand}">
+            <CollectionView x:Name="CalendarDetails" 
+                                        ItemsSource="{Binding CalendarDetails}"
+                                        SelectedItem="{Binding Items}"
+                                        SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="7"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:CalendarModel">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal" />
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="Transparent" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Button Background="{Binding Color}" Padding="0" x:Name="DateButton" HeightRequest="50" Margin="5" Text="{Binding Day}" CornerRadius="10">
+                                <Button.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ExclusionDayViewModel}},Path=ButtonSelectedCommand}" CommandParameter="{Binding .}"/>
+                                </Button.GestureRecognizers>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+        <VerticalStackLayout Grid.Row="2">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,*" Margin="0,30,0,30">
+                <Ellipse 
+                            Stroke="Blue"
+                            StrokeThickness="4"
+                            HeightRequest="10"
+                            WidthRequest="10"
+                            Fill="Blue"
+                            Grid.Column="1"/>
+                <Label Grid.Column="2" Margin="10,0,40,0" Text="Status ON"/>
+                <Ellipse 
+                            Stroke="Red"
+                            StrokeThickness="4"
+                            HeightRequest="10"
+                            WidthRequest="10"
+                            Fill="Red"
+                            Grid.Column="3"/>
+                <Label Grid.Column="4" Margin="10,0,40,0" Text="Status OFF"/>
+            </Grid>
+            <!--<Button Text="Adjust Slots" Command="{Binding AdjustSlotsCommand}" Grid.Row="1" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Margin="0,20,40,80"/>-->
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>

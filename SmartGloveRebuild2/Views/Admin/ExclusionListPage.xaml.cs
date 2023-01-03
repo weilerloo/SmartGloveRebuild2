@@ -2,9 +2,9 @@ using SmartGloveRebuild2.ViewModels.Admin;
 
 namespace SmartGloveRebuild2.Views.Admin;
 
-public partial class ExclusionDayPage : ContentPage
+public partial class ExclusionListPage : ContentPage
 {
-	public ExclusionDayPage(ExclusionDayViewModel viewModel)
+	public ExclusionListPage(ExclusionListViewModel viewModel)
 	{
 		InitializeComponent();
         this.BindingContext = viewModel;
