@@ -30,8 +30,8 @@
         <Frame Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
             <Grid ColumnDefinitions="*,*,*,*">
                 <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="Groups"/>
-                <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="Paxs."/>
-                <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Hours"/>
+                <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Paxs."/>
+                <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="Hours"/>
                 <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="4" Text="Status"/>
             </Grid>
         </Frame>
@@ -79,7 +79,7 @@
                                         ValidStyle="{StaticResource ValidEntryStyle}"
                                         Flags="ValidateOnValueChanged"
                                         MinimumValue="0.1"
-                                        MaximumValue="7.0"
+                                        MaximumValue="1000.0"
                                         MaximumDecimalPlaces="2" />
                             </Entry.Behaviors>
                         </Entry>
@@ -100,7 +100,7 @@
                                         ValidStyle="{StaticResource ValidEntryStyle}"
                                         Flags="ValidateOnValueChanged"
                                         MinimumValue="0.1"
-                                        MaximumValue="1000.0"
+                                        MaximumValue="7.0"
                                         MaximumDecimalPlaces="2" />
                             </Entry.Behaviors>
                         </Entry>

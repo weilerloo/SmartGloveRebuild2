@@ -528,20 +528,20 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     if (GetSchedulebyGroupandDateresponse != null)
                     {
                         var checkIsFull = GetSchedulebyGroupandDateresponse.Find(f => f.AvailablePaxs >= f.Paxs);
-                        var checkIsNotFull = GetSchedulebyGroupandDateresponse.Find(f => (f.AvailablePaxs / f.Paxs) * 100 >= 80.00);
+                        var checkIsNotFull = GetSchedulebyGroupandDateresponse.Find(f => (f.AvailablePaxs / f.Paxs) * 100 <= 80.00);  // not working
                         var checkIsOFF = GetSchedulebyGroupandDateresponse.Find(f => f.Status == false);
 
                         if (checkIsFull != null)
                         {
                             cm.Color = Color.FromArgb("#0000FF");
                         }
-                        else if (checkIsNotFull != null)
-                        {
-                            cm.Color = Color.FromArgb("#A52A2A");
-                        }
                         else if (checkIsOFF != null)
                         {
                             cm.Color = Color.FromArgb("#FF0000");
+                        }
+                        else if (checkIsNotFull != null)
+                        {
+                            cm.Color = Color.FromArgb("#A52A2A");
                         }
                         else
                         {
