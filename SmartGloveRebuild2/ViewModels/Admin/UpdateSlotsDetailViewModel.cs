@@ -106,7 +106,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             foreach (var content in addedGroupSchedule)
             {
-                if (content.Paxs == 0 && content.Hours == 0 && content.Status == true)
+                if ((content.Paxs == 0 || content.Hours == 0) && content.Status == true)
                 {
                     content.Status = false;
                     content.OnOff = "OFF";
