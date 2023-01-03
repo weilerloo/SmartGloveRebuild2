@@ -512,7 +512,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     {
                         DateTime sDate = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
                         var DayDifferences = (DateTime.Now - sDate.Date).Days;
-                        var checkIsFull = response.Find(f => f.AvailablePaxs >= f.Paxs);
+                        var checkIsFull = response.Find(f => f.AvailablePaxs >= f.Paxs && f.Status == true);
 
                         if (getEmployeeSchedule != null && getEmployeeSchedule.IsRejected == true)
                         {
@@ -539,10 +539,19 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         {
                             foreach (var hour in response)
                             {
-                                cm.Hours = hour.Hours;
+                                if(hour.Status == true)
+                                {
+                                    cm.Hours = hour.Hours; 
+                                    cm.Color = Color.FromArgb("#32CD32");
+                                    cm.IsAvailable = true;
+                                }
+                                else
+                                {
+                                    cm.Color = Color.FromArgb("#778899");
+                                    cm.IsAvailable = false;
+                                }
                             }
-                            cm.Color = Color.FromArgb("#32CD32");
-                            cm.IsAvailable = true;
+
 
                         }
                         else
