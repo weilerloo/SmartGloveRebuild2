@@ -68,7 +68,7 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddTransient<RejectedOT>();
         builder.Services.AddTransient<DisplayGroupPage>();
         builder.Services.AddTransient<UpdateSlotsDetails>();
-        builder.Services.AddSingleton<CheckCalendarPage>();
+        builder.Services.AddTransient<CheckCalendarPage>();
         builder.Services.AddTransient<UpdateSlotsPage>();
         builder.Services.AddSingleton<GenerateReportPage>();
         //View Models
@@ -82,7 +82,7 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddSingleton<LoadingPageViewModel>();
         builder.Services.AddTransient<UpdateSlotsDetailViewModel>();
         builder.Services.AddTransient<ScheduleViewModel>();
-        builder.Services.AddSingleton<CheckCalendarViewModel>();
+        builder.Services.AddTransient<CheckCalendarViewModel>();
         builder.Services.AddTransient<UpdateSlotsViewModel>();
         return builder.Build();
     }
