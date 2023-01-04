@@ -79,6 +79,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         #endregion
 
         #region ObservableCollection and List
+        public static ObservableCollection<GroupList> RejectList { get; set; } = new ObservableCollection<GroupList>();
         public ObservableCollection<CalendarModel> CalendarDetails { get; set; } = new ObservableCollection<CalendarModel>();
         public ObservableCollection<CalendarModel> Items { get; set; } = new ObservableCollection<CalendarModel>();
         public ObservableCollection<CalendarModel> Datename { get; set; } = new ObservableCollection<CalendarModel>();
@@ -106,12 +107,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         private async void CheckCalendar()
         {
             await Shell.Current.GoToAsync(nameof(CheckCalendarPage));
-        }
-
-        [RelayCommand]
-        private async void AdjustSlots()
-        {
-            await Shell.Current.GoToAsync(nameof(AdjustSlotsPage));
         }
         #endregion
 
@@ -536,18 +531,25 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                             if (checkIsFull != null)
                             {
+                                cm.IsAvailable = true;
                                 cm.Color = Color.FromArgb("#0000FF");
+                                cm.GroupName = selectedgroupname.GroupName;
                             }
                             else if (checkIsOFF != null)
                             {
                                 cm.Color = Color.FromArgb("#FF0000");
+                                cm.GroupName = selectedgroupname.GroupName;
                             }
                             else if (checkIsNotFull != null)
                             {
+                                cm.IsAvailable = true;
                                 cm.Color = Color.FromArgb("#A52A2A");
+                                cm.GroupName = selectedgroupname.GroupName;
                             }
                             else
                             {
+                                cm.IsSelected = true;
+                                cm.GroupName = selectedgroupname.GroupName;
                                 cm.Color = Color.FromArgb("#778899");
                                 cm.IsAvailable = false;
                             }
@@ -604,5 +606,55 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = false;
         }
         #endregion
+
+        #region SelectADate
+
+        [RelayCommand]
+        public async Task ButtonSelected(CalendarModel selectedItem)
+        {
+            if (IsBusy) { return; }
+
+            IsBusy = true;
+            if (selectedItem == null || selectedItem.IsSelected == true)
+            {
+                IsBusy = false;
+                await Shell.Current.DisplayAlert("Messages", "Please choose the Colored Days to Exclude.", "OK");
+                return;
+            }
+            else if (selectedItem.Color == null)
+            {
+                IsBusy = false;
+                await Shell.Current.DisplayAlert("Messages", "Please choose the Groups First.", "OK");
+                return;
+            }
+
+            var getUsersname = await _scheduleServices.GetScheduleLogsByGroupandDate(new GetSchedulebyGroupandDateDTO
+            {
+                GroupName = selectedItem.GroupName,
+                ScheduleDate = selectedItem.DayMonthYear,
+            });
+
+            if (getUsersname != null)
+            {
+                foreach (var i in getUsersname)
+                {
+                    RejectList.Add(new GroupList
+                    {
+                        UserName = i.EmployeeNumber,
+                        GroupName = i.GroupName,
+                    });
+                }
+            }
+
+            await Shell.Current.GoToAsync(nameof(ExclusionListPage), true, new Dictionary<string, object>
+            {
+            {"CalendarModel", selectedItem
     }
+});
+            IsBusy = false;
+        }
+
+    }
+    #endregion
 }
+

@@ -204,5 +204,25 @@ namespace SmartGloveRebuild2.Services
                 }
             }
         }
+
+        public async Task<List<ScheduleLogResponses>> GetScheduleLogsByGroupandDate(GetSchedulebyGroupandDateDTO getSchedulebyGroupandDateDTO)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
+                string getScheduleLogsbyGroupandDateDTOStr = JsonConvert.SerializeObject(getSchedulebyGroupandDateDTO);
+                var response = await client.GetAsync($"http://172.16.12.149:7006/api/Schedule/GetScheduleLogsbyGroupandDate?GruopName={getSchedulebyGroupandDateDTO.GroupName}&ScheduleDate={getSchedulebyGroupandDateDTO.ScheduleDate}");
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<List<ScheduleLogResponses>>(json);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

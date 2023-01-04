@@ -20,8 +20,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
     public partial class ExclusionListViewModel : BaseViewModel
     {
         #region ObservableCollections
-        public ObservableCollection<GroupScheduleModel> addedGroupSchedule { get; set; } = new ObservableCollection<GroupScheduleModel>();
-        public ObservableCollection<GroupScheduleModel> Items { get; set; } = new ObservableCollection<GroupScheduleModel>();
+        public ObservableCollection<GroupList> FetchedRejectList { get; set; } = new ObservableCollection<GroupList>();
         #endregion
 
 
@@ -45,52 +44,25 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public ExclusionListViewModel(IScheduleServices scheduleServices)
         {
             _scheduleServices = scheduleServices;
-            //foreach (var groups in UpdateSlotsViewModel.GroupSchedule)
-            //{
-            //    if (groups.GroupName == "Unassigned")
-            //    {
-            //        continue;
-            //    }
-            //    else
-            //    {
-            //        Color color;
-            //        string statonoff;
-            //        if (groups.Status == true)
-            //        {
-            //            color = Color.FromArgb("#7CFC00");
-            //            statonoff = "ON";
-            //        }
-            //        else
-            //        {
-            //            color = Color.FromArgb("#FF0000");
-            //            statonoff = "OFF";
-            //        }
+            foreach (var groups in CheckCalendarViewModel.RejectList)
+            {
 
-            //        addedGroupSchedule.Add(new GroupScheduleModel
-            //        {
-            //            GroupName = groups.GroupName,
-            //            Hours = groups.Hours,
-            //            Paxs = groups.Paxs,
-            //            Status = groups.Status,
-            //            DayMonthYear = groups.DayMonthYear,
-            //            Color = color,
-            //            OnOff = statonoff,
-            //        });
-            //        daymonthyear = groups.DayMonthYear;
-            //    }
-            //    Items = new ObservableCollection<GroupScheduleModel>();
-            //    SelectedItem = new GroupScheduleModel();
-
-            //}
+                FetchedRejectList.Add(new GroupList
+                {
+                    GroupName = groups.GroupName,
+                    UserName = groups.EmployeeName,
+                });
+            }
 
         }
 
-        [ObservableProperty]
-        CalendarModel calendarModel;
 
-        [ObservableProperty]
-        bool isRefreshing;
+    [ObservableProperty]
+    CalendarModel calendarModel;
 
+    [ObservableProperty]
+    bool isRefreshing;
 
     }
+
 }
