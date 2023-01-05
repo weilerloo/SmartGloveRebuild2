@@ -615,6 +615,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             if (IsBusy) { return; }
 
             IsBusy = true;
+            if(RejectList != null)
+            {
+                RejectList.Clear();
+            }
+
+
             if (selectedItem == null || selectedItem.IsSelected == true)
             {
                 IsBusy = false;
@@ -634,16 +640,31 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 ScheduleDate = selectedItem.DayMonthYear,
             });
 
-            if (getUsersname != null)
+            var getEmployeeName = await _groupServices.DisplayGroupFromUsers();
+
+            if (getUsersname != null && getEmployeeName != null)
             {
+
                 foreach (var i in getUsersname)
                 {
-                    RejectList.Add(new GroupList
+                    foreach (var o in getEmployeeName)
                     {
-                        UserName = i.EmployeeNumber,
-                        GroupName = i.GroupName,
-                    });
+                        if (o.UserName == i.EmployeeNumber)
+                        {
+                            RejectList.Add(new GroupList
+                            {
+                                UserName = i.EmployeeNumber,
+                                EmployeeName = o.EmployeeName,
+                                GroupName = i.GroupName,
+                            });
+                        }
+                    }
                 }
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Messages", "Group Schedule not found with date.", "OK");
+                IsBusy = false;
             }
 
             await Shell.Current.GoToAsync(nameof(ExclusionListPage), true, new Dictionary<string, object>

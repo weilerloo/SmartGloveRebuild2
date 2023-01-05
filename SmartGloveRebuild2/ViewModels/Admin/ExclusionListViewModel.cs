@@ -21,11 +21,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
     {
         #region ObservableCollections
         public ObservableCollection<GroupList> FetchedRejectList { get; set; } = new ObservableCollection<GroupList>();
+        public ObservableCollection<GroupList> Items { get; set; } = new ObservableCollection<GroupList>();
+        public static ObservableCollection<GroupList> ReasonRejectList { get; set; } = new ObservableCollection<GroupList>();
         #endregion
 
 
-        private CalendarModel selectedItem;
-        public CalendarModel SelectedItem
+        private GroupList selectedItem;
+        public GroupList SelectedItem
         {
             get
             {
@@ -46,22 +48,50 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             _scheduleServices = scheduleServices;
             foreach (var groups in CheckCalendarViewModel.RejectList)
             {
-
                 FetchedRejectList.Add(new GroupList
                 {
+                    EmployeeName = groups.EmployeeName,
+                    UserName = groups.UserName,
                     GroupName = groups.GroupName,
-                    UserName = groups.EmployeeName,
                 });
             }
 
+            Items = new ObservableCollection<GroupList>();
+            SelectedItem = new GroupList();
         }
 
 
-    [ObservableProperty]
-    CalendarModel calendarModel;
+        [ObservableProperty]
+        CalendarModel calendarModel;
 
-    [ObservableProperty]
-    bool isRefreshing;
+        [ObservableProperty]
+        bool isRefreshing;
+
+        [RelayCommand]
+        public void RejectEmployee(GroupList selectedItem)
+        {
+            if (selectedItem == null)
+            {
+                return;
+            }
+
+            foreach (var item in FetchedRejectList)
+            {
+                if (selectedItem.EmployeeName == item.EmployeeName)
+                {
+                    CheckCalendarViewModel.RejectList.Remove(item);
+                    FetchedRejectList.Remove(item);
+                    ReasonRejectList.Add(item);                
+                    break;
+                }
+            }
+        }
+
+        [RelayCommand]
+        public async Task NextReasonRejectList()
+        {
+            await Shell.Current.GoToAsync(nameof(NextReasonRejectListPage));
+        }
 
     }
 

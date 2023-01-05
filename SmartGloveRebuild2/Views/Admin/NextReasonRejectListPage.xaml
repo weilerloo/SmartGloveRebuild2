@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartGloveRebuild2.Views.Admin.NextReasonRejectListPage"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:model="clr-namespace:SmartGloveRebuild2.Models.Group"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             x:DataType="viewmodel:NextReasonRejectListViewModel"
+             Title="Exclude Staff from List Detail">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,*,Auto">
+            <Grid RowDefinitions="Auto,Auto" Grid.Row="0" >
+                <Grid Grid.Row="0" Margin="20,20,0,20"  ColumnDefinitions="Auto,Auto,Auto">
+                    <Label FontSize="24" Grid.Column="0" Text="Exclude Reason" TextColor="Black"/>
+                </Grid>
+                <Label IsVisible="{Binding Cansee}" Margin="20,0,0,20" FontSize="21" Grid.Row="1" Text="Please confirm the list." TextColor="Black"/>
+                <Label IsVisible="{Binding Cansee, Converter={StaticResource InvertedBoolConverter}}" Margin="20,0,0,20" FontSize="21" Grid.Row="1" Text="Please enter the reason." TextColor="Black"/>
+            </Grid>
+            <Label IsVisible="{Binding Cansee}" Margin="20,0,0,20" FontSize="21" HorizontalOptions="Center" FontAttributes="Bold" Grid.Row="1" Text="List of Exclude Worker" TextColor="Black"/>
+            <Frame IsVisible="{Binding Cansee}" Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
+                <Grid ColumnDefinitions="*,*">
+                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="Employee Number"/>
+                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Employee Name"/>
+                </Grid>
+            </Frame>
+            <CollectionView ItemsSource="{Binding FetchedRejectList}" 
+                            Grid.Row="2" IsVisible="{Binding Cansee}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:GroupList">
+                        <Grid ColumnDefinitions="*,*,*">
+                            <Label HorizontalOptions="Center" Text="{Binding UserName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
+                            <Label HorizontalOptions="Center" Grid.Column="1" Text="{Binding EmployeeName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
+                            <Button Text="Revert" HeightRequest="50" WidthRequest="200" Background="Green">
+                                <Button.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:NextReasonRejectListViewModel}},Path=RevertEmployeeCommand}" CommandParameter="{Binding Path=.}" />
+                                </Button.GestureRecognizers>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Entry Margin="5" MaxLength="50" Grid.Row="2" IsVisible="{Binding Cansee ,Converter={StaticResource InvertedBoolConverter}}" Placeholder="Enter yout reason here..." Text="{Binding Reason}"/>
+            <Button Grid.Row="3" Text="Next" WidthRequest="200" HeightRequest="50" IsVisible="{Binding Cansee}" Command="{Binding NextIsPressedCommand}"/>
+            <Grid Grid.Row="3" ColumnDefinitions="*,*">
+                <Button Grid.Column="0" Text="Back" WidthRequest="200" HeightRequest="50" HorizontalOptions="Center" IsVisible="{Binding Cansee ,Converter={StaticResource InvertedBoolConverter}}" Command="{Binding BackIsPressedCommand}"/>
+                <Button Grid.Column="1" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Text="Confirm" IsVisible="{Binding Cansee,Converter={StaticResource InvertedBoolConverter}}" Command="{Binding RemoveFromListCommand}"/>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</ContentPage>

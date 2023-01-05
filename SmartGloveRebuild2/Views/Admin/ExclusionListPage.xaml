@@ -3,12 +3,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Admin.ExclusionListPage"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
-             xmlns:model="clr-namespace:SmartGloveRebuild2.Models"
+             xmlns:model="clr-namespace:SmartGloveRebuild2.Models.Group"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewmodel:ExclusionListViewModel"
              Title="Exclude Staff from List">
-    <Grid RowDefinitions="Auto,*,*">
-        <Label Text="{Binding CalendarModel.DayMonthYear}" />
-        <Label Grid.Row="1" Text="{Binding CalendarModel.GroupName}" />
-    </Grid>
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,*,Auto">
+            <Grid RowDefinitions="Auto,Auto" Grid.Row="0" >
+                <Grid Grid.Row="0" Margin="20,20,0,20"  ColumnDefinitions="Auto,Auto,Auto">
+                    <Label FontSize="24" Grid.Column="0" Text="Groups for" TextColor="Black"/>
+                    <Label FontAttributes="Bold" FontSize="24" Margin="10,0,0,0" Grid.Column="1" Text="{Binding CalendarModel.DayMonthYear}" TextColor="Black"/>
+                    <Label FontAttributes="Bold" FontSize="24" Margin="10,0,0,0" Grid.Column="2" Text="{Binding CalendarModel.GroupName}" TextColor="Black"/>
+                </Grid>
+                <Label Margin="20,0,0,20" FontSize="21" Grid.Row="1" Text="Please Click the 'X' to Exclude Schedule." TextColor="Black"/>
+            </Grid>
+            <Frame Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
+                <Grid ColumnDefinitions="*,*,*">
+                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="Employee Number"/>
+                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Employee Name"/>
+                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="Remove"/>
+                </Grid>
+            </Frame>
+            <CollectionView ItemsSource="{Binding FetchedRejectList}" 
+                            Grid.Row="2"
+                            SelectedItem="{Binding Items}"
+                            SelectionMode="Multiple">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:GroupList">
+                        <Grid ColumnDefinitions="*,*,*" Margin="5,0,0,0">
+                            <Label HorizontalOptions="Center" Text="{Binding UserName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
+                            <Label HorizontalOptions="Center" Grid.Column="1" Text="{Binding EmployeeName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
+                            <Button HorizontalOptions="Center" Grid.Column="2" Text="Remove" WidthRequest="50" HeightRequest="50">
+                                <Button.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ExclusionListViewModel}},Path=RejectEmployeeCommand}" CommandParameter="{Binding Path=.}" />
+                                </Button.GestureRecognizers>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button WidthRequest="200" HeightRequest="50" Grid.Row="3" Text="Next" Command="{Binding NextReasonRejectListCommand}" /> 
+        </Grid>
+    </ScrollView>
 </ContentPage>

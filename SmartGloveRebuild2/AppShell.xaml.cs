@@ -13,6 +13,7 @@ public partial class AppShell : Shell
         this.BindingContext = new AppShellViewModel();
         Routing.RegisterRoute(nameof(AssignGroupPage), typeof(AssignGroupPage));
         Routing.RegisterRoute(nameof(ExclusionListPage), typeof(ExclusionListPage));
+        Routing.RegisterRoute(nameof(NextReasonRejectListPage), typeof(NextReasonRejectListPage));
         Routing.RegisterRoute(nameof(CreateGroupPage), typeof(CreateGroupPage));
         Routing.RegisterRoute(nameof(GroupPage), typeof(GroupPage));
         Routing.RegisterRoute(nameof(DisplayGroupPage), typeof(DisplayGroupPage));

@@ -211,7 +211,7 @@ namespace SmartGloveRebuild2.Services
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string getScheduleLogsbyGroupandDateDTOStr = JsonConvert.SerializeObject(getSchedulebyGroupandDateDTO);
-                var response = await client.GetAsync($"http://172.16.12.149:7006/api/Schedule/GetScheduleLogsbyGroupandDate?GruopName={getSchedulebyGroupandDateDTO.GroupName}&ScheduleDate={getSchedulebyGroupandDateDTO.ScheduleDate}");
+                var response = await client.GetAsync($"http://172.16.12.149:7006/api/Schedule/GetScheduleLogbyGroupandDate?GruopName={getSchedulebyGroupandDateDTO.GroupName}&ScheduleDate={getSchedulebyGroupandDateDTO.ScheduleDate}");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
