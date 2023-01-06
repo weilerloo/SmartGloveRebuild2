@@ -14,11 +14,14 @@
                 <CollectionView Grid.Row="1" 
                             ItemsSource="{Binding Monthname}">
                     <CollectionView.EmptyView>
-                        <Label Text="No Logs Found"
-                           HorizontalOptions="FillAndExpand"
-                           HorizontalTextAlignment="Center"
-                           VerticalOptions="FillAndExpand"
-                           VerticalTextAlignment="Center" />
+                        <Grid WidthRequest="300" HeightRequest="150">
+                            <Label Text="No Logs Found"
+                                   Margin="5"
+                                   HorizontalOptions="FillAndExpand"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="FillAndExpand"
+                                   VerticalTextAlignment="Center" />
+                        </Grid>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:CalendarModel">
@@ -43,11 +46,14 @@
         <RefreshView Grid.Row="1">
             <CollectionView ItemsSource="{Binding RejectedList}">
                 <CollectionView.EmptyView>
-                    <Label Text="No Logs Found"
+                    <Grid WidthRequest="300" HeightRequest="150">
+                        <Label Text="No Logs Found"
+                               Margin="5"
                            HorizontalOptions="FillAndExpand"
                            HorizontalTextAlignment="Center"
                            VerticalOptions="FillAndExpand"
                            VerticalTextAlignment="Center" />
+                    </Grid>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"/>

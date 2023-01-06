@@ -116,6 +116,12 @@ namespace SmartGloveRebuild2.Models
                                     Title = "Schdedule OT",
                                     ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
                                 },
+                                new ShellContent
+                                {
+                                    Icon = Icons.RejectedOT,
+                                    Title = "Rejected OT",
+                                    ContentTemplate = new DataTemplate(typeof(RejectedOT)),
+                                },
 
                    }
                 };
@@ -169,6 +175,12 @@ namespace SmartGloveRebuild2.Models
                                     Icon = Icons.ScheduleOT,
                                     Title = "Schdedule OT",
                                     ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
+                                },                                
+                                new ShellContent
+                                {
+                                    Icon = Icons.RejectedOT,
+                                    Title = "Rejected OT",
+                                    ContentTemplate = new DataTemplate(typeof(RejectedOT)),
                                 },
 
                    }
@@ -217,6 +229,18 @@ namespace SmartGloveRebuild2.Models
                                     Icon = Icons.Groups,
                                     Title = "HOD Groups",
                                     ContentTemplate = new DataTemplate(typeof(DisplayGroupPage)),
+                                },                                
+                                new ShellContent
+                                {
+                                    Icon = Icons.ScheduleOT,
+                                    Title = "Schdedule OT",
+                                    ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.RejectedOT,
+                                    Title = "Rejected OT",
+                                    ContentTemplate = new DataTemplate(typeof(RejectedOT)),
                                 },
 
                    }
@@ -259,6 +283,19 @@ namespace SmartGloveRebuild2.Models
                                     Icon = Icons.GenerateReport,
                                     Title = "Generate Report",
                                     ContentTemplate = new DataTemplate(typeof(GenerateReportPage)),
+                                },
+                                                                
+                                new ShellContent
+                                {
+                                    Icon = Icons.ScheduleOT,
+                                    Title = "Schdedule OT",
+                                    ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.RejectedOT,
+                                    Title = "Rejected OT",
+                                    ContentTemplate = new DataTemplate(typeof(RejectedOT)),
                                 },
                    }
                 };

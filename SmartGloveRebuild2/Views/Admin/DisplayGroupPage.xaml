@@ -33,11 +33,14 @@
                 </Frame>
                 <CollectionView ItemsSource="{Binding GroupNameList}">
                     <CollectionView.EmptyView>
-                        <Label Text="No Groups Found"
-                           HorizontalOptions="FillAndExpand"
-                           HorizontalTextAlignment="Center"
-                           VerticalOptions="FillAndExpand"
-                           VerticalTextAlignment="Center" />
+                        <Grid WidthRequest="300" HeightRequest="150">
+                            <Label Text="No Logs Found"
+                                   Margin="5"
+                                   HorizontalOptions="FillAndExpand"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="FillAndExpand"
+                                   VerticalTextAlignment="Center" />
+                        </Grid>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:GroupList">
@@ -53,7 +56,7 @@
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
-        <Button Grid.Row="1" Margin="0,0,0,30" WidthRequest="200" HeightRequest="50" Text="Edit Group" Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:DisplayGroupViewModel}},Path=EditGroupCommand}"/>
-
+        <Button x:Name="EditButton" Grid.Row="1" Margin="0,0,0,30" WidthRequest="200" HeightRequest="50" Text="Edit Group" 
+                Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:DisplayGroupViewModel}},Path=EditGroupCommand}"/>
     </Grid>
 </ContentPage>

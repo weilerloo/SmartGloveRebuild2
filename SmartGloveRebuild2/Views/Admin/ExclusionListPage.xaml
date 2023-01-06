@@ -4,9 +4,15 @@
              x:Class="SmartGloveRebuild2.Views.Admin.ExclusionListPage"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:model="clr-namespace:SmartGloveRebuild2.Models.Group"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewmodel:ExclusionListViewModel"
              Title="Exclude Staff from List">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <Grid RowDefinitions="Auto,Auto,*,Auto">
             <Grid RowDefinitions="Auto,Auto" Grid.Row="0" >
@@ -26,23 +32,68 @@
             </Frame>
             <CollectionView ItemsSource="{Binding FetchedRejectList}" 
                             Grid.Row="2"
+                            IsVisible="{Binding Cansee ,Converter={StaticResource InvertedBoolConverter}}"
                             SelectedItem="{Binding Items}"
                             SelectionMode="Multiple">
+                <CollectionView.EmptyView>
+                    <Grid WidthRequest="300" HeightRequest="150">
+                        <Label Text="No Logs Found"
+                               Margin="5"
+                           HorizontalOptions="FillAndExpand"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" />
+                    </Grid>
+                </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:GroupList">
                         <Grid ColumnDefinitions="*,*,*" Margin="5,0,0,0">
-                            <Label HorizontalOptions="Center" Text="{Binding UserName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
-                            <Label HorizontalOptions="Center" Grid.Column="1" Text="{Binding EmployeeName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
-                            <Button HorizontalOptions="Center" Grid.Column="2" Text="Remove" WidthRequest="50" HeightRequest="50">
-                                <Button.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ExclusionListViewModel}},Path=RejectEmployeeCommand}" CommandParameter="{Binding Path=.}" />
-                                </Button.GestureRecognizers>
-                            </Button>
+                            <Label FontAutoScalingEnabled="True" HorizontalOptions="Center" Text="{Binding UserName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
+                            <Label FontAutoScalingEnabled="True" HorizontalOptions="Center" Grid.Column="1" Text="{Binding EmployeeName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
+                            <Image HorizontalOptions="Center" Grid.Column="2" Source="remove.png" WidthRequest="50" Aspect="AspectFit" HeightRequest="50">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ExclusionListViewModel}},Path=AddIntoRejectEmployeeCommand}" CommandParameter="{Binding Path=.}" />
+                                </Image.GestureRecognizers>
+                            </Image>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button WidthRequest="200" HeightRequest="50" Grid.Row="3" Text="Next" Command="{Binding NextReasonRejectListCommand}" /> 
+            <CollectionView ItemsSource="{Binding BeforeReasonRejectList}" 
+                            Grid.Row="2"
+                            IsVisible="{Binding Cansee}"
+                            SelectedItem="{Binding Items}"
+                            SelectionMode="Multiple">
+                <CollectionView.EmptyView>
+                    <Grid WidthRequest="300" HeightRequest="150">
+                        <Label Text="No Logs Found"
+                               Margin="5"
+                           HorizontalOptions="FillAndExpand"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" />
+                    </Grid>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:GroupList">
+                        <Grid ColumnDefinitions="*,*,*" Margin="5,0,0,0">
+                            <Label FontAutoScalingEnabled="True" HorizontalOptions="Center" Text="{Binding UserName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
+                            <Label FontAutoScalingEnabled="True" HorizontalOptions="Center" Grid.Column="1" Text="{Binding EmployeeName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
+                            <Image HorizontalOptions="Center" Grid.Column="2" Source="remove.png" WidthRequest="50" Aspect="AspectFit" HeightRequest="50">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ExclusionListViewModel}},Path=DeleteFromRejectEmployeeCommand}" CommandParameter="{Binding Path=.}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Grid Grid.Row="3" Padding="10" ColumnDefinitions="*,*,*,*" HeightRequest="70">
+                <Button Grid.Column="0" Text="Not Excluded" Command="{Binding NextIsPressedCommand}" />
+                <Button Grid.Column="1" Text="Excluded" Command="{Binding BackIsPressedCommand}" />
+                <Button Background="Red" Grid.Column="2" Text="Reject All" Command="{Binding RejectAllEmployeeCommand}" />
+                <Button Grid.Column="3" Text="Confirm" Command="{Binding NextReasonRejectListCommand}" />
+            </Grid>
         </Grid>
     </ScrollView>
 </ContentPage>

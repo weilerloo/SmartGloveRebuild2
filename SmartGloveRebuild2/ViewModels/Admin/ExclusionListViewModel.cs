@@ -21,8 +21,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
     {
         #region ObservableCollections
         public ObservableCollection<GroupList> FetchedRejectList { get; set; } = new ObservableCollection<GroupList>();
-        public ObservableCollection<GroupList> Items { get; set; } = new ObservableCollection<GroupList>();
+        public ObservableCollection<GroupList> BeforeReasonRejectList { get; set; } = new ObservableCollection<GroupList>();
         public static ObservableCollection<GroupList> ReasonRejectList { get; set; } = new ObservableCollection<GroupList>();
+        public ObservableCollection<GroupList> Items { get; set; } = new ObservableCollection<GroupList>();
         #endregion
 
 
@@ -42,24 +43,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             }
         }
 
-        private readonly IScheduleServices _scheduleServices;
-        public ExclusionListViewModel(IScheduleServices scheduleServices)
+        private bool cansee;
+        public bool Cansee
         {
-            _scheduleServices = scheduleServices;
-            foreach (var groups in CheckCalendarViewModel.RejectList)
-            {
-                FetchedRejectList.Add(new GroupList
-                {
-                    EmployeeName = groups.EmployeeName,
-                    UserName = groups.UserName,
-                    GroupName = groups.GroupName,
-                });
-            }
-
-            Items = new ObservableCollection<GroupList>();
-            SelectedItem = new GroupList();
+            get => cansee;
+            set => SetProperty(ref cansee, value);
         }
-
 
         [ObservableProperty]
         CalendarModel calendarModel;
@@ -67,8 +56,39 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [ObservableProperty]
         bool isRefreshing;
 
+        private readonly IScheduleServices _scheduleServices;
+        public ExclusionListViewModel(IScheduleServices scheduleServices)
+        {
+            _scheduleServices = scheduleServices;
+            if (ReasonRejectList != null)
+            {
+                ReasonRejectList.Clear();
+            }
+            foreach (var groups in CheckCalendarViewModel.RejectList)
+            {
+                if (groups.IsRejected == true)
+                {
+                    continue;
+                }
+                else
+                {
+                    FetchedRejectList.Add(new GroupList
+                    {
+                        DayMonthYear = groups.DayMonthYear,
+                        EmployeeName = groups.EmployeeName,
+                        UserName = groups.UserName,
+                        GroupName = groups.GroupName,
+                    });
+                }
+            }
+
+            Items = new ObservableCollection<GroupList>();
+            SelectedItem = new GroupList();
+        }
+
+
         [RelayCommand]
-        public void RejectEmployee(GroupList selectedItem)
+        public void AddIntoRejectEmployee(GroupList selectedItem)
         {
             if (selectedItem == null)
             {
@@ -79,20 +99,78 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             {
                 if (selectedItem.EmployeeName == item.EmployeeName)
                 {
-                    CheckCalendarViewModel.RejectList.Remove(item);
                     FetchedRejectList.Remove(item);
-                    ReasonRejectList.Add(item);                
+                    ReasonRejectList.Add(item);
+                    BeforeReasonRejectList.Add(item);
                     break;
                 }
             }
         }
 
         [RelayCommand]
-        public async Task NextReasonRejectList()
+        public void DeleteFromRejectEmployee(GroupList selectedItem)
         {
-            await Shell.Current.GoToAsync(nameof(NextReasonRejectListPage));
+            if (selectedItem == null)
+            {
+                return;
+            }
+
+            foreach (var item in BeforeReasonRejectList)
+            {
+                if (selectedItem.EmployeeName == item.EmployeeName)
+                {
+                    FetchedRejectList.Add(item);
+                    ReasonRejectList.Remove(item);
+                    BeforeReasonRejectList.Remove(item);
+                    break;
+                }
+            }
         }
 
+        [RelayCommand]
+        public void RejectAllEmployee(GroupList selectedItem)
+        {
+            if (FetchedRejectList.Count() > 0)
+            {
+                foreach (var item in FetchedRejectList.ToList())
+                {
+                    FetchedRejectList.Remove(item);
+                    ReasonRejectList.Add(item);
+                    BeforeReasonRejectList.Add(item);
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+
+        [RelayCommand]
+        public async Task NextReasonRejectList()
+        {
+            if (BeforeReasonRejectList.Count <= 0)
+            {
+                await Shell.Current.DisplayAlert("Messages", "No Reject Employee are found.", "OK");
+                await Shell.Current.GoToAsync("../../..");
+            }
+            else
+            {
+                await Shell.Current.GoToAsync(nameof(NextReasonRejectListPage));
+            }
+        }
+
+        [RelayCommand]
+        public void NextIsPressed()
+        {
+            Cansee = false;
+        }
+
+        [RelayCommand]
+        public void BackIsPressed()
+        {
+            Cansee = true;
+        }
     }
 
 }

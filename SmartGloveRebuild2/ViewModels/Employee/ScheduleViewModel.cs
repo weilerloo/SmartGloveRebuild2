@@ -539,9 +539,9 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         {
                             foreach (var hour in response)
                             {
-                                if(hour.Status == true)
+                                if (hour.Status == true)
                                 {
-                                    cm.Hours = hour.Hours; 
+                                    cm.Hours = hour.Hours;
                                     cm.Color = Color.FromArgb("#32CD32");
                                     cm.IsAvailable = true;
                                 }
@@ -577,7 +577,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         [RelayCommand]
         public void SubmitButtonSelected(CalendarModel selectedItem)
         {
-            if (selectedItem != null)
+            if (selectedItem != null && TotalHours <= 104)
             {
                 foreach (var ccm in CalendarDetails)
                 {
@@ -604,10 +604,11 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         }
                     }
                 }
-
-                //
             }
-
+            else
+            {
+                Shell.Current.DisplayAlert("Alert", "You have exceed the limits of OT. Current actions is disabled.", "OK");
+            }
         }
 
 

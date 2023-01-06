@@ -119,12 +119,10 @@
                     <!--Hour-->
 
                 </Grid>
-                <Grid RowDefinitions="*,*,*,*" Margin="10,20,10,0" RowSpacing="10">
-
+                <Grid RowDefinitions="*,*,*" Margin="10,20,10,0" RowSpacing="10">
                     <Button HeightRequest="60" Grid.Row="0" Text="Update Slots" Clicked="Button_Clicked_1"/>
-                    <Button HeightRequest="60" Grid.Row="1" Text="Check Calender" Clicked="Button_Clicked_2"/>
+                    <Button HeightRequest="60" Grid.Row="1" Text="Display Group" Clicked="Button_Clicked_2"/>
                     <Button HeightRequest="60" Grid.Row="2" Text="Schedule OT" Clicked="Button_Clicked_3"/>
-                    <Button HeightRequest="60" Grid.Row="3" Text="Manage Group" Clicked="Button_Clicked_4"/>
                 </Grid>
             </VerticalStackLayout>
 

@@ -1,4 +1,5 @@
 using SmartGloveRebuild2.ViewModels.Admin;
+using SmartGloveRebuild2.Views.Dashboard;
 
 namespace SmartGloveRebuild2.Views.Admin;
 
@@ -8,5 +9,10 @@ public partial class DisplayGroupPage : ContentPage
     {
         InitializeComponent();
         this.BindingContext = viewModel;
+
+        if(App.UserDetails.Role == "CLERK")
+        {
+            EditButton.IsVisible = false;
+        }
     }
 }

@@ -31,12 +31,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             {
                 FetchedRejectList.Add(new GroupList
                 {
+                    DayMonthYear = groups.DayMonthYear,
                     EmployeeName = groups.EmployeeName,
                     UserName = groups.UserName,
                     GroupName = groups.GroupName,
                 });
+
             }
-            cansee = true;
             Items = new ObservableCollection<GroupList>();
             SelectedItem = new GroupList();
         }
@@ -57,82 +58,37 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             }
         }
 
-        private bool cansee;
-        public bool Cansee
-        {
-            get => cansee;
-            set => SetProperty(ref cansee, value);
-        }
-
-
         [ObservableProperty]
         string reason;
 
         [ObservableProperty]
         CalendarModel calendarModel;
 
-
-
-        [RelayCommand]
-        public void NextIsPressed()
-        {
-            Cansee = false;
-        }        
-        
-        [RelayCommand]
-        public void BackIsPressed()
-        {
-            Cansee = true;
-        }
-
-
         [RelayCommand]
         public async Task RemoveFromList()
         {
             if (IsBusy) { return; }
-            if (cansee == false)
+
+            var action = await Shell.Current.DisplayAlert("Messages", "Are you sure to exclude the Request?", "Yes", "No");
+            if (action)
             {
-                var action = await Shell.Current.DisplayAlert("Messages", "Are you sure to exclude the Request?", "Yes", "No");
-                if (action)
+                IsBusy = true;
+                foreach (var group in FetchedRejectList)
                 {
-                    IsBusy = true;
-                    foreach (var group in FetchedRejectList)
+                    var rejectEmployee = await _scheduleServices.RejectSchedule(new RejectScheduleDTO
                     {
-                        var rejectEmployee = await _scheduleServices.RejectSchedule(new RejectScheduleDTO
-                        {
-                            DateValue = DateTime.Now,
-                            EmployeeNumber = group.UserName,
-                            GroupName = group.GroupName,
-                            IsRejected = true,
-                            RejectedReason = reason,
-                        });
-                    }
+                        RejectedDate = DateTime.Now,
+                        EmployeeNumber = group.UserName,
+                        GroupName = group.GroupName,
+                        IsRejected = true,
+                        RejectedBy = App.UserDetails.EmployeeNumber,
+                        RejectedReason = reason,
+                        DayMonthYear = group.DayMonthYear,
+                    });
                 }
                 IsBusy = false;
                 await Shell.Current.DisplayAlert("Messages", "Reject Successfull.", "Ok");
-                await Shell.Current.GoToAsync(nameof(CheckCalendarPage));
-            }
-        }
-
-
-
-        [RelayCommand]
-        public void RevertEmployee(GroupList selectedItem)
-        {
-            if (selectedItem == null)
-            {
-                return;
-            }
-
-            foreach (var item in FetchedRejectList)
-            {
-                if (selectedItem.EmployeeName == item.EmployeeName)
-                {
-                    CheckCalendarViewModel.RejectList.Add(item);
-                    ExclusionListViewModel.ReasonRejectList.Add(item);
-                    FetchedRejectList.Remove(item);
-                    break;
-                }
+                await Shell.Current.GoToAsync("../..");
             }
         }
     }

@@ -653,6 +653,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         {
                             RejectList.Add(new GroupList
                             {
+                                IsRejected = i.IsRejected,
+                                DayMonthYear = selectedItem.DayMonthYear,
                                 UserName = i.EmployeeNumber,
                                 EmployeeName = o.EmployeeName,
                                 GroupName = i.GroupName,

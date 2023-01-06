@@ -28,14 +28,10 @@ public partial class ClerkDashboardPage : ContentPage
     }
     private async void Button_Clicked_2(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(CheckCalendarPage));
+        await Shell.Current.GoToAsync(nameof(DisplayGroupPage));
     }
     private async void Button_Clicked_3(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(ScheduleOT));
-    }
-    private async void Button_Clicked_4(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync(nameof(GroupPage));
     }
 }

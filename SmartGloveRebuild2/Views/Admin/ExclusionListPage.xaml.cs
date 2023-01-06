@@ -4,9 +4,10 @@ namespace SmartGloveRebuild2.Views.Admin;
 
 public partial class ExclusionListPage : ContentPage
 {
-	public ExclusionListPage(ExclusionListViewModel viewModel)
-	{
-		InitializeComponent();
+    public ExclusionListPage(ExclusionListViewModel viewModel)
+    {
+        InitializeComponent();
         this.BindingContext = viewModel;
     }
+
 }
