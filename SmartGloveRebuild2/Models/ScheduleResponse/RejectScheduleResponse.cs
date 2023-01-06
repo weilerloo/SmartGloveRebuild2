@@ -8,6 +8,6 @@ namespace SmartGloveRebuild2.Models.ScheduleResponse
 {
     public class RejectScheduleResponse
     {
-
+        public bool IsSuccess { get; set; }
     }
 }

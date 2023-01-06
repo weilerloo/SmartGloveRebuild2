@@ -27,16 +27,32 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public NextReasonRejectListViewModel(IScheduleServices scheduleServices)
         {
             _scheduleServices = scheduleServices;
-            foreach (var groups in ExclusionListViewModel.ReasonRejectList)
+            if (ExclusionListViewModel.ReasonRejectList.Count > 0)
             {
-                FetchedRejectList.Add(new GroupList
+                foreach (var groups in ExclusionListViewModel.ReasonRejectList)
                 {
-                    DayMonthYear = groups.DayMonthYear,
-                    EmployeeName = groups.EmployeeName,
-                    UserName = groups.UserName,
-                    GroupName = groups.GroupName,
-                });
+                    FetchedRejectList.Add(new GroupList
+                    {
+                        DayMonthYear = groups.DayMonthYear,
+                        EmployeeName = groups.EmployeeName,
+                        UserName = groups.UserName,
+                        GroupName = groups.GroupName,
+                    });
 
+                }
+            }
+            else if (ExclusionMultipleDateViewModel.MultipleRejectList.Count > 0)
+            {
+                foreach (var groups in ExclusionMultipleDateViewModel.MultipleRejectList)
+                {
+                    FetchedRejectList.Add(new GroupList
+                    {
+                        DayMonthYear = groups.DayMonthYear,
+                        EmployeeName = groups.EmployeeName,
+                        UserName = groups.UserName,
+                        GroupName = groups.GroupName,
+                    });
+                }
             }
             Items = new ObservableCollection<GroupList>();
             SelectedItem = new GroupList();
@@ -75,16 +91,65 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 IsBusy = true;
                 foreach (var group in FetchedRejectList)
                 {
-                    var rejectEmployee = await _scheduleServices.RejectSchedule(new RejectScheduleDTO
+                    var getSchedule = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
                     {
-                        RejectedDate = DateTime.Now,
-                        EmployeeNumber = group.UserName,
                         GroupName = group.GroupName,
-                        IsRejected = true,
-                        RejectedBy = App.UserDetails.EmployeeNumber,
-                        RejectedReason = reason,
-                        DayMonthYear = group.DayMonthYear,
+                        ScheduleDate = group.DayMonthYear,
                     });
+                    var Rejectname = await _scheduleServices.GetScheduleLogsByGroupandDate(new GetSchedulebyGroupandDateDTO
+                    {
+                        GroupName = group.GroupName,
+                        ScheduleDate = group.DayMonthYear,
+                    });
+                    if (group.EmployeeName == null && group.UserName == null)
+                    {
+                        foreach (var s in getSchedule)
+                        {
+                            if (s.DayMonthYear == group.DayMonthYear)
+                            {
+                                var rejectDate = await _scheduleServices.updateScheduleStatusByGroupName(new UpdateScheduleStatusByGroupNameDTO
+                                {
+                                    GroupName = group.GroupName,
+                                    DayMonthYear = group.DayMonthYear,
+                                    Hours = s.Hours,
+                                    Paxs = s.Paxs,
+                                    Status = false,
+                                });
+                            }
+                        }
+                        foreach (var user in Rejectname)
+                        {
+                            var BulkrejectEmployee = await _scheduleServices.RejectSchedule(new RejectScheduleDTO
+                            {
+                                RejectedDate = DateTime.Now,
+                                EmployeeNumber = user.EmployeeNumber,
+                                GroupName = group.GroupName,
+                                IsRejected = true,
+                                RejectedBy = App.UserDetails.EmployeeNumber,
+                                RejectedReason = reason,
+                                DayMonthYear = group.DayMonthYear,
+                            });
+                        }
+                    }
+                    else
+                    {
+                        var rejectEmployee = await _scheduleServices.RejectSchedule(new RejectScheduleDTO
+                        {
+                            RejectedDate = DateTime.Now,
+                            EmployeeNumber = group.UserName,
+                            GroupName = group.GroupName,
+                            IsRejected = true,
+                            RejectedBy = App.UserDetails.EmployeeNumber,
+                            RejectedReason = reason,
+                            DayMonthYear = group.DayMonthYear,
+                        });
+
+                        if (rejectEmployee.IsSuccess == false)
+                        {
+                            await Shell.Current.DisplayAlert("Messages", "Reject Unsuccessfull. Please contact the peers for the further issues.", "Ok");
+                            return;
+                        }
+                    }
                 }
                 IsBusy = false;
                 await Shell.Current.DisplayAlert("Messages", "Reject Successfull.", "Ok");

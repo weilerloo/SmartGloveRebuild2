@@ -10,4 +10,8 @@ public partial class CheckCalendarPage : ContentPage
 		this.BindingContext = viewmodel;
 	}
 
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+		Shell.Current.GoToAsync(nameof(ExclusionMultipleDatePage));
+    }
 }

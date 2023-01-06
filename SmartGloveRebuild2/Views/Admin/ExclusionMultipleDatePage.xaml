@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SmartGloveRebuild2.Views.Admin.CheckCalendarPage"
              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:model="clr-namespace:SmartGloveRebuild2.Models"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
-             x:DataType="viewmodel:CheckCalendarViewModel"
-             Title="{Binding Title}">
+             x:DataType="viewmodel:ExclusionMultipleDateViewModel"
+             Title="{Binding Title}"
+             x:Class="SmartGloveRebuild2.Views.Admin.ExclusionMultipleDatePage"
+             BackgroundColor="White">
     <ScrollView>
-        <Grid RowDefinitions="Auto,*,*">
+        <Grid RowDefinitions="Auto,*,Auto,Auto">
             <VerticalStackLayout Grid.Row="0">
                 <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="0,0,0,30">
                     <Label Text="Choose the Groups." FontSize="24" Margin="20,20,0,10" TextColor="Black"/>
@@ -29,11 +30,9 @@
                             ItemDisplayBinding="{Binding GroupName}"/>
                         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
                     </HorizontalStackLayout>
-                    <!--<ImageButton Grid.Row="2" Grid.Column="2" Source="leftpage.png" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="0,0,5,0" Command="{Binding DecreaseMonthCommand}"/>
-                    <ImageButton Grid.Row="2" Grid.Column="2" Source="leftpage.png" Opacity="10" Rotation="180" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="70,0,20,0" Command="{Binding IncreaseMonthCommand}" />-->
+                    <Button x:Name="Reset" Grid.Row="3" HorizontalOptions="Start" Margin="20,0,0,0" WidthRequest="80" Grid.Column="0" Text="Reset" Command="{Binding DeleteButtonSelectedCommand}"/>
                     <Button x:Name="MinusButton" Grid.Row="3" Grid.Column="2" Text="-" Margin="2" Command="{Binding DecreaseMonthCommand}"/>
                     <Button x:Name="AddButton" Grid.Row="3" Grid.Column="3" Text="+" Margin="2" Command="{Binding IncreaseMonthCommand}"/>
-                    <!--<Button Grid.Row="3" Grid.Column="4" Text="Reset" Margin="2"/>-->
                 </Grid>
                 <CollectionView ItemsSource="{Binding Datename}">
                     <CollectionView.ItemsLayout>
@@ -48,9 +47,11 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </VerticalStackLayout>
-            <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}"
-                                 Command="{Binding DisplayGroupMemberCommand}">
-                <Grid>
+            <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding ColorStatusCommand}"
+                     Grid.Row="1"
+                     Margin="0,10,0,0">
+                <Grid IsEnabled="False">
                     <CollectionView x:Name="CalendarDetails" 
                                         ItemsSource="{Binding CalendarDetails}"
                                         SelectedItem="{Binding Items}"
@@ -73,7 +74,7 @@
                                     </VisualStateManager.VisualStateGroups>
                                     <Button Background="{Binding Color}" Padding="0" x:Name="DateButton" HeightRequest="50" Margin="5" Text="{Binding Day}" CornerRadius="10">
                                         <Button.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:CheckCalendarViewModel}},Path=ButtonSelectedCommand}" CommandParameter="{Binding Path=.}"/>
+                                            <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ExclusionMultipleDateViewModel}},Path=SubmitButtonSelectedCommand}" CommandParameter="{Binding .}"/>
                                         </Button.GestureRecognizers>
                                     </Button>
                                 </Grid>
@@ -82,16 +83,18 @@
                     </CollectionView>
                 </Grid>
             </RefreshView>
-            <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto">
-                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto,Auto,Auto,Auto,*" Margin="0,30,0,30">
+            <VerticalStackLayout Grid.Row="2">
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto,Auto,*"
+                                  RowDefinitions="Auto,Auto"
+                                  Margin="0,30,0,40">
                     <Ellipse 
-                            Stroke="Blue"
+                            Stroke="Green"
                             StrokeThickness="4"
                             HeightRequest="10"
                             WidthRequest="10"
-                            Fill="Blue"
+                            Fill="Green"
                             Grid.Column="1"/>
-                    <Label Grid.Column="2" Margin="10,0,40,0" Text="Sufficient Worker"/>
+                    <Label Grid.Column="2" Margin="10,0,40,0" Text="Status ON"/>
                     <Ellipse 
                             Stroke="Red"
                             StrokeThickness="4"
@@ -100,19 +103,17 @@
                             Fill="Red"
                             Grid.Column="3"/>
                     <Label Grid.Column="4" Margin="10,0,40,0" Text="Status OFF"/>
-                    <Ellipse 
-                            Stroke="Brown"
+                    <Ellipse Stroke="{StaticResource Gray300}"
                             StrokeThickness="4"
                             HeightRequest="10"
                             WidthRequest="10"
-                            Fill="Brown"
-                            Grid.Column="1"
-                            Grid.Row="1"/>
-                    <Label Grid.Column="2" Grid.Row="1" Margin="10,0,40,0" Text="Insufficient Worker"/>
+                            Fill="{StaticResource Gray300}"
+                            Grid.Column="5"/>
+                    <Label Grid.Column="6" Margin="10,0,40,0" Text="N/A"/>
                 </Grid>
-                <Label Grid.Row="1" Text="Please Choose a Date to Exclude the request." HorizontalTextAlignment="Center" FontAttributes="Bold"/>
-                <Button Text="Multiple Date Exclusion" Clicked="Button_Clicked" Grid.Row="2" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Margin="0,20,0,80"/>
-            </Grid>
+                <Label Margin="10" Grid.Column="1" Grid.Row="0" Text="Please Select Multiple Days to Exclude." HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+            </VerticalStackLayout>
+            <Button Margin="0,50,0,50" Grid.Row="3" Command="{Binding GoToReasonPageCommand}" Text="Confirm" HeightRequest="50" WidthRequest="200"/>
         </Grid>
     </ScrollView>
 </ContentPage>
