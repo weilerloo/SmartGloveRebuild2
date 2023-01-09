@@ -23,7 +23,18 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         int month = 1, decreasemonth, increasemonth, year;
 
         [ObservableProperty]
-        String lastcurrentmonth, notesforot;
+        String lastcurrentmonth;
+
+        private string notesforot;
+        public string Notesforot
+        {
+            get => notesforot;
+            set
+            {
+                notesforot = value;
+                OnPropertyChanged(nameof(Notesforot));
+            }
+        }
 
         private double totalhours;
         public double TotalHours
@@ -506,14 +517,18 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         {
                             TotalHours = getEmployeeSchedule.Hours + TotalHours;
                         }
-                        if(TotalHours >= 104)
+                        if (TotalHours >= 104)
                         {
-                            notesforot = "You are NOT Eligible for OT's.";
+                            Notesforot = "You are NOT Eligible for OT's.";
                         }
                         else
                         {
-                            notesforot = "You are Eligible for OT's.";
+                            Notesforot = "You are Eligible for OT's.";
                         }
+                    }
+                    else
+                    {
+                        Notesforot = "You are Eligible for OT's.";
                     }
 
                     if (response != null)
@@ -529,15 +544,26 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         }
                         else if (DayDifferences > 7 && response.Count() != 0 && getEmployeeSchedule != null)
                         {
-
-                            cm.Color = Color.FromArgb("#FFA500");
-                            cm.IsBooked = true;
+                            foreach (var sdl in response)
+                            {
+                                cm.Color = Color.FromArgb("#FFA500");
+                                cm.IsBooked = true;
+                                cm.Remark = sdl.Remarks;
+                                cm.Hours = sdl.Hours;
+                                cm.GroupName = sdl.GroupName;
+                            }
 
                         }
                         else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber == App.UserDetails.EmployeeNumber)
                         {
-                            cm.Color = Color.FromArgb("#FFA500");
-
+                            foreach (var sdl in response)
+                            {
+                                cm.Color = Color.FromArgb("#FFA500");
+                                cm.IsBooked = true;
+                                cm.Remark = sdl.Remarks;
+                                cm.Hours = sdl.Hours;
+                                cm.GroupName = sdl.GroupName;
+                            }
                         }
                         else if (checkIsFull != null)
                         {
@@ -545,13 +571,15 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         }
                         else if (DayDifferences < 7 && response.Count() != 0)
                         {
-                            foreach (var hour in response)
+                            foreach (var sdl in response)
                             {
-                                if (hour.Status == true)
+                                if (sdl.Status == true && sdl.Remarks != null)
                                 {
-                                    cm.Hours = hour.Hours;
+                                    cm.Hours = sdl.Hours;
                                     cm.Color = Color.FromArgb("#32CD32");
+                                    cm.Remark = sdl.Remarks;
                                     cm.IsAvailable = true;
+                                    cm.GroupName = sdl.GroupName;
                                 }
                                 else
                                 {
@@ -559,8 +587,6 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                                     cm.IsAvailable = false;
                                 }
                             }
-
-
                         }
                         else
                         {
@@ -583,7 +609,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
 
         [RelayCommand]
-        public void SubmitButtonSelected(CalendarModel selectedItem)
+        public async void SubmitButtonSelected(CalendarModel selectedItem)
         {
             if (selectedItem != null && TotalHours <= 104)
             {
@@ -596,20 +622,45 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         ccm.IsSelected = true;
                         if (ccm.IsSelected == true)
                         {
-                            TotalHours = selectedItem.Hours + TotalHours;
-                            ccm.Color = Color.FromArgb("#006400");
-
-                            Items.Add(new CalendarModel
+                            var action = await Shell.Current.DisplayAlert($"You are Scheduling for {selectedItem.DayMonthYear}",
+                                $"Schedule Date : {selectedItem.DayMonthYear} \n " +
+                                $"Groups :{selectedItem.GroupName} \n" +
+                                $"OT Hours is :{selectedItem.Hours} \n" +
+                                $"OT Purposes :{selectedItem.Remark} \n\n" +
+                                "Do you want to schedule?", "Yes", "No");
+                            if (action)
                             {
-                                DayMonthYear = selectedItem.DayMonthYear,
-                                Day = selectedItem.Day,
-                                Month = selectedItem.Month,
-                                Year = selectedItem.Year,
-                                IsSelected = true,
-                                EmployeeNumber = App.UserDetails.EmployeeName,
-                                GroupName = App.UserDetails.GroupName,
-                            });
+                                TotalHours = selectedItem.Hours + TotalHours;
+                                ccm.Color = Color.FromArgb("#006400");
+                                Items.Add(new CalendarModel
+                                {
+                                    DayMonthYear = selectedItem.DayMonthYear,
+                                    Day = selectedItem.Day,
+                                    Month = selectedItem.Month,
+                                    Year = selectedItem.Year,
+                                    IsSelected = true,
+                                    EmployeeNumber = App.UserDetails.EmployeeName,
+                                    GroupName = App.UserDetails.GroupName,
+                                });
+                            }
+                            else
+                            {
+                                ccm.IsSelected = false;
+                            }
                         }
+                    }
+
+                    if (ccm.IsSelected == false &&
+                        ccm.DayMonthYear == selectedItem.DayMonthYear &&
+                        ccm.IsBooked == true)
+                    {
+                        await Shell.Current.DisplayAlert($"Scheduled Overtime {selectedItem.DayMonthYear}",
+                            $"You have schedule for {selectedItem.DayMonthYear} \n" +
+                            $"Groups :{selectedItem.GroupName} \n" +
+                            $"OT Hours is :{selectedItem.Hours} \n" +
+                            $"OT Purposes :{selectedItem.Remark} \n"
+
+                            , "OK");
                     }
                 }
             }
@@ -617,11 +668,11 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             {
                 if (TotalHours >= 104)
                 {
-                    notesforot = "You are NOT Eligible for OT's.";
+                    Notesforot = "You are NOT Eligible for OT's.";
                 }
                 else
                 {
-                    notesforot = "You are Eligible for OT's.";
+                    Notesforot = "You are Eligible for OT's.";
                 }
                 Shell.Current.DisplayAlert("Alert", "You have exceed the limits of OT. Current actions is disabled.", "OK");
             }

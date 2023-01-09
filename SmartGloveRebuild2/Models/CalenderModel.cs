@@ -23,6 +23,7 @@ namespace SmartGloveRebuild2.Models
         private bool isrejected;
         private bool isselected;
         private string lastcurrentmonth;
+        private string remark;
         private Color color;
         private string daymonthyear;
         private DateTime scheduledate;
@@ -112,6 +113,11 @@ namespace SmartGloveRebuild2.Models
         {
             get => lastcurrentmonth;
             set => SetProperty(ref lastcurrentmonth, value);
+        }        
+        public string Remark
+        {
+            get => remark;
+            set => SetProperty(ref remark, value);
         }
         public Color Color
         {

@@ -20,6 +20,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
     {
         #region ObservableCollections
         public ObservableCollection<GroupList> FetchedRejectList { get; set; } = new ObservableCollection<GroupList>();
+        public ObservableCollection<GroupList> FetchedApprovedList { get; set; } = new ObservableCollection<GroupList>();
         public ObservableCollection<GroupList> Items { get; set; } = new ObservableCollection<GroupList>();
         #endregion
 
@@ -27,8 +28,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public NextReasonRejectListViewModel(IScheduleServices scheduleServices)
         {
             _scheduleServices = scheduleServices;
-            if (ExclusionListViewModel.ReasonRejectList.Count > 0)
+            if (ExclusionListViewModel.ReasonRejectList.Count > 0 || ExclusionListViewModel.ReasonApprovedList.Count > 0)
             {
+                if (ExclusionListViewModel.ReasonRejectList.Count == 0)
+                {
+                    Cansee = false;
+                }
+
                 foreach (var groups in ExclusionListViewModel.ReasonRejectList)
                 {
                     FetchedRejectList.Add(new GroupList
@@ -38,7 +44,17 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         UserName = groups.UserName,
                         GroupName = groups.GroupName,
                     });
+                }
 
+                foreach (var groups in ExclusionListViewModel.ReasonApprovedList)
+                {
+                    FetchedApprovedList.Add(new GroupList
+                    {
+                        DayMonthYear = groups.DayMonthYear,
+                        EmployeeName = groups.EmployeeName,
+                        UserName = groups.UserName,
+                        GroupName = groups.GroupName,
+                    });
                 }
             }
             else if (ExclusionMultipleDateViewModel.MultipleRejectList.Count > 0)
@@ -74,20 +90,33 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             }
         }
 
+        private bool cansee;
+        public bool Cansee
+        {
+            get => cansee;
+            set => SetProperty(ref cansee, value);
+        }
+
         [ObservableProperty]
-        string reason;
+        string rejectreason, approvedreason;
 
         [ObservableProperty]
         CalendarModel calendarModel;
 
         [RelayCommand]
-        public async Task RemoveFromList()
+        public async Task ApprovedRemoveFromList()
         {
             if (IsBusy) { return; }
 
-            var action = await Shell.Current.DisplayAlert("Messages", "Are you sure to exclude the Request?", "Yes", "No");
+            var action = await Shell.Current.DisplayAlert("Messages", "Are you sure to confirm the Request?", "Yes", "No");
             if (action)
             {
+                if(approvedreason == null && rejectreason == null)
+                {
+                    await Shell.Current.DisplayAlert("Messages","Reason cannot be Empty! Please enter the reasons.","OK");
+                    return;
+                }
+
                 IsBusy = true;
                 foreach (var group in FetchedRejectList)
                 {
@@ -101,7 +130,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         GroupName = group.GroupName,
                         ScheduleDate = group.DayMonthYear,
                     });
-                    if (group.EmployeeName == null && group.UserName == null)
+                    if (group.EmployeeName == null && group.UserName == null) //For Bulk Reject
                     {
                         foreach (var s in getSchedule)
                         {
@@ -126,7 +155,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                 GroupName = group.GroupName,
                                 IsRejected = true,
                                 RejectedBy = App.UserDetails.EmployeeNumber,
-                                RejectedReason = reason,
+                                RejectedReason = rejectreason,
                                 DayMonthYear = group.DayMonthYear,
                             });
                         }
@@ -140,9 +169,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             GroupName = group.GroupName,
                             IsRejected = true,
                             RejectedBy = App.UserDetails.EmployeeNumber,
-                            RejectedReason = reason,
+                            RejectedReason = rejectreason,
                             DayMonthYear = group.DayMonthYear,
-                        });
+                        });  //For Single Reject
 
                         if (rejectEmployee.IsSuccess == false)
                         {
@@ -150,9 +179,36 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             return;
                         }
                     }
+
+
+                }
+
+                foreach (var group2 in FetchedApprovedList)
+                {
+                    var getSchedule = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
+                    {
+                        GroupName = group2.GroupName,
+                        ScheduleDate = group2.DayMonthYear,
+                    });
+
+                    if (getSchedule != null)
+                    {
+                        foreach (var g in getSchedule)
+                        {
+                            var response = await _scheduleServices.updateScheduleStatusByGroupName(new UpdateScheduleStatusByGroupNameDTO
+                            {
+                                DayMonthYear = g.DayMonthYear,
+                                GroupName = g.GroupName,
+                                Status = g.Status,
+                                Hours = g.Hours,
+                                Remarks = approvedreason,
+                                Paxs = g.Paxs,
+                            });
+                        }
+                    }
                 }
                 IsBusy = false;
-                await Shell.Current.DisplayAlert("Messages", "Reject Successfull.", "Ok");
+                await Shell.Current.DisplayAlert("Messages", "Submit Successfull.", "Ok");
                 await Shell.Current.GoToAsync("../..");
             }
         }

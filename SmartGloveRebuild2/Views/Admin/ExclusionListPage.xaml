@@ -89,9 +89,9 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
             <Grid Grid.Row="3" Padding="10" ColumnDefinitions="*,*,*,*" HeightRequest="70">
-                <Button Grid.Column="0" Text="Not Excluded" Command="{Binding NextIsPressedCommand}" />
+                <Button Grid.Column="0" Text="Approved" Command="{Binding NextIsPressedCommand}" />
                 <Button Grid.Column="1" Text="Excluded" Command="{Binding BackIsPressedCommand}" />
-                <Button Background="Red" Grid.Column="2" Text="Reject All" Command="{Binding RejectAllEmployeeCommand}" />
+                <Button Background="Red" Grid.Column="2" Text="Exclude All" Command="{Binding RejectAllEmployeeCommand}" />
                 <Button Grid.Column="3" Text="Confirm" Command="{Binding NextReasonRejectListCommand}" />
             </Grid>
         </Grid>

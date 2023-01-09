@@ -516,47 +516,39 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                     if (GetSchedulebyGroupandDateresponse != null)
                     {
-                        var checkIsZero = GetSchedulebyGroupandDateresponse.Find(f => f.AvailablePaxs == 0 || f.Paxs == 0);
 
-                        if (checkIsZero != null)
+                        var checkIsFull = GetSchedulebyGroupandDateresponse.Find(f => f.AvailablePaxs >= f.Paxs);
+                        var checkIsNotFull = GetSchedulebyGroupandDateresponse.Find(f => (f.AvailablePaxs / f.Paxs) * 100 <= 80.00); 
+                        var checkIsRemarked = GetSchedulebyGroupandDateresponse.Find(f => f.Remarks != null && f.Paxs != 0 && f.Hours != 0);
+
+                        if (checkIsFull != null)
                         {
-                            cm.Color = Color.FromArgb("#778899");
-                            cm.IsAvailable = false;
+                            cm.IsAvailable = true;
+                            cm.Color = Color.FromArgb("#0000FF");
+                            cm.GroupName = selectedgroupname.GroupName;
+                        }
+                        else if (checkIsRemarked != null)
+                        {
+                            cm.Color = Color.FromArgb("#FF0000");
+                            cm.GroupName = selectedgroupname.GroupName;
+                        }
+                        else if (checkIsNotFull != null)
+                        {
+                            cm.IsAvailable = true;
+                            cm.Color = Color.FromArgb("#A52A2A");
+                            cm.GroupName = selectedgroupname.GroupName;
                         }
                         else
                         {
-                            var checkIsFull = GetSchedulebyGroupandDateresponse.Find(f => f.AvailablePaxs >= f.Paxs);
-                            var checkIsNotFull = GetSchedulebyGroupandDateresponse.Find(f => (f.AvailablePaxs / f.Paxs) * 100 <= 80.00);  // not working
-                            var checkIsOFF = GetSchedulebyGroupandDateresponse.Find(f => f.Status == false);
-
-                            if (checkIsFull != null)
-                            {
-                                cm.IsAvailable = true;
-                                cm.Color = Color.FromArgb("#0000FF");
-                                cm.GroupName = selectedgroupname.GroupName;
-                            }
-                            else if (checkIsOFF != null)
-                            {
-                                cm.Color = Color.FromArgb("#FF0000");
-                                cm.GroupName = selectedgroupname.GroupName;
-                            }
-                            else if (checkIsNotFull != null)
-                            {
-                                cm.IsAvailable = true;
-                                cm.Color = Color.FromArgb("#A52A2A");
-                                cm.GroupName = selectedgroupname.GroupName;
-                            }
-                            else
-                            {
-                                cm.IsSelected = true;
-                                cm.GroupName = selectedgroupname.GroupName;
-                                cm.Color = Color.FromArgb("#778899");
-                                cm.IsAvailable = false;
-                            }
+                            cm.IsSelected = true;
+                            cm.GroupName = selectedgroupname.GroupName;
+                            cm.Color = Color.FromArgb("#778899");
+                            cm.IsAvailable = false;
                         }
                     }
                 }
             }
+
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -615,7 +607,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             if (IsBusy) { return; }
 
             IsBusy = true;
-            if(RejectList != null)
+            if (RejectList != null)
             {
                 RejectList.Clear();
             }

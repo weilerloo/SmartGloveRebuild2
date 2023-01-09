@@ -23,6 +23,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public ObservableCollection<GroupList> FetchedRejectList { get; set; } = new ObservableCollection<GroupList>();
         public ObservableCollection<GroupList> BeforeReasonRejectList { get; set; } = new ObservableCollection<GroupList>();
         public static ObservableCollection<GroupList> ReasonRejectList { get; set; } = new ObservableCollection<GroupList>();
+        public static ObservableCollection<GroupList> ReasonApprovedList { get; set; } = new ObservableCollection<GroupList>();
         public ObservableCollection<GroupList> Items { get; set; } = new ObservableCollection<GroupList>();
         #endregion
 
@@ -149,16 +150,27 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public async Task NextReasonRejectList()
         {
-            if (BeforeReasonRejectList.Count <= 0)
+            if (BeforeReasonRejectList.Count <= 0 && ReasonApprovedList.Count <= 0 && FetchedRejectList.Count <= 0)
             {
-                await Shell.Current.DisplayAlert("Messages", "No Reject Employee are found.", "OK");
+                await Shell.Current.DisplayAlert("Messages", "No Employee are found.", "OK");
                 await Shell.Current.GoToAsync("../../..");
             }
             else
             {
+                if (ReasonApprovedList.Count() != 0)
+                {
+                    ReasonApprovedList.Clear();
+                }
+
+                foreach (var item in FetchedRejectList.ToList())
+                {
+                    ReasonApprovedList.Add(item);
+                }
                 await Shell.Current.GoToAsync(nameof(NextReasonRejectListPage));
             }
+
         }
+
 
         [RelayCommand]
         public void NextIsPressed()

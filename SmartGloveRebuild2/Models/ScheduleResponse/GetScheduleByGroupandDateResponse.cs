@@ -12,6 +12,7 @@ namespace SmartGloveRebuild2.Models.ScheduleResponse
         public double Hours { get; set; }
         public int Paxs { get; set; }
         public int AvailablePaxs { get; set; }
+        public string Remarks { get; set; }
         public bool Status { get; set; }
         public string DayMonthYear { get; set; }
 

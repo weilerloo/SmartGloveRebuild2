@@ -31,7 +31,7 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             {
                 var checktoken = await _loginService.CheckRefreshToken(new LoginRequest
                 {
-                    UserName = App.UserDetails.EmployeeName,
+                    UserName = App.UserDetails.EmployeeNumber,
                     Password = App.UserDetails.NRIC,
                 });
 

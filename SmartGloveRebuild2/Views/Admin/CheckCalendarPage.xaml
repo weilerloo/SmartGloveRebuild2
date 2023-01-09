@@ -82,8 +82,10 @@
                     </CollectionView>
                 </Grid>
             </RefreshView>
-            <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto">
-                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto,Auto,Auto,Auto,*" Margin="0,30,0,30">
+            <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto" >
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto,Auto,*"
+                                  RowDefinitions="Auto,Auto"
+                                  Margin="0,30,0,40">
                     <Ellipse 
                             Stroke="Blue"
                             StrokeThickness="4"
@@ -93,24 +95,31 @@
                             Grid.Column="1"/>
                     <Label Grid.Column="2" Margin="10,0,40,0" Text="Sufficient Worker"/>
                     <Ellipse 
-                            Stroke="Red"
-                            StrokeThickness="4"
-                            HeightRequest="10"
-                            WidthRequest="10"
-                            Fill="Red"
-                            Grid.Column="3"/>
-                    <Label Grid.Column="4" Margin="10,0,40,0" Text="Status OFF"/>
-                    <Ellipse 
                             Stroke="Brown"
                             StrokeThickness="4"
                             HeightRequest="10"
                             WidthRequest="10"
                             Fill="Brown"
-                            Grid.Column="1"
+                            Grid.Column="3"/>
+                    <Label Grid.Column="4" Margin="10,0,40,0" Text="Insufficient Worker"/>
+                    <Ellipse Stroke="{StaticResource Gray300}"
+                            StrokeThickness="4"
+                            HeightRequest="10"
+                            WidthRequest="10"
+                            Fill="{StaticResource Gray300}"
+                            Grid.Column="5"/>
+                    <Label Grid.Column="6" Margin="10,0,40,0" Text="N/A"/>
+                    <Ellipse 
+                            Stroke="Red"
+                            StrokeThickness="4"
+                            HeightRequest="10"
+                            WidthRequest="10"
+                            Fill="Red"
+                            Grid.Column="3"
                             Grid.Row="1"/>
-                    <Label Grid.Column="2" Grid.Row="1" Margin="10,0,40,0" Text="Insufficient Worker"/>
+                    <Label Grid.Column="4" Grid.Row="1" Margin="10,0,40,0" Text="Required Update Remarks"/>
                 </Grid>
-                <Label Grid.Row="1" Text="Please Choose a Date to Exclude the request." HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Grid.Row="1" Text="Please Choose a Date to Update Remarks and Requests." HorizontalTextAlignment="Center" FontAttributes="Bold"/>
                 <Button Text="Multiple Date Exclusion" Clicked="Button_Clicked" Grid.Row="2" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Margin="0,20,0,80"/>
             </Grid>
         </Grid>
