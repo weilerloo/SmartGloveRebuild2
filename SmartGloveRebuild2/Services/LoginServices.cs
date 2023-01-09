@@ -40,6 +40,8 @@ namespace SmartGloveRebuild2.Services
         {
             using (var client = new HttpClient())
             {
+
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string loginRequestStr = JsonConvert.SerializeObject(loginRequest);
 
                 var response = await client.GetAsync($"http://192.168.68.110:7006/api/Users/CheckUserActivity?UserName={loginRequest.UserName}&Password={loginRequest.Password}");
