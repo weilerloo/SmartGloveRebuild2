@@ -1,3 +1,4 @@
+using SmartGloveRebuild2.ViewModels.Dashboard;
 using SmartGloveRebuild2.Views.Admin;
 using SmartGloveRebuild2.Views.Employee;
 
@@ -5,9 +6,10 @@ namespace SmartGloveRebuild2.Views.Dashboard;
 
 public partial class HODDashboardPage : ContentPage
 {
-    public HODDashboardPage()
+    public HODDashboardPage(DashboardPageViewModel dashboardPageViewModel)
     {
         InitializeComponent();
+        this.BindingContext = dashboardPageViewModel;
 
         if (App.UserDetails != null)
         {

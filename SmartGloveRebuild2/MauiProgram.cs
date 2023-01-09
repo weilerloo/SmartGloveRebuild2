@@ -74,6 +74,11 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddTransient<CheckCalendarPage>();
         builder.Services.AddTransient<UpdateSlotsPage>();
         builder.Services.AddSingleton<GenerateReportPage>();
+        builder.Services.AddTransient<EmployeeDashboardPage>();
+        builder.Services.AddTransient<ClerkDashboardPage>();
+        builder.Services.AddTransient<HODDashboardPage>();
+        builder.Services.AddTransient<HRDashboardPage>();
+        builder.Services.AddTransient<SupervisorDashboardPage>();
         //View Models
         builder.Services.AddSingleton<GroupViewModel>();
         builder.Services.AddTransient<AssignGroupViewModel>();

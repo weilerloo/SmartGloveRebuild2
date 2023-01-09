@@ -1,13 +1,15 @@
+using SmartGloveRebuild2.ViewModels.Dashboard;
 using SmartGloveRebuild2.Views.Employee;
 
 namespace SmartGloveRebuild2.Views.Dashboard;
 
 public partial class EmployeeDashboardPage : ContentPage
 {
-	public EmployeeDashboardPage()
+	public EmployeeDashboardPage(DashboardPageViewModel dashboardPageViewModel)
 	{
 		InitializeComponent();
-        
+        this.BindingContext = dashboardPageViewModel;
+
         if (App.UserDetails != null)
         {
             EmployeeName.Text = App.UserDetails.EmployeeName;

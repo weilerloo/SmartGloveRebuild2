@@ -21,6 +21,7 @@ namespace SmartGloveRebuild2.Models
         public double TotalHour { get; set; }
         public string Role { get; set; }
         public int? RoleID { get; set; }
+        public string RefreshToken { get; set; }
 
         //public string EmployeeName
         //{

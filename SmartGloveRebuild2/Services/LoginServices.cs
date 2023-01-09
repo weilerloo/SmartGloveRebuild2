@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SmartGloveRebuild2.Models;
+using SmartGloveRebuild2.Models.ScheduleResponse;
 using SmartGloveRebuild2.Views.Startup;
 using SQLite;
 using System;
@@ -35,5 +36,24 @@ namespace SmartGloveRebuild2.Services
             }
         }
 
+        public async Task<string> CheckRefreshToken(LoginRequest loginRequest)
+        {
+            using (var client = new HttpClient())
+            {
+                string loginRequestStr = JsonConvert.SerializeObject(loginRequest);
+
+                var response = await client.GetAsync($"http://172.16.12.149:7006/api/Users/CheckUserActivity?UserName={loginRequest.UserName}&Password={loginRequest.Password}");
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var rspond = await response.Content.ReadAsStringAsync();
+                    return rspond;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

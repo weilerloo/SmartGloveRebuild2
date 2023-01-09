@@ -50,5 +50,6 @@ namespace SmartGloveRebuild2.Models.Group
         public AssignGroupDTO SelectedGroup { get; set; }
         public string DayMonthYear{ get; set; }
         public bool IsRejected { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

@@ -1,15 +1,17 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SmartGloveRebuild2.ViewModels.Admin;
+using SmartGloveRebuild2.ViewModels.Dashboard;
 using SmartGloveRebuild2.Views.Admin;
 
 namespace SmartGloveRebuild2.Views.Dashboard;
 
 public partial class HRDashboardPage : ContentPage
 {
-    public HRDashboardPage()
+    public HRDashboardPage(DashboardPageViewModel dashboardPageViewModel)
     {
         InitializeComponent();
+        this.BindingContext = dashboardPageViewModel;
 
         if (App.UserDetails != null)
         {
