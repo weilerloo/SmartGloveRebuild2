@@ -30,9 +30,10 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             _scheduleServices = scheduleServices;
             if (ExclusionListViewModel.ReasonRejectList.Count > 0 || ExclusionListViewModel.ReasonApprovedList.Count > 0)
             {
-                if (ExclusionListViewModel.ReasonRejectList.Count == 0)
+                Reasonremark = "Enter your approved reason here...";
+                if (ExclusionListViewModel.ReasonRejectList.Count != 0)
                 {
-                    Cansee = false;
+                    Cansee = true;
                 }
 
                 foreach (var groups in ExclusionListViewModel.ReasonRejectList)
@@ -59,6 +60,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             }
             else if (ExclusionMultipleDateViewModel.MultipleRejectList.Count > 0)
             {
+                Reasonremark = "Reason of exclusion here...";
                 foreach (var groups in ExclusionMultipleDateViewModel.MultipleRejectList)
                 {
                     FetchedRejectList.Add(new GroupList
@@ -95,6 +97,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         {
             get => cansee;
             set => SetProperty(ref cansee, value);
+        }        
+        
+        private string reasonremark;
+        public string Reasonremark
+        {
+            get => reasonremark;
+            set => SetProperty(ref reasonremark, value);
         }
 
         [ObservableProperty]
@@ -111,9 +120,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             var action = await Shell.Current.DisplayAlert("Messages", "Are you sure to confirm the Request?", "Yes", "No");
             if (action)
             {
-                if(approvedreason == null && rejectreason == null)
+                if (approvedreason == null && rejectreason == null)
                 {
-                    await Shell.Current.DisplayAlert("Messages","Reason cannot be Empty! Please enter the reasons.","OK");
+                    await Shell.Current.DisplayAlert("Messages", "Reason cannot be Empty! Please enter the reasons.", "OK");
                     return;
                 }
 
@@ -145,6 +154,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                     Status = false,
                                 });
                             }
+                            break;
                         }
                         foreach (var user in Rejectname)
                         {
@@ -155,7 +165,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                 GroupName = group.GroupName,
                                 IsRejected = true,
                                 RejectedBy = App.UserDetails.EmployeeNumber,
-                                RejectedReason = rejectreason,
+                                RejectedReason = approvedreason,
                                 DayMonthYear = group.DayMonthYear,
                             });
                         }
@@ -195,14 +205,37 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
                         foreach (var g in getSchedule)
                         {
-                            var response = await _scheduleServices.updateScheduleStatusByGroupName(new UpdateScheduleStatusByGroupNameDTO
+                            var response2 = await _scheduleServices.updateScheduleStatusByGroupName(new UpdateScheduleStatusByGroupNameDTO
                             {
                                 DayMonthYear = g.DayMonthYear,
                                 GroupName = g.GroupName,
                                 Status = g.Status,
                                 Hours = g.Hours,
                                 Remarks = approvedreason,
-                                Paxs = g.Paxs,
+                            });
+                        }
+                    }
+                }
+                if (FetchedApprovedList.Count == 0)
+                {
+
+                    foreach (var getfromreject in FetchedRejectList)
+                    {
+                        var getSchedule = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
+                        {
+                            GroupName = getfromreject.GroupName,
+                            ScheduleDate = getfromreject.DayMonthYear,
+                        });
+                        foreach (var hp in getSchedule)
+                        {
+                            var response2 = await _scheduleServices.updateScheduleStatusByGroupName(new UpdateScheduleStatusByGroupNameDTO
+                            {
+                                Hours = hp.Hours,
+                                Paxs = hp.Paxs,
+                                DayMonthYear = getfromreject.DayMonthYear,
+                                GroupName = getfromreject.GroupName,
+                                Status = hp.Status,
+                                Remarks = approvedreason,
                             });
                         }
                     }

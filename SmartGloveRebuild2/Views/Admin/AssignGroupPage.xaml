@@ -48,8 +48,8 @@
             </VerticalStackLayout>
         </ScrollView>
         <Grid ColumnDefinitions="*,*" Grid.Row="1" Margin="10,0,10,25">
-            <Button HeightRequest="50" WidthRequest="150" Grid.Column="0" Command="{Binding SaveGroupChangesCommand}" Text="Save Changes"/>
-            <Button HeightRequest="50" WidthRequest="150" Grid.Column="1" IsVisible="{Binding }" Command="{Binding DeleteGroupsCommand}" Text="Delete Group"/>
+            <Button HeightRequest="50" WidthRequest="150" Grid.Column="0" IsVisible="{Binding }" Command="{Binding DeleteGroupsCommand}" Text="Delete Group"/>
+            <Button HeightRequest="50" WidthRequest="150" Grid.Column="1" Command="{Binding SaveGroupChangesCommand}" Text="Save Changes"/>
         </Grid>
     </Grid>
 </ContentPage>

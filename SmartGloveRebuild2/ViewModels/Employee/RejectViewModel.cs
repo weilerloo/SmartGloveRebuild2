@@ -66,7 +66,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             _scheduleService = scheduleServices;
             DisplayDays();
             this.Init = GetRejectedList();
-            Title = "Update Slots";
+            Title = "Reject List";
         }
 
         #region LoadCalendar
@@ -433,10 +433,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             ReduceMonth();
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
-            IsBusy = true;
             await GetRejectedList();
-            IsRefreshing = false;
-            IsBusy = false;
         }
 
 
@@ -452,10 +449,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             AddMonth();
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
-            IsBusy = true;
             await GetRejectedList();
-            IsRefreshing = false;
-            IsBusy = false;
         }
 
         #endregion
@@ -463,7 +457,13 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         [RelayCommand]
         public async Task GetRejectedList()
         {
+            if(IsBusy) return;
+
             IsBusy = true;
+            if (RejectedList != null)
+            {
+                RejectedList.Clear();
+            }
             foreach (var cm in ListCalendar)
             {
                 var getEmployeeSchedule = await _scheduleService.GetScheduleByEmployeeNumberandDate(new GetScheduleByEmployeeNumberandDateDTO
@@ -488,7 +488,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     }
                 }
             }
-            isRefreshing = false;
+            IsRefreshing = false;
             IsBusy = false;
         }
     }

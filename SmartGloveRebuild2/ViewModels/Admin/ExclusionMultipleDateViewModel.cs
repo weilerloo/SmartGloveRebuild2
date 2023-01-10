@@ -494,36 +494,26 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                     if (GetSchedulebyGroupandDateresponse != null)
                     {
-                        var checkIsZero = GetSchedulebyGroupandDateresponse.Find(f => f.AvailablePaxs == 0 || f.Paxs == 0);
+                        var checkIsON = GetSchedulebyGroupandDateresponse.Find(f => f.Status == true);
+                        var checkIsOFF = GetSchedulebyGroupandDateresponse.Find(f => f.Status == false);
 
-                        if (checkIsZero != null)
+                        if (checkIsON != null)
                         {
-                            cm.Color = Color.FromArgb("#778899");
-                            cm.IsAvailable = false;
+                            cm.IsAvailable = true;
+                            cm.Color = Color.FromArgb("#00ff04");
+                            cm.GroupName = selectedgroupname.GroupName;
+                        }
+                        else if (checkIsOFF != null)
+                        {
+                            cm.Color = Color.FromArgb("#FF0000");
+                            cm.GroupName = selectedgroupname.GroupName;
                         }
                         else
                         {
-                            var checkIsON = GetSchedulebyGroupandDateresponse.Find(f => f.Status == true);
-                            var checkIsOFF = GetSchedulebyGroupandDateresponse.Find(f => f.Status == false);
-
-                            if (checkIsON != null)
-                            {
-                                cm.IsAvailable = true;
-                                cm.Color = Color.FromArgb("#00ff04");
-                                cm.GroupName = selectedgroupname.GroupName;
-                            }
-                            else if (checkIsOFF != null)
-                            {
-                                cm.Color = Color.FromArgb("#FF0000");
-                                cm.GroupName = selectedgroupname.GroupName;
-                            }
-                            else
-                            {
-                                cm.IsSelected = true;
-                                cm.GroupName = selectedgroupname.GroupName;
-                                cm.Color = Color.FromArgb("#778899");
-                                cm.IsAvailable = false;
-                            }
+                            cm.IsSelected = true;
+                            cm.GroupName = selectedgroupname.GroupName;
+                            cm.Color = Color.FromArgb("#778899");
+                            cm.IsAvailable = false;
                         }
                     }
                 }
@@ -580,7 +570,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public void SubmitButtonSelected(CalendarModel selectedItem)
         {
-            if(IsBusy) { return; }
+            if (IsBusy) { return; }
 
             if (selectedItem.IsAvailable == false && selectedItem.IsSelected == true)
             {
@@ -639,9 +629,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public async Task GoToReasonPage()
         {
-            if(MultipleRejectList.Count <= 0)
+            if (MultipleRejectList.Count <= 0)
             {
-                await Shell.Current.DisplayAlert("Messages","Please select a Date first.","OK");
+                await Shell.Current.DisplayAlert("Messages", "Please select a Date first.", "OK");
                 return;
             }
             await Shell.Current.GoToAsync(nameof(NextReasonRejectListPage));

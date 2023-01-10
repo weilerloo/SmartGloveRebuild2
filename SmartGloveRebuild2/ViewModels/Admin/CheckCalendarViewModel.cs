@@ -497,9 +497,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         #region Color
         public async Task ColorStatus()
         {
-            if (IsBusy) { return; }
-
-            IsBusy = true;
             if (SelectedGroupname != null)
             {
                 if (GroupNameList.Count > 0)
@@ -518,23 +515,23 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
 
                         var checkIsFull = GetSchedulebyGroupandDateresponse.Find(f => f.AvailablePaxs >= f.Paxs);
-                        var checkIsNotFull = GetSchedulebyGroupandDateresponse.Find(f => (f.AvailablePaxs / f.Paxs) * 100 <= 80.00); 
-                        var checkIsRemarked = GetSchedulebyGroupandDateresponse.Find(f => f.Remarks != null && f.Paxs != 0 && f.Hours != 0);
+                        var checkIsNotFull = GetSchedulebyGroupandDateresponse.Find(f => (f.AvailablePaxs / f.Paxs) * 100 <= 80.00);
+                        var checkIsOFF = GetSchedulebyGroupandDateresponse.Find(f => f.Status == false);
 
                         if (checkIsFull != null)
                         {
                             cm.IsAvailable = true;
-                            cm.Color = Color.FromArgb("#0000FF");
+                            cm.Color = Color.FromArgb("#0000FF"); //BLUE
                             cm.GroupName = selectedgroupname.GroupName;
                         }
-                        else if (checkIsRemarked != null)
+                        else if (checkIsOFF != null)
                         {
-                            cm.Color = Color.FromArgb("#FF0000");
+                            cm.Color = Color.FromArgb("#778899");
                             cm.GroupName = selectedgroupname.GroupName;
                         }
                         else if (checkIsNotFull != null)
                         {
-                            cm.IsAvailable = true;
+                            cm.IsAvailable = true; //not relevant
                             cm.Color = Color.FromArgb("#A52A2A");
                             cm.GroupName = selectedgroupname.GroupName;
                         }
@@ -548,9 +545,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                 }
             }
-
-            IsRefreshing = false;
-            IsBusy = false;
         }
         #endregion
 
@@ -594,6 +588,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                 }
             }
+
+            await ColorStatus();
             IsRefreshing = false;
             IsBusy = false;
         }

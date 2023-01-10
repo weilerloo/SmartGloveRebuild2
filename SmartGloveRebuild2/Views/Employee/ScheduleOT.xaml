@@ -79,7 +79,7 @@
             <VerticalStackLayout Grid.Row="2">
                 <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto,Auto,*"
                                   RowDefinitions="Auto,Auto"
-                                  Margin="0,30,0,40">
+                                  Margin="40,30,0,40">
                     <Ellipse 
                             Stroke="Green"
                             StrokeThickness="4"

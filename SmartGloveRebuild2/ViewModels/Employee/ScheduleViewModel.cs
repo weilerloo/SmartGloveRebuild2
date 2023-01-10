@@ -548,7 +548,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                             {
                                 cm.Color = Color.FromArgb("#FFA500");
                                 cm.IsBooked = true;
-                                cm.Remark = sdl.Remarks;
+                                //cm.Remark = sdl.Remarks;
                                 cm.Hours = sdl.Hours;
                                 cm.GroupName = sdl.GroupName;
                             }
@@ -560,7 +560,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                             {
                                 cm.Color = Color.FromArgb("#FFA500");
                                 cm.IsBooked = true;
-                                cm.Remark = sdl.Remarks;
+                                //cm.Remark = sdl.Remarks;
                                 cm.Hours = sdl.Hours;
                                 cm.GroupName = sdl.GroupName;
                             }
@@ -573,11 +573,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         {
                             foreach (var sdl in response)
                             {
-                                if (sdl.Status == true && sdl.Remarks != null)
+                                if (sdl.Status == true)
                                 {
                                     cm.Hours = sdl.Hours;
                                     cm.Color = Color.FromArgb("#32CD32");
-                                    cm.Remark = sdl.Remarks;
                                     cm.IsAvailable = true;
                                     cm.GroupName = sdl.GroupName;
                                 }
@@ -593,6 +592,11 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                             cm.Color = Color.FromArgb("#778899");
                             cm.IsAvailable = false;
                         }
+                    }
+                    else
+                    {
+                        cm.Color = Color.FromArgb("#778899");
+                        cm.IsAvailable = false;
                     }
                 }
             }
@@ -626,7 +630,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                                 $"Schedule Date : {selectedItem.DayMonthYear} \n " +
                                 $"Groups :{selectedItem.GroupName} \n" +
                                 $"OT Hours is :{selectedItem.Hours} \n" +
-                                $"OT Purposes :{selectedItem.Remark} \n\n" +
+                                //$"OT Purposes :{selectedItem.Remark} \n\n" +
                                 "Do you want to schedule?", "Yes", "No");
                             if (action)
                             {
@@ -657,8 +661,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         await Shell.Current.DisplayAlert($"Scheduled Overtime {selectedItem.DayMonthYear}",
                             $"You have schedule for {selectedItem.DayMonthYear} \n" +
                             $"Groups :{selectedItem.GroupName} \n" +
-                            $"OT Hours is :{selectedItem.Hours} \n" +
-                            $"OT Purposes :{selectedItem.Remark} \n"
+                            $"OT Hours is :{selectedItem.Hours} \n"
+                            //$"OT Purposes :{selectedItem.Remark} \n"
 
                             , "OK");
                     }
@@ -674,7 +678,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                 {
                     Notesforot = "You are Eligible for OT's.";
                 }
-                Shell.Current.DisplayAlert("Alert", "You have exceed the limits of OT. Current actions is disabled.", "OK");
+                await Shell.Current.DisplayAlert("Alert", "You have exceed the limits of OT. Current actions is disabled.", "OK");
             }
         }
 

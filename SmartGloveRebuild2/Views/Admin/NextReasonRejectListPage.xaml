@@ -27,7 +27,7 @@
                     <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Employee Name"/>
                 </Grid>
             </Frame>-->
-            <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="1" Placeholder="Enter yout approved reason here..." Text="{Binding Approvedreason}"/>
+            <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="1" Placeholder="{Binding Reasonremark}" Text="{Binding Approvedreason}"/>
             <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="2" Placeholder="Enter yout reject reason here..." IsVisible="{Binding Cansee}" Text="{Binding Rejectreason}"/>
             <Button Margin="10" Grid.Row="3" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Text="Confirm" Command="{Binding ApprovedRemoveFromListCommand}"/>
         </Grid>
