@@ -497,6 +497,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         #region Color
         public async Task ColorStatus()
         {
+            if (IsBusy) { return; }
+
+            IsBusy = true;
             if (SelectedGroupname != null)
             {
                 if (GroupNameList.Count > 0)
@@ -545,6 +548,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                 }
             }
+            IsRefreshing = false;
+            IsBusy = false;
         }
         #endregion
 

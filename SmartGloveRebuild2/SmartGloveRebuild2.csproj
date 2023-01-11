@@ -12,7 +12,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>SmartGloveRebuild2</ApplicationTitle>
+		<ApplicationTitle>SmartGloveV3</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.smartgloverebuild1620</ApplicationId>
