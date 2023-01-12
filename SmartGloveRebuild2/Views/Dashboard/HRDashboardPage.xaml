@@ -109,11 +109,7 @@
                     </Frame> <!--Hour-->
 
                 </Grid>
-                <Button Text="Generate Report" Command="{Binding HRGenerateReportCommand}">
-                    <Button.BindingContext>
-                        <viewmodel:HRGenerateReportViewModel/>
-                    </Button.BindingContext>
-                </Button>
+                <Button Text="Generate Report" Clicked="Button_Clicked"/>
 
 
                 <Image Source="sglogo.png" 

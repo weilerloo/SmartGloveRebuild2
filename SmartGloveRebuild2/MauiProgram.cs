@@ -93,6 +93,7 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddTransient<NextReasonRejectListViewModel>();
         builder.Services.AddSingleton<LoadingPageViewModel>();
         builder.Services.AddTransient<UpdateSlotsDetailViewModel>();
+        builder.Services.AddTransient<HRGenerateReportViewModel>();
         builder.Services.AddTransient<ScheduleViewModel>();
         builder.Services.AddTransient<CheckCalendarViewModel>();
         builder.Services.AddTransient<UpdateSlotsViewModel>();

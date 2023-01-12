@@ -556,18 +556,29 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         }
                         else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber == App.UserDetails.EmployeeNumber)
                         {
-                            foreach (var sdl in response)
+                            if (response.Count > 0)
                             {
-                                cm.Color = Color.FromArgb("#FFA500");
+                                foreach (var sdl in response)
+                                {
+                                    cm.Color = Color.FromArgb("#FFA500");//orange
+                                    cm.IsBooked = true;
+                                    //cm.Remark = sdl.Remarks;
+                                    cm.Hours = sdl.Hours;
+                                    cm.GroupName = sdl.GroupName;
+                                }
+                            }
+                            else
+                            {
+                                cm.Color = Color.FromArgb("#FFA500");//orange
                                 cm.IsBooked = true;
                                 //cm.Remark = sdl.Remarks;
-                                cm.Hours = sdl.Hours;
-                                cm.GroupName = sdl.GroupName;
+                                cm.Hours = getEmployeeSchedule.Hours;
+                                cm.GroupName = getEmployeeSchedule.GroupName;
                             }
                         }
                         else if (checkIsFull != null)
                         {
-                            cm.Color = Color.FromArgb("#FF0000");
+                            cm.Color = Color.FromArgb("#FF0000");//red
                         }
                         else if (DayDifferences < 7 && response.Count() != 0)
                         {
@@ -576,26 +587,26 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                                 if (sdl.Status == true)
                                 {
                                     cm.Hours = sdl.Hours;
-                                    cm.Color = Color.FromArgb("#32CD32");
+                                    cm.Color = Color.FromArgb("#32CD32");//green
                                     cm.IsAvailable = true;
                                     cm.GroupName = sdl.GroupName;
                                 }
                                 else
                                 {
-                                    cm.Color = Color.FromArgb("#778899");
+                                    cm.Color = Color.FromArgb("#778899");//grey
                                     cm.IsAvailable = false;
                                 }
                             }
                         }
                         else
                         {
-                            cm.Color = Color.FromArgb("#778899");
+                            cm.Color = Color.FromArgb("#778899");//grey
                             cm.IsAvailable = false;
                         }
                     }
                     else
                     {
-                        cm.Color = Color.FromArgb("#778899");
+                        cm.Color = Color.FromArgb("#778899");//grey
                         cm.IsAvailable = false;
                     }
                 }

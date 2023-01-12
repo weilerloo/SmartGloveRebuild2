@@ -2,11 +2,20 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Admin.GenerateReportPage"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:model="clr-namespace:SmartGloveRebuild2.Models"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             x:DataType="viewmodel:HRGenerateReportViewModel"
              Title="GenerateReportPage">
     <VerticalStackLayout>
         <Label 
             Text="Welcome to .Generate Report MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <Button Command="{Binding DownloadReportCommand}"/>
+
+
+        <DatePicker Date="{Binding Selectedmindaymonthyear}" />
+        <DatePicker Date="{Binding Selectedmaxdaymonthyear}" />
     </VerticalStackLayout>
 </ContentPage>

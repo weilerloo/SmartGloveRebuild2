@@ -51,5 +51,6 @@ namespace SmartGloveRebuild2.Models.Group
         public string DayMonthYear{ get; set; }
         public bool IsRejected { get; set; }
         public string RefreshToken { get; set; }
+        public string Department { get; set; }
     }
 }

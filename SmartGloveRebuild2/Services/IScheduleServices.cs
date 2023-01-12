@@ -22,5 +22,8 @@ namespace SmartGloveRebuild2.Services
         Task<UpdateScheduleStatusByGroupNameResponse> updateScheduleStatusByGroupName(UpdateScheduleStatusByGroupNameDTO updateScheduleStatusByGroupNameDTO);
         //Task<UpdateScheduleStatusByEmployeeNumberResponse> updateScheduleStatusByEmployeeName(UpdateScheduleStatusByEmployeeNumberDTO updateScheduleStatusByEmployeeNumberDTO);
         Task<RejectScheduleResponse> RejectSchedule(RejectScheduleDTO rejectScheduleDTO);
+        Task<List<ScheduleLogResponses>> GetScheduleLogsByDepartmentGroupDate(GetScheduleLogsByDepartmentGroupDateDTO getScheduleLogsByDepartmentGroupDateDTO);
+        Task<List<ScheduleLogResponses>> GetScheduleLogsByDepartmentandDate(GetSchedulebyGroupandDateDTO getSchedulebyGroupandDateDTO);
+
     }
 }
