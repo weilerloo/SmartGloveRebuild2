@@ -8,7 +8,7 @@
         <Grid BackgroundColor="Transparent">
 
             <VerticalStackLayout Margin="20,0,20,20" Spacing="20">
-                <Grid ColumnDefinitions="*,*" Margin="0,40,0,20">
+                <Grid ColumnDefinitions="*,*" Margin="0,25,0,15">
                     <Image Source="admin.png" HeightRequest="60" WidthRequest="300"/>
                     <Label FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" Grid.Column="1" x:Name="EmployeeName"/>
                 </Grid>
@@ -119,10 +119,10 @@
                     <!--Hour-->
 
                 </Grid>
-                <Grid RowDefinitions="*,*,*" Margin="10,20,10,0" RowSpacing="10">
-                    <Button HeightRequest="60" Grid.Row="0" Text="Schedule OT" Clicked="Button_Clicked_1"/>
+                <Grid RowDefinitions="*,*,*" Margin="10,0,10,0" RowSpacing="10">
+                    <Button HeightRequest="60" Grid.Row="0" Text="Check Calendar" Clicked="Button_Clicked_3"/>
                     <Button HeightRequest="60" Grid.Row="1" Text="Manage Group" Clicked="Button_Clicked_2"/>
-                    <Button HeightRequest="60" Grid.Row="2" Text="Check Calendar" Clicked="Button_Clicked_3"/>
+                    <Button HeightRequest="60" Grid.Row="2" Text="Schedule OT" Clicked="Button_Clicked_1"/>
                 </Grid>
             </VerticalStackLayout>
 

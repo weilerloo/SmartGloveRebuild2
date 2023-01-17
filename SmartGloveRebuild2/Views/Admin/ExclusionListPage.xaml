@@ -25,8 +25,8 @@
             </Grid>
             <Frame Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
                 <Grid ColumnDefinitions="*,*,*">
-                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="Employee Number"/>
-                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Employee Name"/>
+                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="EMP.NUM"/>
+                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="EMP.NAME"/>
                     <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="Remove"/>
                 </Grid>
             </Frame>

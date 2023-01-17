@@ -12,7 +12,7 @@
         <Grid RowDefinitions="Auto,*,Auto,Auto">
             <VerticalStackLayout Grid.Row="0">
                 <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="0,0,0,30">
-                    <Label Text="Choose the Groups." FontSize="24" Margin="20,20,0,10" TextColor="Black"/>
+                    <Label Text="Select Multiple Dates." FontSize="18" Margin="20,20,0,10" TextColor="Black"/>
                     <CollectionView Grid.Row="1" ItemsSource="{Binding Monthname}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:CalendarModel">
@@ -23,16 +23,16 @@
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-                    <HorizontalStackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center">
-                        <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Click me to Choose." 
+                    <StackLayout Grid.Row="2" Margin="20" HorizontalOptions="Start">
+                        <Picker FontSize="19" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="180" Title="Click me to Choose." TitleColor="SlateGrey" 
                             ItemsSource="{Binding GroupTitleList}" 
                             SelectedItem="{Binding SelectedGroupname}"
                             ItemDisplayBinding="{Binding GroupName}"/>
                         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
-                    </HorizontalStackLayout>
-                    <Button x:Name="Reset" Grid.Row="3" HorizontalOptions="Start" Margin="20,0,0,0" WidthRequest="80" Grid.Column="0" Text="Reset" Command="{Binding DeleteButtonSelectedCommand}"/>
-                    <Button x:Name="MinusButton" Grid.Row="3" Grid.Column="2" Text="-" Margin="2" Command="{Binding DecreaseMonthCommand}"/>
-                    <Button x:Name="AddButton" Grid.Row="3" Grid.Column="3" Text="+" Margin="2" Command="{Binding IncreaseMonthCommand}"/>
+                    </StackLayout>
+                    <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="2" Text="-" Margin="5,20,0,0" Command="{Binding DecreaseMonthCommand}"/>
+                    <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2,20,2,0" Command="{Binding IncreaseMonthCommand}"/>
+                    <Button Grid.Row="2" Grid.Column="4" Text="Reset" Margin="2,20,10,0" Command="{Binding DeleteButtonSelectedCommand}"/>
                 </Grid>
                 <CollectionView ItemsSource="{Binding Datename}">
                     <CollectionView.ItemsLayout>
@@ -86,7 +86,7 @@
             <VerticalStackLayout Grid.Row="2">
                 <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto,Auto,*"
                                   RowDefinitions="Auto,Auto"
-                                  Margin="0,30,0,40">
+                      Margin="30,0,0,0">
                     <Ellipse 
                             Stroke="Green"
                             StrokeThickness="4"
@@ -94,7 +94,7 @@
                             WidthRequest="10"
                             Fill="Green"
                             Grid.Column="1"/>
-                    <Label Grid.Column="2" Margin="10,0,40,0" Text="Status ON"/>
+                    <Label Grid.Column="2" Margin="20,0,40,0" Text="Status ON"/>
                     <Ellipse 
                             Stroke="Red"
                             StrokeThickness="4"
@@ -111,9 +111,9 @@
                             Grid.Column="5"/>
                     <Label Grid.Column="6" Margin="10,0,40,0" Text="N/A"/>
                 </Grid>
-                <Label Margin="10" Grid.Column="1" Grid.Row="0" Text="Please Select Multiple Days to Exclude." HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Label Margin="0,20,0,0" Grid.Column="1" Grid.Row="0" Text="Please Select Multiple Days to Exclude." HorizontalTextAlignment="Center" FontAttributes="Bold"/>
             </VerticalStackLayout>
-            <Button Margin="0,50,0,50" Grid.Row="3" Command="{Binding GoToReasonPageCommand}" Text="Confirm" HeightRequest="50" WidthRequest="200"/>
+            <Button Margin="0,30,0,30" Grid.Row="3" Command="{Binding GoToReasonPageCommand}" Text="Confirm" HeightRequest="50" WidthRequest="200"/>
         </Grid>
     </ScrollView>
 </ContentPage>

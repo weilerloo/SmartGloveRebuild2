@@ -7,7 +7,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewmodel:NextReasonRejectListViewModel"
-             Title="Exclude Staff from List Detail">
+             Title="Exclude Overtime Date">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
@@ -29,7 +29,7 @@
             </Frame>-->
             <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="1" Placeholder="{Binding Reasonremark}" Text="{Binding Approvedreason}"/>
             <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="2" Placeholder="Enter yout reject reason here..." IsVisible="{Binding Cansee}" Text="{Binding Rejectreason}"/>
-            <Button Margin="10" Grid.Row="3" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Text="Confirm" Command="{Binding ApprovedRemoveFromListCommand}"/>
+            <Button Margin="50" Grid.Row="3" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Text="Confirm" Command="{Binding ApprovedRemoveFromListCommand}"/>
         </Grid>
     </ScrollView>
 </ContentPage>

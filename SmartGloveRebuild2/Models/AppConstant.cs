@@ -53,7 +53,7 @@ namespace SmartGloveRebuild2.Models
                                 new ShellContent
                                 {
                                     Icon = Icons.ScheduleOT,
-                                    Title = "Schdedule OT",
+                                    Title = "Schedule OT",
                                     ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
                                 },
                                 new ShellContent
@@ -113,7 +113,7 @@ namespace SmartGloveRebuild2.Models
                                 new ShellContent
                                 {
                                     Icon = Icons.ScheduleOT,
-                                    Title = "Schdedule OT",
+                                    Title = "Schedule OT",
                                     ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
                                 },
                                 new ShellContent
@@ -173,7 +173,7 @@ namespace SmartGloveRebuild2.Models
                                 new ShellContent
                                 {
                                     Icon = Icons.ScheduleOT,
-                                    Title = "Schdedule OT",
+                                    Title = "Schedule OT",
                                     ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
                                 },                                
                                 new ShellContent
@@ -233,7 +233,7 @@ namespace SmartGloveRebuild2.Models
                                 new ShellContent
                                 {
                                     Icon = Icons.ScheduleOT,
-                                    Title = "Schdedule OT",
+                                    Title = "Schedule OT",
                                     ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
                                 },
                                 new ShellContent
@@ -288,7 +288,7 @@ namespace SmartGloveRebuild2.Models
                                 new ShellContent
                                 {
                                     Icon = Icons.ScheduleOT,
-                                    Title = "Schdedule OT",
+                                    Title = "Schedule OT",
                                     ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
                                 },
                                 new ShellContent
