@@ -477,7 +477,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     foreach (var Group in response)// 14/12/2022, Biomas, Sigma, GX2
                     {
                         var checkgroup = response.Where(f => f.DayMonthYear.Contains(updateSlotsModel.DayMonthYear));
-                        if (checkgroup != null)
+                        var checkExistinggroup = getGroup.Where(f => f.GroupName.Equals(Group.GroupName)).FirstOrDefault();
+                        if (checkgroup != null && checkExistinggroup != null)
                         {
                             GroupSchedule.Add(new UpdateGroupModel
                             {
@@ -491,7 +492,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                     foreach (var newG in getGroup)  // From new group
                     {
-                        var checkgroupfromGroups = response.Where(f => f.GroupName.Contains(newG.GroupName));
+                        var checkgroupfromGroups = response.Where(f => f.GroupName.Equals(newG.GroupName)).FirstOrDefault();
                         if (checkgroupfromGroups == null)
                         {
                             GroupSchedule.Add(new UpdateGroupModel

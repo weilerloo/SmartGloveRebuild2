@@ -514,37 +514,57 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         ScheduleDate = cm.DayMonthYear,
                     });
 
-                    if (GetSchedulebyGroupandDateresponse != null)
+                    if (GetSchedulebyGroupandDateresponse.Count > 0)
                     {
 
-                        var checkIsFull = GetSchedulebyGroupandDateresponse.Find(f => f.AvailablePaxs >= f.Paxs);
-                        var checkIsNotFull = GetSchedulebyGroupandDateresponse.Find(f => (f.AvailablePaxs / f.Paxs) * 100 <= 80.00);
-                        var checkIsOFF = GetSchedulebyGroupandDateresponse.Find(f => f.Status == false);
+                        foreach (var getschdule in GetSchedulebyGroupandDateresponse)
+                        {
+                            if (getschdule.Hours == 0 && getschdule.Paxs == 0)
+                            {
+                                cm.IsSelected = true;
+                                cm.GroupName = selectedgroupname.GroupName;
+                                cm.Color = Color.FromArgb("#778899");
+                                cm.IsAvailable = false;
+                            }
+                            else
+                            {
+                                var checkIsFull = GetSchedulebyGroupandDateresponse.Find(f => f.AvailablePaxs >= f.Paxs);
+                                var checkIsNotFull = GetSchedulebyGroupandDateresponse.Find(f => (f.AvailablePaxs / f.Paxs) * 100 <= 80.00);
+                                var checkIsOFF = GetSchedulebyGroupandDateresponse.Find(f => f.Status == false);
 
-                        if (checkIsFull != null)
-                        {
-                            cm.IsAvailable = true;
-                            cm.Color = Color.FromArgb("#0000FF"); //BLUE
-                            cm.GroupName = selectedgroupname.GroupName;
+                                if (checkIsFull != null)
+                                {
+                                    cm.IsAvailable = true;
+                                    cm.Color = Color.FromArgb("#0000FF"); //BLUE
+                                    cm.GroupName = selectedgroupname.GroupName;
+                                }
+                                else if (checkIsOFF != null)
+                                {
+                                    cm.Color = Color.FromArgb("#778899");
+                                    cm.GroupName = selectedgroupname.GroupName;
+                                }
+                                else if (checkIsNotFull != null)
+                                {
+                                    cm.IsAvailable = true; //not relevant
+                                    cm.Color = Color.FromArgb("#A52A2A");
+                                    cm.GroupName = selectedgroupname.GroupName;
+                                }
+                                //else
+                                //{
+                                //    cm.IsSelected = true;
+                                //    cm.GroupName = selectedgroupname.GroupName;
+                                //    cm.Color = Color.FromArgb("#778899");
+                                //    cm.IsAvailable = false;
+                                //}
+                            }
                         }
-                        else if (checkIsOFF != null)
-                        {
-                            cm.Color = Color.FromArgb("#778899");
-                            cm.GroupName = selectedgroupname.GroupName;
-                        }
-                        else if (checkIsNotFull != null)
-                        {
-                            cm.IsAvailable = true; //not relevant
-                            cm.Color = Color.FromArgb("#A52A2A");
-                            cm.GroupName = selectedgroupname.GroupName;
-                        }
-                        else
-                        {
-                            cm.IsSelected = true;
-                            cm.GroupName = selectedgroupname.GroupName;
-                            cm.Color = Color.FromArgb("#778899");
-                            cm.IsAvailable = false;
-                        }
+                    }
+                    else
+                    {
+                        cm.IsSelected = true;
+                        cm.GroupName = selectedgroupname.GroupName;
+                        cm.Color = Color.FromArgb("#778899");
+                        cm.IsAvailable = false;
                     }
                 }
             }

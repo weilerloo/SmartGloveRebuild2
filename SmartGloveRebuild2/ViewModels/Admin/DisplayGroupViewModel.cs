@@ -41,6 +41,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             }
         }
 
+        private bool cansee;
+        public bool Cansee
+        {
+            get => cansee;
+            set => SetProperty(ref cansee, value);
+        }
+
 
         private GroupList selectedgroupname;
         public GroupList SelectedGroupname
@@ -68,11 +75,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             if (IsBusy) { return; }
 
             IsBusy = true;
-            var response = await _groupServices.DisplayGroupFromUsers();
+            var responsefromdisplaygrp = await _groupServices.DisplayGroup();
 
-            if (response.Count > 0)
+            if (responsefromdisplaygrp.Count > 0)
             {
-                foreach (var grp in response)
+                foreach (var grp in responsefromdisplaygrp)
                 {
                     var res = GroupTitleList.Where(f => f.GroupName.Equals(grp.GroupName)).FirstOrDefault();
                     if (res != null)
@@ -96,26 +103,32 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     GroupNameList.Clear();
                     TotalWorker = 0;
                 }
+                var response = await _groupServices.DisplayGroupFromUsers();
 
                 foreach (var grp in response)
                 {
-                    var res = GroupTitleList.Where(f => f.GroupName.Contains(SelectedGroupname.GroupName));
-                    if (res != null)
+                    if (grp.GroupName == SelectedGroupname.GroupName)
                     {
-                        if (grp.GroupName == SelectedGroupname.GroupName)
+                        GroupNameList.Add(new GroupList
                         {
-                            GroupNameList.Add(new GroupList
-                            {
-                                GroupName = grp.GroupName,
-                                EmployeeName = grp.EmployeeName,
-                                TotalHour = grp.TotalHour,
-                                UserName = grp.UserName,
+                            GroupName = grp.GroupName,
+                            EmployeeName = grp.EmployeeName,
+                            TotalHour = grp.TotalHour,
+                            UserName = grp.UserName,
 
-                            });
+                        });
 
-                            TotalWorker++;
-                        }
+                        TotalWorker++;
                     }
+                }
+
+                if (GroupNameList.Count <= 0)
+                {
+                    Cansee = false;
+                }
+                else
+                {
+                    Cansee = true;
                 }
             }
             IsRefreshing = false;
