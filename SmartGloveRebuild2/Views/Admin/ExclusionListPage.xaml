@@ -14,16 +14,20 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView>
-        <Grid RowDefinitions="Auto,Auto,*,Auto">
-            <Grid RowDefinitions="Auto,Auto" Grid.Row="0" >
+        <Grid RowDefinitions="Auto,Auto,Auto,*,Auto">
+            <Grid RowDefinitions="Auto,Auto,Auto" Grid.Row="0">
                 <Grid Grid.Row="0" Margin="20,20,0,20"  ColumnDefinitions="Auto,Auto,Auto">
-                    <Label FontSize="24" Grid.Column="0" Text="Groups for" TextColor="Black"/>
-                    <Label FontAttributes="Bold" FontSize="24" Margin="10,0,0,0" Grid.Column="1" Text="{Binding CalendarModel.DayMonthYear}" TextColor="Black"/>
-                    <Label FontAttributes="Bold" FontSize="24" Margin="10,0,0,0" Grid.Column="2" Text="{Binding CalendarModel.GroupName}" TextColor="Black"/>
+                    <Label FontAttributes="Bold" FontSize="24" Margin="10,0,0,0" Grid.Column="0" Text="{Binding CalendarModel.GroupName}" TextColor="Black"/>
+                    <Label FontSize="24" Grid.Column="1" Text="  on" TextColor="Black"/>
+                    <Label VerticalTextAlignment="End" FontSize="20" Margin="10,0,0,0" Grid.Column="2" Text="{Binding CalendarModel.DayMonthYear}" TextColor="Black"/>
                 </Grid>
                 <Label Margin="20,0,0,20" FontSize="21" Grid.Row="1" Text="Please Click the 'X' to Exclude Schedule." TextColor="Black"/>
             </Grid>
-            <Frame Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
+            <Grid Grid.Row="1" ColumnDefinitions="*,*">
+                <Button Margin="30,-5,20,5" Grid.Column="0"  Text="Approved" Command="{Binding NextIsPressedCommand}" />
+                <Button Margin="30,-5,20,5" Grid.Column="1" Text="Excluded" Command="{Binding BackIsPressedCommand}" />
+            </Grid>
+            <Frame Grid.Row="2" CornerRadius="0" Padding="0,10,0,10">
                 <Grid ColumnDefinitions="*,*,*">
                     <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="EMP.NUM"/>
                     <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="EMP.NAME"/>
@@ -31,7 +35,7 @@
                 </Grid>
             </Frame>
             <CollectionView ItemsSource="{Binding FetchedRejectList}" 
-                            Grid.Row="2"
+                            Grid.Row="3"
                             IsVisible="{Binding Cansee ,Converter={StaticResource InvertedBoolConverter}}"
                             SelectedItem="{Binding Items}"
                             SelectionMode="Multiple">
@@ -60,7 +64,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
             <CollectionView ItemsSource="{Binding BeforeReasonRejectList}" 
-                            Grid.Row="2"
+                            Grid.Row="3"
                             IsVisible="{Binding Cansee}"
                             SelectedItem="{Binding Items}"
                             SelectionMode="Multiple">
@@ -88,11 +92,9 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Grid Grid.Row="3" Padding="10" ColumnDefinitions="*,*,*,*" HeightRequest="70">
-                <Button Grid.Column="0" Text="Approved" Command="{Binding NextIsPressedCommand}" />
-                <Button Grid.Column="1" Text="Excluded" Command="{Binding BackIsPressedCommand}" />
-                <Button Background="Red" Grid.Column="2" Text="Exclude All" Command="{Binding RejectAllEmployeeCommand}" />
-                <Button Grid.Column="3" Text="Confirm" Command="{Binding NextReasonRejectListCommand}" />
+            <Grid Grid.Row="4" Padding="10" ColumnDefinitions="*,*" HeightRequest="70">
+                <Button Margin="5" Background="Red" Grid.Column="0" Text="Exclude All" Command="{Binding RejectAllEmployeeCommand}" />
+                <Button Margin="5" Grid.Column="1" Text="Confirm" Command="{Binding NextReasonRejectListCommand}" />
             </Grid>
         </Grid>
     </ScrollView>

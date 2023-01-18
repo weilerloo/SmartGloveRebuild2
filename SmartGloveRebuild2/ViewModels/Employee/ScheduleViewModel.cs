@@ -582,9 +582,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         }
                         else if (DayDifferences < 7 && response.Count() != 0)
                         {
+                            var currentday = DateTime.Now.Day;
                             foreach (var sdl in response)
                             {
-                                if (sdl.Status == true)
+                                if (sdl.Status == true && currentday <= cm.Day)
                                 {
                                     cm.Hours = sdl.Hours;
                                     cm.Color = Color.FromArgb("#32CD32");//green
@@ -616,6 +617,15 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                 await Shell.Current.DisplayAlert("You are Unassigned", "Please get a group to be assigned first.", "OK");
 
             }
+
+            if (TotalHours >= 104)
+            {
+                Notesforot = "You are NOT Eligible for OT's.";
+            }
+            else
+            {
+                Notesforot = "You are Eligible for OT's.";
+            }
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -643,8 +653,20 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                                 $"OT Hours is :{selectedItem.Hours} \n" +
                                 //$"OT Purposes :{selectedItem.Remark} \n\n" +
                                 "Do you want to schedule?", "Yes", "No");
+
+
+
                             if (action)
                             {
+                                var tthour = TotalHours + selectedItem.Hours;
+                                if(tthour > 104)
+                                {
+                                    ccm.IsSelected = false;
+                                    await Shell.Current.DisplayAlert("Messages","Current OT Hour is exceeding 104 hours. Your schedule has disabled.","OK");
+                                    return;
+                                }
+
+
                                 TotalHours = selectedItem.Hours + TotalHours;
                                 ccm.Color = Color.FromArgb("#006400");
                                 Items.Add(new CalendarModel

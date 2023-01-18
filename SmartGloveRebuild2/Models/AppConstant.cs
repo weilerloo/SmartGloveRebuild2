@@ -166,12 +166,6 @@ namespace SmartGloveRebuild2.Models
                                 },
                                 new ShellContent
                                 {
-                                    Icon = Icons.CheckCalendar,
-                                    Title = "Check Calendar",
-                                    ContentTemplate = new DataTemplate(typeof(CheckCalendarPage)),
-                                },
-                                new ShellContent
-                                {
                                     Icon = Icons.ScheduleOT,
                                     Title = "Schedule OT",
                                     ContentTemplate = new DataTemplate(typeof(ScheduleOT)),

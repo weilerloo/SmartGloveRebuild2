@@ -516,14 +516,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                     if (GetSchedulebyGroupandDateresponse.Count > 0)
                     {
-
                         foreach (var getschdule in GetSchedulebyGroupandDateresponse)
                         {
                             if (getschdule.Hours == 0 && getschdule.Paxs == 0)
                             {
                                 cm.IsSelected = true;
                                 cm.GroupName = selectedgroupname.GroupName;
-                                cm.Color = Color.FromArgb("#778899");
+                                cm.Color = Color.FromArgb("#778899");//grey
                                 cm.IsAvailable = false;
                             }
                             else
@@ -534,19 +533,22 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                                 if (checkIsFull != null)
                                 {
+                                    cm.IsSelected = false;
                                     cm.IsAvailable = true;
                                     cm.Color = Color.FromArgb("#0000FF"); //BLUE
                                     cm.GroupName = selectedgroupname.GroupName;
                                 }
                                 else if (checkIsOFF != null)
                                 {
+                                    cm.IsSelected = true;
                                     cm.Color = Color.FromArgb("#778899");
                                     cm.GroupName = selectedgroupname.GroupName;
                                 }
                                 else if (checkIsNotFull != null)
                                 {
+                                    cm.IsSelected = false;
                                     cm.IsAvailable = true; //not relevant
-                                    cm.Color = Color.FromArgb("#A52A2A");
+                                    cm.Color = Color.FromArgb("#A52A2A");//chocolate
                                     cm.GroupName = selectedgroupname.GroupName;
                                 }
                                 //else

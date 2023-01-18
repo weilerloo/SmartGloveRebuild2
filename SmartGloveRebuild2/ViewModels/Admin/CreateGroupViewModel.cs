@@ -26,7 +26,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             _groupService = groupService;
         }
 
-
         [RelayCommand]
         public async Task CreateGroup(CreateGroupDTO createGroupDTO)
         {
@@ -45,6 +44,5 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
             }
         }
-
     }
 }

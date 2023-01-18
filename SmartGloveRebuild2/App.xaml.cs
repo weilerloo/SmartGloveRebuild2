@@ -14,6 +14,7 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        UserAppTheme = AppTheme.Light;
         //Border less entry
         Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(BorderlessEntry), (handler, view) =>
         {
