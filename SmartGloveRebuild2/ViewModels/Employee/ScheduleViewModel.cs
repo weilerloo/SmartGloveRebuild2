@@ -582,10 +582,11 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         }
                         else if (DayDifferences < 7 && response.Count() != 0)
                         {
-                            var currentday = DateTime.Now.Day;
                             foreach (var sdl in response)
                             {
-                                if (sdl.Status == true && currentday <= cm.Day)
+                                DateTime cmdaymonthyear = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
+
+                                if (sdl.Status == true && cmdaymonthyear >= DateTime.Now)
                                 {
                                     cm.Hours = sdl.Hours;
                                     cm.Color = Color.FromArgb("#32CD32");//green
