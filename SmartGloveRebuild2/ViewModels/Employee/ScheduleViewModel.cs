@@ -246,18 +246,18 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     Monthname.Add(new CalendarModel
                     {
                         Year = year,
-                        LastCurrentMonth = "Januray ~ February"
+                        LastCurrentMonth = "January ~ February"
                     });
 
                     for (int a = 0; a < 7; a++)
                     {
                         //Day of Week
-                        string dayoftheweek = new DateTime(year - 1, 1, 21 + a).ToString("ddd");
+                        string dayoftheweek = new DateTime(year, 1, 21 + a).ToString("ddd");
                         Datename.Add(new CalendarModel
                         {
                             Currentday = dayoftheweek, // 21, 22
                             Month = 12,
-                            Year = year - 1,
+                            Year = year,
                         });
                     } //Day Name
 
@@ -265,9 +265,9 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     {
                         CalendarDetails.Add(new CalendarModel
                         {
-                            Day = c, // start with the curretn month
+                            Day = c, // start with the current month
                             Month = 1,
-                            Year = year - 1,
+                            Year = year,
                         });
                     }  //End of December
 
@@ -382,7 +382,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         CalendarDetails.Add(new CalendarModel
                         {
                             Day = q,
-                            Month = month,
+                            Month = month + 1,
                             Year = year,
                         });
 

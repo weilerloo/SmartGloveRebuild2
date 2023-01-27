@@ -191,7 +191,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
                         ListCalendar.Add(new UpdateSlotsModel
                         {
-                            Day = b, // start with the curretn month
+                            Day = b, // start with the current month
                             Currentmonth = 11,
                             Currentyear = year,
                         });
@@ -244,13 +244,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         });
                     }  //End of December
 
-                    for (int d = 1; d <= DateTime.DaysInMonth(year + 1, 2); d++)
+                    for (int d = 1; d <= DateTime.DaysInMonth(year, 2); d++)
                     {
                         ListCalendar.Add(new UpdateSlotsModel
                         {
                             Day = d,
                             Currentmonth = 2,
-                            Currentyear = year + 1,
+                            Currentyear = year,
                         });
 
                         if (d == 20)

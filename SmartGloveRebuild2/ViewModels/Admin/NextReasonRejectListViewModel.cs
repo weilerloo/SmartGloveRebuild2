@@ -241,7 +241,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                 }
                 IsBusy = false;
-                await Shell.Current.DisplayAlert("Messages", "Submit Successfull.", "Ok");
+                await Shell.Current.DisplayAlert("Messages", "Submit Successful.", "Ok");
                 await Shell.Current.GoToAsync("../..");
             }
         }
