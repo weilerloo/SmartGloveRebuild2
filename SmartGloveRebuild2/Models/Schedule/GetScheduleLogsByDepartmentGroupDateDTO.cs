@@ -8,7 +8,7 @@ namespace SmartGloveRebuild2.Models.Schedule
 {
     public class GetScheduleLogsByDepartmentGroupDateDTO
     {
-        public string GroupName { get; set; }
+        public string GruopName { get; set; }
         public string Department { get; set; }
         public string ScheduleDate { get; set; }
     }

@@ -34,8 +34,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<IScheduleServices, ScheduleServices>();
         builder.Services.AddSingleton<IGroupServices, GroupServices>();
 #if WINDOWS
-    
-
 builder.ConfigureLifecycleEvents(events =>
         {
             events.AddWindows(wndLifeCycleBuilder =>
@@ -56,6 +54,21 @@ builder.ConfigureLifecycleEvents(events =>
                 });
             });
         });
+
+
+#elif ANDROID
+builder.ConfigureLifecycleEvents(events =>
+            {
+                events.AddAndroid(android => android.OnCreate((activity, bundle) => MakeStatusBarTranslucent(activity)));
+
+                static void MakeStatusBarTranslucent(Android.App.Activity activity)
+                {
+
+                    //activity.Window.SetFlags(Android.Views.WindowManagerFlags.TranslucentStatus, Android.Views.WindowManagerFlags.TranslucentStatus);
+
+                    activity.Window.SetStatusBarColor(Android.Graphics.Color.Rgb(55, 88, 156));
+                }
+            });
 #endif
         //Views
         builder.Services.AddSingleton<LoginPage>();
@@ -73,7 +86,7 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddTransient<UpdateSlotsDetails>();
         builder.Services.AddTransient<CheckCalendarPage>();
         builder.Services.AddTransient<UpdateSlotsPage>();
-        builder.Services.AddSingleton<GenerateReportPage>();
+        builder.Services.AddTransient<GenerateReportPage>();
         builder.Services.AddTransient<EmployeeDashboardPage>();
         builder.Services.AddTransient<ClerkDashboardPage>();
         builder.Services.AddTransient<HODDashboardPage>();

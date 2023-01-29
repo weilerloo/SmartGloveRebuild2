@@ -7,15 +7,43 @@
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewmodel:HRGenerateReportViewModel"
              Title="GenerateReportPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .Generate Report MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Button Command="{Binding DownloadReportCommand}"/>
-
-
-        <DatePicker Date="{Binding Selectedmindaymonthyear}" />
-        <DatePicker Date="{Binding Selectedmaxdaymonthyear}" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label FontAttributes="Bold" Text="Generate Report" FontSize="22" Margin="20,20,0,10" TextColor="Black"/>
+            <Label Text="Please CHOOSE from acquires field." FontSize="22" Margin="20,0,0,10" TextColor="Black"/>
+            <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center">
+                <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Department List" 
+                            ItemsSource="{Binding DepartmentList}" 
+                            SelectedItem="{Binding SelectedDepartment}"
+                            ItemDisplayBinding="{Binding Department}"/>
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+            </StackLayout>
+            <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center">
+                <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Group List" 
+                            ItemsSource="{Binding FromGroupList}" 
+                            SelectedItem="{Binding SelectedGroup}"
+                            ItemDisplayBinding="{Binding GroupName}"/>
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+            </StackLayout>
+            <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center">
+                <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Employee List" 
+                            ItemsSource="{Binding EmployeeList}" 
+                            SelectedItem="{Binding SelectedEmployee}"
+                            ItemDisplayBinding="{Binding UserName}"/>
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+            </StackLayout>
+            <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center" Spacing="20">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Starting Date" FontSize="18" FontAttributes="Bold"/>
+                    <DatePicker Date="{Binding Selectedmindaymonthyear}" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Ending Date" FontSize="18" FontAttributes="Bold"/>
+                    <DatePicker Date="{Binding Selectedmaxdaymonthyear}" />
+                </HorizontalStackLayout>
+                <Button Margin="0,20,0,20" Text="Generate Report" WidthRequest="200" HeightRequest="50" Command="{Binding DownloadReportCommand}"/>
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+            </StackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
