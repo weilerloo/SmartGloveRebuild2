@@ -646,10 +646,10 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                 x.CurrentPageNumber();
                             });
                     });
-                }).GeneratePdf(Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("Mdyyyy")}.pdf"));
+                }).GeneratePdf(Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("d_M_yyyy")}.pdf"));
 
 
-                var filepath = Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("Mdyyyy")}.pdf");
+                var filepath = Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("d_M_yyyy")}.pdf");
                 await Launcher.OpenAsync(new OpenFileRequest
                 {
                     File = new ReadOnlyFile(filepath),
@@ -681,10 +681,10 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             
             
             
-            .GeneratePdf(Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("MdyyyyHHmmss")}.pdf"));
+            .GeneratePdf(Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("d_M_yyyy")}.pdf"));
 
 
-            var filepath = Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("MdyyyyHHmmss")}.pdf");
+            var filepath = Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("d_M_yyyy")}.pdf");
             await Launcher.OpenAsync(new OpenFileRequest
             {
                 File = new ReadOnlyFile(filepath),
