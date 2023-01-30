@@ -278,19 +278,6 @@ namespace SmartGloveRebuild2.Models
                                     Title = "Generate Report",
                                     ContentTemplate = new DataTemplate(typeof(GenerateReportPage)),
                                 },
-                                                                
-                                new ShellContent
-                                {
-                                    Icon = Icons.ScheduleOT,
-                                    Title = "Schedule OT",
-                                    ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
-                                },
-                                new ShellContent
-                                {
-                                    Icon = Icons.RejectedOT,
-                                    Title = "Rejected OT",
-                                    ContentTemplate = new DataTemplate(typeof(RejectedOT)),
-                                },
                    }
                 };
 

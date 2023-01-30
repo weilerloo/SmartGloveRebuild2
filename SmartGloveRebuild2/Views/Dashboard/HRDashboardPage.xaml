@@ -109,13 +109,13 @@
                     </Frame> <!--Hour-->
 
                 </Grid>
-                <Button Text="Generate Report" Clicked="Button_Clicked"/>
+                <Button Margin="0,40,0,0" Text="Generate Report" Clicked="Button_Clicked"/>
 
 
                 <Image Source="sglogo.png" 
                        HeightRequest="20" 
                        WidthRequest="300" 
-                       Margin="0,120,0,0"/>
+                       Margin="0,50,0,0"/>
             </VerticalStackLayout>
 
         </Grid>
