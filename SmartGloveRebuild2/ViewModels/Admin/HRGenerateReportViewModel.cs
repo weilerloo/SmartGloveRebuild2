@@ -247,9 +247,15 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 var maxdate = selectedmaxdaymonthyear.ToString("d/m/yyyy");
                 foreach (DateTime day in EachDay(selectedmindaymonthyear, selectedmaxdaymonthyear))
                 {
-                    var getfromDep = await _scheduleServices.GetSchedulebyDate(new Models.Schedule.GetSchedulebyDateDTO
+                    var dymday = day.Day;
+                    var dymmonth = day.Month;
+                    var dymyear = day.ToString("yyyy");
+                    var concatenateddmy = dymday + "%2F" + dymmonth + "%2F" + dymyear;
+                    var getfromDep = await _scheduleServices.GetScheduleLogsByDepartmentGroupDate(new Models.Schedule.GetScheduleLogsByDepartmentGroupDateDTO
                     {
-                        ScheduleDate = day.ToString("d/M/yyyy"),
+                        Department = selectedDepartment.Department,
+                        GruopName = selectedGroup.GroupName,
+                        ScheduleDate = concatenateddmy,
                     });
                     if (getfromDep != null)
                     {
@@ -266,11 +272,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                     }
                                 }
                             }
-                            if (item.UserName == selectedEmployee.UserName)
+                            if (item.EmployeeNumber == selectedEmployee.UserName && item.GroupName == selectedGroup.GroupName)
                             {
                                 FinalList.Add(item);
                             }
                         }
+                        Grouplistfrompicker = await CalculateSection();
                     }
                 }
                 if (FinalList.Count == 0)
@@ -402,7 +409,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             {
                 foreach (var grp in GroupsfromDepartment)
                 {
-                    if (grp.Department == selectedDepartment.Department)
+                    if(grp.GroupName == "Unassigned")
+                    {
+                        continue;
+                    }
+                    else if (grp.Department == selectedDepartment.Department)
                     {
                         GroupsName.Add(grp.GroupName);
                     }
