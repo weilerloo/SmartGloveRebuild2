@@ -512,6 +512,22 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     });
                     if (getEmployeeSchedule != null)
                     {
+                        if (getEmployeeSchedule != null && getEmployeeSchedule.IsRejected == true)  //Red
+                        {
+                            cm.Color = Color.FromArgb("#FF0000");
+                            cm.IsRejected = true;
+                            cm.LastCurrentMonth = "red";
+                        }
+                        else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber == App.UserDetails.EmployeeNumber)
+                        {
+                            cm.Color = Color.FromArgb("#FFA500");
+                            cm.IsBooked = true;
+                            //cm.Remark = sdl.Remarks;
+                            cm.Hours = getEmployeeSchedule.Hours;
+                            cm.GroupName = getEmployeeSchedule.GroupName;
+                            cm.LastCurrentMonth = "yellow";
+                        }
+
                         var convertedstring = getEmployeeSchedule.ScheduleDate.ToString("d/M/yyyy");
                         if (convertedstring == cm.DayMonthYear)
                         {
@@ -537,79 +553,81 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         var DayDifferences = (DateTime.Now - sDate.Date).Days;
                         var checkIsFull = response.Find(f => f.AvailablePaxs >= f.Paxs && f.Status == true);
 
-                        if (getEmployeeSchedule != null && getEmployeeSchedule.IsRejected == true)
-                        {
-                            cm.Color = Color.FromArgb("#FF0000");
-                            cm.IsRejected = true;
-                        }
-                        else if (DayDifferences > 7 && response.Count() != 0 && getEmployeeSchedule != null)
-                        {
-                            foreach (var sdl in response)
-                            {
-                                cm.Color = Color.FromArgb("#FFA500");
-                                cm.IsBooked = true;
-                                //cm.Remark = sdl.Remarks;
-                                cm.Hours = sdl.Hours;
-                                cm.GroupName = sdl.GroupName;
-                            }
+                        //if (DayDifferences > 7 && response.Count() != 0)
+                        //{
+                        //    if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber == App.UserDetails.EmployeeNumber && getEmployeeSchedule.IsRejected == true)
+                        //    {
+                        //        cm.Color = Color.FromArgb("#FFA500");
+                        //        cm.IsBooked = true;
+                        //        //cm.Remark = sdl.Remarks;
+                        //        cm.Hours = getEmployeeSchedule.Hours;
+                        //        cm.GroupName = getEmployeeSchedule.GroupName;
+                        //    }
+                        //    else if (response.Count > 0)
+                        //    {
+                        //        foreach (var sdl in response)
+                        //        {
+                        //            cm.Color = Color.FromArgb("#FFA500");
+                        //            cm.IsBooked = true;
+                        //            //cm.Remark = sdl.Remarks;
+                        //            cm.Hours = sdl.Hours;
+                        //            cm.GroupName = sdl.GroupName;
+                        //        }
+                        //    }
 
-                        }
-                        else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber == App.UserDetails.EmployeeNumber)
+                        //}
+                        if (DayDifferences < 7 && response.Count() != 0)
                         {
-                            if (response.Count > 0)
+                            if (checkIsFull != null && cm.LastCurrentMonth == null)
+                            {
+                                cm.Color = Color.FromArgb("#FF0000");
+                            }
+                            else if (getEmployeeSchedule != null)
                             {
                                 foreach (var sdl in response)
                                 {
-                                    cm.Color = Color.FromArgb("#FFA500");//orange
-                                    cm.IsBooked = true;
-                                    //cm.Remark = sdl.Remarks;
-                                    cm.Hours = sdl.Hours;
-                                    cm.GroupName = sdl.GroupName;
+                                    DateTime cmdaymonthyear = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
+
+                                    if (sdl.Status == true && cmdaymonthyear >= DateTime.Now && getEmployeeSchedule.GroupName != sdl.GroupName && getEmployeeSchedule.IsRejected == true)
+                                    {
+                                        cm.Hours = sdl.Hours;
+                                        cm.Color = Color.FromArgb("#32CD32");//green
+                                        cm.IsAvailable = true;
+                                        cm.GroupName = sdl.GroupName;
+                                    }
                                 }
                             }
                             else
                             {
-                                cm.Color = Color.FromArgb("#FFA500");//orange
-                                cm.IsBooked = true;
-                                //cm.Remark = sdl.Remarks;
-                                cm.Hours = getEmployeeSchedule.Hours;
-                                cm.GroupName = getEmployeeSchedule.GroupName;
-                            }
-                        }
-                        else if (checkIsFull != null)
-                        {
-                            cm.Color = Color.FromArgb("#FF0000");//red
-                        }
-                        else if (DayDifferences < 7 && response.Count() != 0)
-                        {
-                            foreach (var sdl in response)
-                            {
-                                DateTime cmdaymonthyear = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
+                                foreach (var sdl in response)
+                                {
+                                    DateTime cmdaymonthyear = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
 
-                                if (sdl.Status == true && cmdaymonthyear >= DateTime.Now)
-                                {
-                                    cm.Hours = sdl.Hours;
-                                    cm.Color = Color.FromArgb("#32CD32");//green
-                                    cm.IsAvailable = true;
-                                    cm.GroupName = sdl.GroupName;
+                                    if (sdl.Status == true && cmdaymonthyear >= DateTime.Now)
+                                    {
+                                        cm.Hours = sdl.Hours;
+                                        cm.Color = Color.FromArgb("#32CD32");//green
+                                        cm.IsAvailable = true;
+                                        cm.GroupName = sdl.GroupName;
+                                    }
+                                    else
+                                    {
+                                        cm.Color = Color.FromArgb("#778899");//grey
+                                        cm.IsAvailable = false;
+                                    }
                                 }
-                                else
-                                {
-                                    cm.Color = Color.FromArgb("#778899");//grey
-                                    cm.IsAvailable = false;
-                                }
+
                             }
                         }
                         else
                         {
-                            cm.Color = Color.FromArgb("#778899");//grey
-                            cm.IsAvailable = false;
+                            if (cm.LastCurrentMonth == null)
+                            {
+                                cm.Color = Color.FromArgb("#778899");//grey
+                                cm.IsAvailable = false;
+                            }
                         }
-                    }
-                    else
-                    {
-                        cm.Color = Color.FromArgb("#778899");//grey
-                        cm.IsAvailable = false;
+
                     }
                 }
             }
@@ -660,10 +678,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                             if (action)
                             {
                                 var tthour = TotalHours + selectedItem.Hours;
-                                if(tthour > 104)
+                                if (tthour > 104)
                                 {
                                     ccm.IsSelected = false;
-                                    await Shell.Current.DisplayAlert("Messages","Current OT Hour is exceeding 104 hours. Your schedule has disabled.","OK");
+                                    await Shell.Current.DisplayAlert("Messages", "Current OT Hour is exceeding 104 hours. Your schedule has disabled.", "OK");
                                     return;
                                 }
 
