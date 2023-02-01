@@ -274,6 +274,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             }
                             if (item.EmployeeNumber == selectedEmployee.UserName && item.GroupName == selectedGroup.GroupName)
                             {
+                                DateTime converted = DateTime.ParseExact(item.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
+                                item.DayMonthYear = converted.ToString("d");
                                 FinalList.Add(item);
                             }
                         }

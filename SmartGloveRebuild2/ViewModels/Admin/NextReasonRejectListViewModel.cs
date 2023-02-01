@@ -209,6 +209,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             {
                                 DayMonthYear = g.DayMonthYear,
                                 GroupName = g.GroupName,
+                                Paxs = g.Paxs, 
                                 Status = g.Status,
                                 Hours = g.Hours,
                                 Remarks = approvedreason,

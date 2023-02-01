@@ -30,15 +30,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [ObservableProperty]
         bool isRefreshing;
 
-        private int totalworker;
-        public int TotalWorker
+        private int accworker;
+        public int Accworker
         {
-            get { return totalworker; }
-            set
-            {
-                totalworker = value;
-                OnPropertyChanged();
-            }
+            get => accworker;
+            set => SetProperty(ref accworker, value);
         }
 
         private bool cansee;
@@ -76,6 +72,14 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
             IsBusy = true;
             var responsefromdisplaygrp = await _groupServices.DisplayGroup();
+            var res1 = GroupTitleList.Where(f => f.GroupName.Equals("Unassigned")).FirstOrDefault();
+            if(res1 == null)
+            {
+                GroupTitleList.Add(new GroupList
+                {
+                    GroupName = "Unassigned",
+                });
+            }
 
             if (responsefromdisplaygrp.Count > 0)
             {
@@ -101,7 +105,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 if (GroupNameList.Count > 0)
                 {
                     GroupNameList.Clear();
-                    TotalWorker = 0;
+                    Accworker = 0;
                 }
                 var response = await _groupServices.DisplayGroupFromUsers();
 
@@ -118,7 +122,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                         });
 
-                        TotalWorker++;
+                        Accworker++;
                     }
                 }
 

@@ -43,10 +43,10 @@
                     <Grid WidthRequest="300" HeightRequest="150">
                         <Label Text="No Logs Found"
                                Margin="5"
-                           HorizontalOptions="FillAndExpand"
-                           HorizontalTextAlignment="Center"
-                           VerticalOptions="FillAndExpand"
-                           VerticalTextAlignment="Center" />
+                               HorizontalOptions="FillAndExpand"
+                               HorizontalTextAlignment="Center"
+                               VerticalOptions="FillAndExpand"
+                               VerticalTextAlignment="Center" />
                     </Grid>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>

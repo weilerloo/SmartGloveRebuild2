@@ -22,7 +22,7 @@
                     </StackLayout>
                     <Grid Grid.Row="3" ColumnDefinitions="Auto,Auto" HorizontalOptions="Center">
                         <Label Grid.Column="0" Text="Total of Worker:" FontSize="16" HorizontalOptions="Center" TextColor="Black"/>
-                        <Label Grid.Column="1" Text="{Binding TotalWorker}" FontSize="16" Margin="5,0,0,10" HorizontalOptions="Center" TextColor="Black"/>
+                        <Label Grid.Column="1" Text="{Binding Accworker}" FontSize="16" Margin="5,0,0,10" HorizontalOptions="Center" TextColor="Black"/>
                     </Grid>
                 </Grid>
                 <Frame CornerRadius="0">

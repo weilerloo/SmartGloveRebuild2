@@ -98,7 +98,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
             foreach (var item in FetchedRejectList)
             {
-                if (selectedItem.EmployeeName == item.EmployeeName)
+                if (selectedItem.UserName == item.UserName)
                 {
                     FetchedRejectList.Remove(item);
                     ReasonRejectList.Add(item);
@@ -118,7 +118,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
             foreach (var item in BeforeReasonRejectList)
             {
-                if (selectedItem.EmployeeName == item.EmployeeName)
+                if (selectedItem.UserName == item.UserName)
                 {
                     FetchedRejectList.Add(item);
                     ReasonRejectList.Remove(item);

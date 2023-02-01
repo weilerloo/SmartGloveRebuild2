@@ -529,7 +529,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                         }
 
                         var convertedstring = getEmployeeSchedule.ScheduleDate.ToString("d/M/yyyy");
-                        if (convertedstring == cm.DayMonthYear)
+                        if (convertedstring == cm.DayMonthYear && getEmployeeSchedule.IsRejected == false)
                         {
                             TotalHours = getEmployeeSchedule.Hours + TotalHours;
                         }
