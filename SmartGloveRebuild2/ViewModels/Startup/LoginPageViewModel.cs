@@ -11,6 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SmartGloveRebuild2.Views.Startup;
 using SmartGloveRebuild2.Services;
+using Microsoft.Maui.Networking;
 
 namespace SmartGloveRebuild2.ViewModels.Startup
 {
@@ -19,15 +20,18 @@ namespace SmartGloveRebuild2.ViewModels.Startup
         [ObservableProperty]
         private string _employeeNumber;
 
-        [ObservableProperty]    
+        [ObservableProperty]
         private string _password;
 
 
         private readonly ILoginService _loginService;
+        private readonly IConnectivity _connectivity;
 
-        public LoginPageViewModel(ILoginService loginServices)
+        public LoginPageViewModel(ILoginService loginServices, IConnectivity connectivity)
         {
             _loginService = loginServices;
+            _connectivity = connectivity;
+
         }
 
         #region Commands
@@ -35,59 +39,69 @@ namespace SmartGloveRebuild2.ViewModels.Startup
         [RelayCommand]
         async void Login()
         {
-            if (!string.IsNullOrWhiteSpace(EmployeeNumber) && !string.IsNullOrWhiteSpace(Password))
+            if (IsBusy)
+                return;
+
+            try
             {
-
-                var response = await _loginService.Authenticate(new LoginRequest
+                if (_connectivity.NetworkAccess != NetworkAccess.Internet)
                 {
-                    UserName = EmployeeNumber,
-                    Password = Password
-                });
+                    await Shell.Current.DisplayAlert("No connectivity!",
+                        $"Please check internet and try again.", "OK");
+                    return;
+                }
 
-                if (response != null)
+                if (!string.IsNullOrWhiteSpace(EmployeeNumber) && !string.IsNullOrWhiteSpace(Password))
                 {
 
-                    if (response.UserDetail.Role == null)
+                    var response = await _loginService.Authenticate(new LoginRequest
                     {
-                        await AppShell.Current.DisplayAlert("No Role Assigned",
-                            "No role assigned to this user.", "OK");
-                        return;
-                    }
-                    response.UserDetail.EmployeeNumber = EmployeeNumber;
+                        UserName = EmployeeNumber,
+                        Password = Password
+                    });
 
-                    if (Preferences.ContainsKey(nameof(App.UserDetails)))
+                    if (response != null)
                     {
-                        Preferences.Remove(nameof(App.UserDetails));
+
+                        if (response.UserDetail.Role == null)
+                        {
+                            await AppShell.Current.DisplayAlert("No Role Assigned",
+                                "No role assigned to this user.", "OK");
+                            return;
+                        }
+                        response.UserDetail.EmployeeNumber = EmployeeNumber;
+
+                        if (Preferences.ContainsKey(nameof(App.UserDetails)))
+                        {
+                            Preferences.Remove(nameof(App.UserDetails));
+                        }
+
+                        await SecureStorage.SetAsync(nameof(App.Token), response.Token);
+
+                        string userDetailStr = JsonConvert.SerializeObject(response.UserDetail);
+                        Preferences.Set(nameof(App.UserDetails), userDetailStr);
+                        App.UserDetails = response.UserDetail;
+                        App.Token = response.Token;
+                        await AppConstant.AddFlyoutMenusDetails();
+
                     }
-
-                    await SecureStorage.SetAsync(nameof(App.Token), response.Token);
-
-                    string userDetailStr = JsonConvert.SerializeObject(response.UserDetail);
-                    Preferences.Set(nameof(App.UserDetails), userDetailStr);
-                    App.UserDetails = response.UserDetail;
-                    App.Token = response.Token;
-                    await AppConstant.AddFlyoutMenusDetails();
-
+                    else
+                    {
+                        await AppShell.Current.DisplayAlert("Invalid User Name Or Password", "Invalid UserName or Password", "OK");
+                    }
                 }
                 else
                 {
-                    await AppShell.Current.DisplayAlert("Invalid User Name Or Password", "Invalid UserName or Password", "OK");
+                    await AppShell.Current.DisplayAlert("No User Name or Password", "Please Enter Users Name or Passwword", "OK");
                 }
 
-
-
             }
-            else
+            catch (Exception ex)
             {
-                await AppShell.Current.DisplayAlert("No User Name or Password", "Please Enter Users Name or Passwword", "OK");
+                await Shell.Current.DisplayAlert("Internet Error", "Failed to Conenct to Server. ", "OK");
             }
-
-
+            #endregion
         }
-        #endregion
+
     }
-
-
-
-
 }

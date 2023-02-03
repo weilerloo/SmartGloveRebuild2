@@ -16,8 +16,12 @@ namespace SmartGloveRebuild2.ViewModels.Startup
 
     public partial class LoadingPageViewModel
     {
-        public LoadingPageViewModel()
+        private readonly IConnectivity _connectivity;
+
+        public LoadingPageViewModel(IConnectivity connectivity)
         {
+            _connectivity = connectivity;
+            CheckInternetAccess();
             CheckUserLoginDetails();
         }
 
@@ -59,10 +63,42 @@ namespace SmartGloveRebuild2.ViewModels.Startup
                     App.Token = tokenDetails;
                     await AppConstant.AddFlyoutMenusDetails();
                 }
-
-
             }
         }
 
+        private async void CheckInternetAccess()
+        {
+            try
+            {
+                if (_connectivity.NetworkAccess != NetworkAccess.Internet)
+                {
+                    if (Preferences.ContainsKey(nameof(App.UserDetails)))
+                    {
+                        Preferences.Remove(nameof(App.UserDetails));
+                    }
+                    if (DeviceInfo.Platform == DevicePlatform.WinUI)
+                    {
+                        AppShell.Current.Dispatcher.Dispatch(async () =>
+                        {
+                            await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
+                            await Shell.Current.DisplayAlert("No connectivity!",
+                            $"Please check internet and try again.", "OK");
+                            return;
+                        });
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
+                        await Shell.Current.DisplayAlert("No connectivity!",
+                            $"Please check internet and try again.", "OK");
+                        return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Internet Error", "Failed to Conenct to Server. ", "OK");
+            }
+        }
     }
 }

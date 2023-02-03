@@ -29,7 +29,7 @@ public static class MauiProgram
             fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
         }).UseMauiCommunityToolkit();
 
-
+        builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
         builder.Services.AddSingleton<ILoginService, LoginServices>();
         builder.Services.AddSingleton<IScheduleServices, ScheduleServices>();
         builder.Services.AddSingleton<IGroupServices, GroupServices>();
