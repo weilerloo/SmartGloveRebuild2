@@ -7,9 +7,11 @@
              x:DataType="viewmodel:UpdateSlotsViewModel"
              Title="{Binding Title}"
              BackgroundColor="White">
+    
     <Grid RowDefinitions="Auto,*">
+        
         <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto" Margin="0,0,0,30">
-            <Label Text="Update Slots" FontSize="24" Margin="20,20,0,10" TextColor="Black"/>
+            <Label Text="Update Slots" FontSize="24" Margin="20,20,0,10" TextColor="Black" />
 
             <CollectionView Grid.Row="1" 
                             ItemsSource="{Binding Monthname}">

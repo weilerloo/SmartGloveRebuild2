@@ -31,7 +31,6 @@ namespace SmartGloveRebuild2.ViewModels.Startup
         {
             _loginService = loginServices;
             _connectivity = connectivity;
-
         }
 
         #region Commands
@@ -94,7 +93,6 @@ namespace SmartGloveRebuild2.ViewModels.Startup
                 {
                     await AppShell.Current.DisplayAlert("No User Name or Password", "Please Enter Users Name or Passwword", "OK");
                 }
-
             }
             catch (Exception ex)
             {

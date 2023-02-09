@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using SmartGloveRebuild2.ViewModels.Dashboard;
 using SmartGloveRebuild2.Views.Admin;
 using SmartGloveRebuild2.Views.Employee;
@@ -27,14 +28,20 @@ public partial class SupervisorDashboardPage : ContentPage
 
     private async void Button_Clicked_1(object sender, EventArgs e)
     {
+        IsBusy = true;
         await Shell.Current.GoToAsync(nameof(ScheduleOT));
+        IsBusy = false;
     }
     private async void Button_Clicked_2(object sender, EventArgs e)
     {
+        IsBusy = true;
         await Shell.Current.GoToAsync(nameof(GroupPage));
+        IsBusy = false;
     }
     private async void Button_Clicked_3(object sender, EventArgs e)
     {
+        IsBusy = true;
         await Shell.Current.GoToAsync(nameof(CheckCalendarPage));
+        IsBusy = false;
     }
 }

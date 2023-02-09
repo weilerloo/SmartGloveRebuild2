@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using SmartGloveRebuild2.Controls;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Services;
+using SmartGloveRebuild2.Views.Admin;
+using SmartGloveRebuild2.Views.Employee;
 using SmartGloveRebuild2.Views.Startup;
 using System;
 using System.Collections.Generic;
@@ -23,7 +26,6 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             CheckUserActivity();
             LoopCheckActivity();
         }
-
         public async void CheckUserActivity()
         {
             IsBusy = true;
