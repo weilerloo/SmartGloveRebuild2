@@ -457,7 +457,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         [RelayCommand]
         public async Task GetRejectedList()
         {
-            if(IsBusy) return;
+            if (IsBusy) return;
 
             IsBusy = true;
             if (RejectedList != null)
@@ -466,7 +466,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             }
             foreach (var cm in ListCalendar)
             {
-                var getEmployeeSchedule = await _scheduleService.GetScheduleByEmployeeNumberandDate(new GetScheduleByEmployeeNumberandDateDTO
+                var getEmployeeSchedule = await _scheduleService.GetRejectedScheduleLog(new GetScheduleByEmployeeNumberandDateDTO
                 {
                     DayMonthYear = cm.DayMonthYear,
                     EmployeeNumber = App.UserDetails.EmployeeNumber,
@@ -474,17 +474,20 @@ namespace SmartGloveRebuild2.ViewModels.Employee
 
                 if (getEmployeeSchedule != null)
                 {
-                    if (getEmployeeSchedule.IsRejected == true)
+                    foreach (var s in getEmployeeSchedule)
                     {
-                        RejectedList.Add(new CalendarModel
+                        if (s.IsRejected == true)
                         {
-                            Day = cm.Day,
-                            Month = cm.Month,
-                            Year = cm.Year,
-                            Rejectedreason = getEmployeeSchedule.RejectedReason,
-                            IsRejected = getEmployeeSchedule.IsRejected,
-                            RejectedBy = getEmployeeSchedule.RejectedBy,
-                        });
+                            RejectedList.Add(new CalendarModel
+                            {
+                                Day = cm.Day,
+                                Month = cm.Month,
+                                Year = cm.Year,
+                                Rejectedreason = s.RejectedReason,
+                                IsRejected = s.IsRejected,
+                                RejectedBy = s.RejectedBy,
+                            });
+                        }
                     }
                 }
             }

@@ -167,6 +167,14 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public async Task DeleteGroups()
         {
             if (IsBusy) { return; }
+            if (GroupList.GroupName == "Unassigned")
+            {
+                await Shell.Current.DisplayAlert("Messages", "Unable to delete Group 'Unassinged'.", "OK");
+                await Shell.Current.GoToAsync("../..");
+                IsRefreshing = false;
+                IsBusy = false;
+                return;
+            }
             var action = await Shell.Current.DisplayAlert("Messages", "Are you sure to delete?", "Yes", "No");
             if (action)
             {
@@ -228,6 +236,22 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         await Shell.Current.DisplayAlert("Messages", "Group Deleted.", "OK");
                     }
                     break;
+                }
+                if (EditGroupList.Count() == 0)
+                {
+                    var fordelelte = await _groupService.DeleteGroup(new DeleteGroupDTO
+                    {
+                        GroupName = GroupList.GroupName,
+                    });
+                    if (fordelelte.IsSuccess == false)
+                    {
+                        await Shell.Current.DisplayAlert("Messages", "Unable to delete. Grouping Error.", "OK");
+
+                    }
+                    else
+                    {
+                        await Shell.Current.DisplayAlert("Messages", "Group Deleted.", "OK");
+                    }
                 }
                 await Shell.Current.GoToAsync("../..");
                 IsRefreshing = false;

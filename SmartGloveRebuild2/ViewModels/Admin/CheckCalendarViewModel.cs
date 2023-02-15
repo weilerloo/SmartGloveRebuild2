@@ -583,7 +583,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             if (IsBusy) { return; }
 
             IsBusy = true;
-            var response = await _groupServices.DisplayGroupFromUsers();
+            var response = await _groupServices.DisplayGroup();
 
             if (response.Count > 0)
             {

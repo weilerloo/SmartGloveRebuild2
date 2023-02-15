@@ -38,9 +38,9 @@
             </Grid>
             <Frame Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
                 <Grid ColumnDefinitions="*,*,*">
-                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="Date"/>
-                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Reason"/>
-                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="Reject by"/>
+                    <Label HorizontalTextAlignment="Center" FontSize="18" FontAttributes="Bold" Grid.Column="0" Text="Date"/>
+                    <Label HorizontalTextAlignment="Center" FontSize="18" FontAttributes="Bold" Grid.Column="1" Text="Reason"/>
+                    <Label HorizontalTextAlignment="Center" FontSize="18" FontAttributes="Bold" Grid.Column="2" Text="Reject by"/>
                 </Grid>
             </Frame>
         </VerticalStackLayout>
@@ -63,18 +63,15 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:CalendarModel">
-                        <Frame CornerRadius="0" Padding="5">
+                        <Frame HeightRequest="80" CornerRadius="0" Padding="0">
                             <Grid HeightRequest="40" ColumnDefinitions="*,*,*">
-                                <Grid ColumnDefinitions="*,*" Grid.Column="0">
-                                    <Label HorizontalOptions="End" VerticalOptions="Center" VerticalTextAlignment="Center" Padding="5,0,5,0" FontSize="Medium" Grid.Column="0" FontAttributes="Bold" Text="{Binding Day}"/>
-                                    <Label HorizontalOptions="Center" VerticalOptions="Center" VerticalTextAlignment="Center" Padding="5,0,5,0" FontSize="Medium" Grid.Column="1" FontAttributes="Bold" Text="{Binding Month}"/>
+                                <Grid ColumnDefinitions="Auto,Auto,Auto" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label FontAutoScalingEnabled="True" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="0" FontAttributes="Bold" Text="{Binding Day}"/>
+                                    <Label FontAutoScalingEnabled="True" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="1" FontAttributes="Bold" Text="/"/>
+                                    <Label FontAutoScalingEnabled="True" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="2" FontAttributes="Bold" Text="{Binding Month}"/>
                                 </Grid>
-                                <Grid Grid.Column="1">
-                                    <Label HorizontalOptions="Center" VerticalOptions="Center" VerticalTextAlignment="Center" Padding="5,0,5,0" FontSize="Medium" Grid.Column="1" FontAttributes="Bold" Text="{Binding Rejectedreason}"/>
-                                </Grid>
-                                <Grid Grid.Column="2">
-                                    <Label HorizontalOptions="Center" VerticalOptions="Center" VerticalTextAlignment="Center" Padding="5,0,5,0" FontSize="Medium" Grid.Column="1" FontAttributes="Bold" Text="{Binding RejectedBy}"/>
-                                </Grid>
+                                <Label Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAutoScalingEnabled="True" FontAttributes="Bold" Text="{Binding Rejectedreason}"/>
+                                <Label Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAutoScalingEnabled="True" FontAttributes="Bold" Text="{Binding RejectedBy}"/>
                             </Grid>
                         </Frame>
                     </DataTemplate>

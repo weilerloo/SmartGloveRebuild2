@@ -30,11 +30,16 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [ObservableProperty]
         bool isRefreshing;
 
-        private int accworker;
-        public int Accworker
+        private int numworker;
+        public int Numworker
         {
-            get => accworker;
-            set => SetProperty(ref accworker, value);
+            get => numworker;
+            set
+            {
+                numworker = value;
+                DisplayGroupMember();
+                OnPropertyChanged("Numworker");
+            }
         }
 
         private bool cansee;
@@ -52,10 +57,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             set
             {
                 selectedgroupname = value;
-                OnPropertyChanged();
                 DisplayGroupMember();
+                OnPropertyChanged();
             }
         }
+
+
 
         private readonly IGroupServices _groupServices;
         public DisplayGroupViewModel(IGroupServices groupServices)
@@ -73,7 +80,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             var responsefromdisplaygrp = await _groupServices.DisplayGroup();
             var res1 = GroupTitleList.Where(f => f.GroupName.Equals("Unassigned")).FirstOrDefault();
-            if(res1 == null)
+            if (res1 == null)
             {
                 GroupTitleList.Add(new GroupList
                 {
@@ -105,7 +112,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 if (GroupNameList.Count > 0)
                 {
                     GroupNameList.Clear();
-                    Accworker = 0;
+                    Numworker = 0;
                 }
                 var response = await _groupServices.DisplayGroupFromUsers();
 
@@ -121,20 +128,16 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             UserName = grp.UserName,
 
                         });
-
-                        Accworker++;
                     }
                 }
 
-                if (GroupNameList.Count <= 0)
-                {
-                    Cansee = false;
-                }
-                else
+                if (GroupNameList != null)
                 {
                     Cansee = true;
                 }
             }
+
+            Numworker = GroupNameList.Count();
             IsRefreshing = false;
             IsBusy = false;
         }

@@ -20,9 +20,9 @@
                             ItemDisplayBinding="{Binding GroupName}"/>
                         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
                     </StackLayout>
-                    <Grid Grid.Row="3" ColumnDefinitions="Auto,Auto" HorizontalOptions="Center">
-                        <Label Grid.Column="0" Text="Total of Worker:" FontSize="16" HorizontalOptions="Center" TextColor="Black"/>
-                        <Label Grid.Column="1" Text="{Binding Accworker}" FontSize="16" Margin="5,0,0,10" HorizontalOptions="Center" TextColor="Black"/>
+                    <Grid Grid.Row="3" ColumnDefinitions="*,*" HorizontalOptions="Center">
+                        <Label HorizontalTextAlignment="End" Grid.Column="0" Text="Total of Worker:" FontSize="16" HorizontalOptions="Center" TextColor="Black"/>
+                        <Label HorizontalTextAlignment="Start" Grid.Column="1" Text="{Binding Numworker}" FontSize="16" Margin="5,0,0,10" HorizontalOptions="Center" TextColor="Black"/>
                     </Grid>
                 </Grid>
                 <Frame CornerRadius="0">
