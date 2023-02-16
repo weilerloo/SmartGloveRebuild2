@@ -120,7 +120,7 @@
 
                 </Grid>
                 <Button x:Name="ScheduleButton" HeightRequest="50" Clicked="ScheduleButton_Clicked" Margin="0,40,0,0" Text="Schedule OT"/>
-                <Image Source="sglogo.png" 
+                <Image Source="sglogo_new.png" 
                        HeightRequest="20" 
                        WidthRequest="300" 
                        Margin="0,25,0,0"/>

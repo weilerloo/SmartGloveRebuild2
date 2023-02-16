@@ -25,7 +25,7 @@
     <Shell.FlyoutFooter>
         <StackLayout Padding="20">
             <Button Text="Sign Out" Command="{Binding SignOutCommand}" />
-            <Image Source="sglogo.png" 
+            <Image Source="sglogo_new.png" 
                    WidthRequest="150" 
                    Margin="12,20,0,0"/>
         </StackLayout>
