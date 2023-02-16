@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartGloveRebuild2.Views.Dashboard.ExecutiveDashboardPage"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"	
+             Title="Executive Dashboard">
+    <ScrollView>
+        <Grid BackgroundColor="Transparent">
+
+            <VerticalStackLayout Margin="20,0,20,20" Spacing="20">
+                <Grid ColumnDefinitions="*,*" Margin="0,40,0,20">
+                    <Image Source="admin.png" HeightRequest="60" WidthRequest="300"/>
+                    <Label FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" Grid.Column="1" x:Name="EmployeeName"/>
+                </Grid>
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+                    <Label Grid.Column="0" 
+                           Grid.Row="0" 
+                           FontSize="16" 
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Employee Number</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="0"
+                           Grid.Column="1">
+
+                        <Label x:Name="EmployeeNumber" HorizontalOptions="Center"/>
+
+
+                    </Frame>
+                    <!--EmployeeNumber-->
+                    <Label Grid.Column="0" 
+                           Grid.Row="1" 
+                           FontSize="16" 
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Groups</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="1"
+                           Grid.Column="1">
+
+                        <Label x:Name="Group" HorizontalOptions="Center"/>
+
+
+                    </Frame>
+                    <!--EmployeeName-->
+                    <Label Grid.Column="0" 
+                           Grid.Row="2" 
+                           FontSize="16" 
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Plant</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="2"
+                           Grid.Column="1">
+
+                        <Label x:Name="Plant" HorizontalOptions="Center"/>
+
+
+                    </Frame>
+                    <!--Plant-->
+                    <Label Grid.Column="0" 
+                           Grid.Row="3" 
+                           FontSize="16" 
+                           HorizontalOptions="Start" 
+                           VerticalOptions="Center">Department</Label>
+                    <Frame Padding="10"
+                           BorderColor="Black"
+                           Grid.Row="3"
+                           Grid.Column="1">
+
+                        <Label x:Name="Department" HorizontalOptions="Center"/>
+
+
+                    </Frame>
+                    <!--Department-->
+                   
+
+                </Grid>
+                <Button Margin="0,40,0,0" Text="Generate Report" Clicked="Button_Clicked"/>
+
+
+                <Image Source="sglogo_new.png.png" 
+                       HeightRequest="20" 
+                       WidthRequest="300" 
+                       Margin="0,50,0,0"/>
+            </VerticalStackLayout>
+
+        </Grid>
+        
+    </ScrollView>
+</ContentPage>

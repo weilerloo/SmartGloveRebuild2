@@ -1,0 +1,30 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using SmartGloveRebuild2.ViewModels.Admin;
+using SmartGloveRebuild2.ViewModels.Dashboard;
+using SmartGloveRebuild2.Views.Admin;
+
+namespace SmartGloveRebuild2.Views.Dashboard;
+
+public partial class ExecutiveDashboardPage : ContentPage
+{
+    public ExecutiveDashboardPage(DashboardPageViewModel dashboardPageViewModel)
+    {
+        InitializeComponent();
+        this.BindingContext = dashboardPageViewModel;
+
+        if (App.UserDetails != null)
+        {
+            EmployeeName.Text = App.UserDetails.EmployeeName;
+            EmployeeNumber.Text = App.UserDetails.EmployeeNumber;
+            Plant.Text = App.UserDetails.Plant;
+            Department.Text = App.UserDetails.Department;
+            Group.Text = App.UserDetails.GroupName;
+        }
+    }
+
+    private async void Button_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(GenerateReportPage));
+    }
+}

@@ -30,6 +30,9 @@ namespace SmartGloveRebuild2.Models
             var HRDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(HRDashboardPage)).FirstOrDefault();
             if (HRDashboardInfo != null) AppShell.Current.Items.Remove(HRDashboardInfo);
 
+            var EvecutiveDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(ExecutiveDashboardPage)).FirstOrDefault();
+            if (EvecutiveDashboardInfo != null) AppShell.Current.Items.Remove(EvecutiveDashboardInfo);
+
             var ClerkDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(ClerkDashboardPage)).FirstOrDefault();
             if (ClerkDashboardInfo != null) AppShell.Current.Items.Remove(ClerkDashboardInfo);
 
@@ -169,7 +172,7 @@ namespace SmartGloveRebuild2.Models
                                     Icon = Icons.ScheduleOT,
                                     Title = "Schedule OT",
                                     ContentTemplate = new DataTemplate(typeof(ScheduleOT)),
-                                },                                
+                                },
                                 new ShellContent
                                 {
                                     Icon = Icons.RejectedOT,
@@ -223,7 +226,7 @@ namespace SmartGloveRebuild2.Models
                                     Icon = Icons.Groups,
                                     Title = "HOD Groups",
                                     ContentTemplate = new DataTemplate(typeof(DisplayGroupPage)),
-                                },                                
+                                },
                                 new ShellContent
                                 {
                                     Icon = Icons.ScheduleOT,
@@ -296,8 +299,46 @@ namespace SmartGloveRebuild2.Models
                         await Shell.Current.GoToAsync($"//{nameof(HRDashboardPage)}");
                     }
                 }
+            }
+            if (App.UserDetails.RoleID == (int)RoleDetails.Executive)
+            {
+                var flyoutItem = new FlyoutItem()
+                {
+                    Title = "Dashboard Page",
+                    Route = nameof(ExecutiveDashboardPage),
+                    FlyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems,
+                    Items =
+                    {
+                                new ShellContent
+                                {
+                                    Icon = Icons.Dashboard,
+                                    Title = "Executive Dashboard",
+                                    ContentTemplate = new DataTemplate(typeof(ExecutiveDashboardPage)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.GenerateReport,
+                                    Title = "Generate Report",
+                                    ContentTemplate = new DataTemplate(typeof(GenerateReportPage)),
+                                },
+                   }
+                };
 
-
+                if (!AppShell.Current.Items.Contains(flyoutItem))
+                {
+                    AppShell.Current.Items.Add(flyoutItem);
+                    if (DeviceInfo.Platform == DevicePlatform.WinUI)
+                    {
+                        AppShell.Current.Dispatcher.Dispatch(async () =>
+                        {
+                            await Shell.Current.GoToAsync($"//{nameof(ExecutiveDashboardPage)}");
+                        });
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync($"//{nameof(ExecutiveDashboardPage)}");
+                    }
+                }
             }
         }
     }

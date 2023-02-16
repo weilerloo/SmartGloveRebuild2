@@ -39,5 +39,6 @@ namespace SmartGloveRebuild2.Models
         Clerk,
         Technician,
         Worker,
+        Executive,
     }
 }

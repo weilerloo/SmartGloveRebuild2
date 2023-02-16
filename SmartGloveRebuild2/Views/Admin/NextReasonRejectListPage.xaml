@@ -7,29 +7,26 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewmodel:NextReasonRejectListViewModel"
-             Title="Exclude Overtime Date">
+             Title="Exclude Remark">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ScrollView>
+    <ScrollView BackgroundColor="White">
         <Grid RowDefinitions="Auto,*,*,Auto">
             <Grid RowDefinitions="Auto,Auto" Grid.Row="0" >
                 <Grid Grid.Row="0" Margin="20,20,0,20"  ColumnDefinitions="Auto,Auto,Auto">
-                    <Label FontSize="24" Grid.Column="0" Text="Exclude Reason" TextColor="Black"/>
                 </Grid>
-                <Label Margin="20,0,0,20" FontSize="21" Grid.Row="1" Text="Please enter the reason." TextColor="Black"/>
+                <Label Margin="20,0,0,10" FontSize="25" Grid.Row="1" Text="Please enter the remark." TextColor="Black"/>
             </Grid>
-            <!--<Frame Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
-                <Grid ColumnDefinitions="*,*">
-                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="Employee Number"/>
-                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Employee Name"/>
-                </Grid>
-            </Frame>-->
-            <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="1" Placeholder="{Binding Reasonremark}" Text="{Binding Approvedreason}"/>
-            <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="2" Placeholder="Enter yout reject reason here..." IsVisible="{Binding Cansee}" Text="{Binding Rejectreason}"/>
-            <Button Margin="50" Grid.Row="3" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Text="Confirm" Command="{Binding ApprovedRemoveFromListCommand}"/>
+            <Frame Grid.Row="1" Margin="20" BorderColor="#013292">
+                <Entry MaxLength="50" Placeholder="{Binding Reasonremark}" IsVisible="{Binding Cansee}" Text="{Binding Approvedreason}"/>
+            </Frame>
+            <Frame Grid.Row="2" Margin="20" BorderColor="#013292">
+                <Entry MaxLength="50" Placeholder="Enter yout reject remark here..." IsVisible="{Binding Cansee}" Text="{Binding Rejectreason}"/>
+            </Frame>
+            <Button Margin="50" Grid.Row="3" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Text="SUBMIT" TextColor="White" BackgroundColor="#013292" Command="{Binding ApprovedRemoveFromListCommand}"/>
         </Grid>
     </ScrollView>
 </ContentPage>

@@ -32,10 +32,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.png" Color="#FFFFFF" BaseSize="512,512"/>
+		<MauiIcon Include="Resources\AppIcon\appicon.png" Color="#FFFFFF" BaseSize="512,512" />
 		
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\sqaurelogo.png" Color="#FFFFFF" BaseSize="256,256"/>
+		<MauiSplashScreen Include="Resources\Splash\sqaurelogo.png" Color="#FFFFFF" BaseSize="256,256" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -97,6 +97,9 @@
 	  <Compile Update="Views\Dashboard\ClerkDashboardPage.xaml.cs">
 	    <DependentUpon>ClerkDashboardPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\Dashboard\ExecutiveDashboardPage.xaml.cs">
+	    <DependentUpon>ExecutiveDashboardPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -129,6 +132,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Dashboard\ClerkDashboardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Dashboard\ExecutiveDashboardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

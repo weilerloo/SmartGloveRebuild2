@@ -85,6 +85,7 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddTransient<DisplayGroupPage>();
         builder.Services.AddTransient<UpdateSlotsDetails>();
         builder.Services.AddTransient<CheckCalendarPage>();
+        builder.Services.AddTransient<ExecutiveDashboardPage>();
         builder.Services.AddTransient<UpdateSlotsPage>();
         builder.Services.AddTransient<GenerateReportPage>();
         builder.Services.AddTransient<EmployeeDashboardPage>();
