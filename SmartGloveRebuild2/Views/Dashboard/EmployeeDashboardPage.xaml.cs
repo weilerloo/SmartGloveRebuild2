@@ -1,3 +1,5 @@
+using CommunityToolkit.Maui.Views;
+using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.ViewModels.Dashboard;
 using SmartGloveRebuild2.Views.Employee;
 
@@ -23,8 +25,13 @@ public partial class EmployeeDashboardPage : ContentPage
         }
     }
 
-    private void ScheduleButton_Clicked(object sender, EventArgs e)
+    private async void ScheduleButton_Clicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync(nameof(ScheduleOT));
+        IsBusy = true;
+        PopupPages p = new PopupPages();
+        Application.Current.MainPage.ShowPopup(p);
+        await Shell.Current.GoToAsync(nameof(ScheduleOT));
+        p.Close();
+        IsBusy = false;
     }
 }

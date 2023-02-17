@@ -122,6 +122,7 @@
                     <Button Clicked="Button_Clicked_3" HeightRequest="60" Grid.Row="0" Text="Check Calendar"/>
                     <Button HeightRequest="60" Grid.Row="1" Text="Manage Group" Clicked="Button_Clicked_2"/>
                     <Button HeightRequest="60" Grid.Row="2" Text="Schedule OT" Clicked="Button_Clicked_1"/>
+                    <!--<Button HeightRequest="60" Grid.Row="3" Text="Test Pop Up" Clicked="Button_Clicked"/>-->
                 </Grid>
             </VerticalStackLayout>
         </Grid>

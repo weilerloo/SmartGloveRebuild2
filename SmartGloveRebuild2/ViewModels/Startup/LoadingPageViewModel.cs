@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
+using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.Controls;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Views.Dashboard;
@@ -24,6 +25,7 @@ namespace SmartGloveRebuild2.ViewModels.Startup
             CheckInternetAccess();
             CheckUserLoginDetails();
         }
+        
 
         private async void CheckUserLoginDetails()
         {
@@ -95,7 +97,7 @@ namespace SmartGloveRebuild2.ViewModels.Startup
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 await Shell.Current.DisplayAlert("Internet Error", "Failed to Conenct to Server. ", "OK");
             }

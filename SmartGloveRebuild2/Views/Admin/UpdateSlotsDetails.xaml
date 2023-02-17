@@ -70,8 +70,9 @@
                                    VerticalTextAlignment="Center" 
                                    VerticalOptions="Center" 
                                    HorizontalOptions="Center" 
-                                   Grid.Column="1" 
-                                   Text="{Binding Paxs}" 
+                                   Grid.Column="1"
+                                   Completed="Paxs_Completed"
+                                   Text="{Binding Paxs}"
                                    Placeholder="{Binding Paxs}">
                             <Entry.Behaviors>
                                 <toolkit:NumericValidationBehavior 
@@ -91,7 +92,8 @@
                                    HorizontalTextAlignment="Center" 
                                    VerticalTextAlignment="Center" 
                                    VerticalOptions="Center" 
-                                   HorizontalOptions="Center" 
+                                   HorizontalOptions="Center"
+                                   Completed="Paxs_Completed"
                                    Grid.Column="2" Text="{Binding Hours}" 
                                    Placeholder="{Binding Hours}">
                             <Entry.Behaviors>

@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Models.ClerkDTO;
 using SmartGloveRebuild2.Models.Group;
@@ -16,7 +18,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         #region Properties
         private readonly IScheduleServices _scheduleServices;
         private readonly IGroupServices _groupServices;
-        private readonly Task Init;
 
         [ObservableProperty]
         DateTime now = DateTime.Now;
@@ -79,7 +80,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             _groupServices = groupServices;
             DisplayDays();
             DisplayGroupMember();
-            Init = ColorStatus();
+            ColorStatus();
             Title = "Exclusion Multiple Date";
             Items = new ObservableCollection<CalendarModel>();
             SelectedItem = new CalendarModel();
@@ -443,7 +444,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         }
 
         [RelayCommand]
-        public async Task DecreaseMonth()
+        public void DecreaseMonth()
         {
             if (IsBusy) return;
             CalendarDetails.Clear();
@@ -452,11 +453,16 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             ReduceMonth();
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
-            await ColorStatus();
+            IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
+            ColorStatus();
+            p.Close();
+            IsBusy = false;
         }
 
         [RelayCommand]
-        public async Task IncreaseMonth()
+        public void IncreaseMonth()
         {
             if (IsBusy) return;
             CalendarDetails.Clear();
@@ -465,7 +471,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             AddMonth();
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
-            await ColorStatus();
+            IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
+            ColorStatus();
+            p.Close();
+            IsBusy = false;
         }
 
         #endregion
@@ -473,11 +484,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         #region Color
 
         [RelayCommand]
-        public async Task ColorStatus()
+        public async void ColorStatus()
         {
-            if (IsBusy) { return; }
-
+            if (IsBusy)
+                return;
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             if (SelectedGroupname != null)
             {
                 if (GroupNameList.Count > 0)
@@ -518,6 +531,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                 }
             }
+            p.Close();
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -527,9 +541,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public async void DisplayGroupMember()
         {
-            if (IsBusy) { return; }
-
+            if (IsBusy)
+                return;
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             var response = await _groupServices.DisplayGroupFromUsers();
 
             if (response.Count > 0)
@@ -562,6 +578,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                 }
             }
+            p.Close();
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -608,8 +625,10 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
 
         [RelayCommand]
-        public async Task DeleteButtonSelected()
+        public void DeleteButtonSelected()
         {
+            if(IsBusy) { return; }
+            IsBusy = true;
             foreach (var ccm in CalendarDetails)
             {
                 if (ccm.IsSelected == true)
@@ -623,7 +642,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             Datename.Clear();
             Monthname.Clear();
             DisplayDays();
-            await ColorStatus();
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
+            ColorStatus();
+            p.Close();
+            IsBusy = false;
         }
 
         [RelayCommand]

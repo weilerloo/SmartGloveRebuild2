@@ -1,8 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.Models.Group;
 using SmartGloveRebuild2.Models.ScheduleResponse;
 using SmartGloveRebuild2.Services;
@@ -116,8 +118,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public async void GetScheduleByDepartment()
         {
-            if (IsBusy) { return; }
+            if (IsBusy)
+                return;
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
 
             if (DepartmentList != null)
             {
@@ -148,6 +153,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                 }
             }
+            p.Close();
             IsBusy = false;
         }
 
@@ -155,6 +161,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         {
             if (IsBusy || selectedDepartment == null) { return; }
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
 
             var groupList = new List<string>();
 
@@ -189,12 +197,15 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     });
                 }
             }
+            p.Close();
             IsBusy = false;
         }
         public async void GetScheduleByEmployee()
         {
             if (IsBusy || selectedGroup == null) { return; }
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
 
             var employeeList = new List<string>();
 
@@ -217,6 +228,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                 }
             }
+            p.Close();
             IsBusy = false;
         }
         #endregion
@@ -231,9 +243,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         {
             if (IsBusy == true) { return false; }
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             if (selectedDepartment == null)
             {
                 await Shell.Current.DisplayAlert("Messages", "Please select a Department First or Select Start/End Date.", "OK");
+                p.Close();
                 IsBusy = false;
                 return false;
             }
@@ -285,9 +300,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 if (FinalList.Count == 0)
                 {
                     await Shell.Current.DisplayAlert("Messages", "No Schedule Found. Please change to a valid date.", "OK");
+                    p.Close();
                     IsBusy = false;
                     return false;
                 }
+                p.Close();
                 IsBusy = false;
                 return true;
             }
@@ -337,9 +354,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 if (FinalList.Count == 0)
                 {
                     await Shell.Current.DisplayAlert("Messages", "No Schedule Found. Please change to a valid date.", "OK");
+                    p.Close();
                     IsBusy = false;
                     return false;
                 }
+                p.Close();
                 IsBusy = false;
                 return true;
             }
@@ -382,14 +401,17 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 if (FinalList.Count == 0)
                 {
                     await Shell.Current.DisplayAlert("Messages", "No Schedule Found. Please change to a valid date.", "OK");
+                    p.Close();
                     IsBusy = false;
                     return false;
                 }
+                p.Close();
                 IsBusy = false;
                 return true;
             }
             else
             {
+                p.Close();
                 IsBusy = false;
                 return false;
             }

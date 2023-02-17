@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.Models.ClerkDTO;
 using SmartGloveRebuild2.Models.Group;
 using SmartGloveRebuild2.Models.GroupResponse;
@@ -427,12 +429,18 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public void DecreaseMonth()
         {
+            if (IsBusy) return;
+            IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             ListCalendar.Clear();
             Datename.Clear();
             Monthname.Clear();
             ReduceMonth();
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
+            p.Close();
+            IsBusy = false;
         }
 
 
@@ -440,12 +448,18 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public void IncreaseMonth()
         {
+            if (IsBusy) return;
+            IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             ListCalendar.Clear();
             Datename.Clear();
             Monthname.Clear();
             AddMonth();
             now = DateTime.Now.AddMonths(month);
-            DisplayDays();
+            DisplayDays(); 
+            p.Close();
+            IsBusy = false;
         }
 
         #endregion
@@ -454,7 +468,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         private async Task UpdateSlots()
         {
+            IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             await Shell.Current.GoToAsync(nameof(UpdateSlotsPage));
+            p.Close();
+            IsBusy = false;
         }
 
         [RelayCommand]
@@ -528,11 +547,16 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 return;
             }
 
+            IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             await Shell.Current.GoToAsync(nameof(UpdateSlotsDetails), true, new Dictionary<string, object>
             {
             {"UpdateSlotsModel", updateSlotsModel
     }
 });
+            p.Close();
+            IsBusy = false;
         }
 
         #endregion

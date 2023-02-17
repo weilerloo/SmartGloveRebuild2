@@ -1,3 +1,6 @@
+#if ANDROID
+using SmartGloveRebuild2.Platforms.Android;
+#endif
 using SmartGloveRebuild2.Models.ClerkDTO;
 using SmartGloveRebuild2.ViewModels.Admin;
 using System.Collections.ObjectModel;
@@ -10,9 +13,12 @@ public partial class UpdateSlotsDetails : ContentPage
     {
         InitializeComponent();
         this.BindingContext = updateSlotsDetailViewModel;
-    
-        
-    
     }
 
+    private void Paxs_Completed(object sender, EventArgs e)
+    {
+#if ANDROID
+            KeyboardHelper.HideKeyboard();
+#endif
+    }
 }

@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.Models.ClerkDTO;
 using SmartGloveRebuild2.Models.Group;
 using SmartGloveRebuild2.Models.Schedule;
@@ -104,6 +106,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public async Task UpdateStatus()
         {
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             foreach (var content in addedGroupSchedule)
             {
                 if ((content.Paxs == 0 || content.Hours == 0) && content.Status == true)
@@ -121,6 +125,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 });
             }
 
+            p.Close();
             IsRefreshing = false;
             IsBusy = false;
             await Shell.Current.DisplayAlert("Messages", "Schedule Updated.", "OK");

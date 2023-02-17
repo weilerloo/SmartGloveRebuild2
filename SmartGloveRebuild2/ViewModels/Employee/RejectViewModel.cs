@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Models.ClerkDTO;
 using SmartGloveRebuild2.Models.Group;
@@ -460,6 +462,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             if (IsBusy) return;
 
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             if (RejectedList != null)
             {
                 RejectedList.Clear();
@@ -491,6 +495,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     }
                 }
             }
+            p.Close();
             IsRefreshing = false;
             IsBusy = false;
         }

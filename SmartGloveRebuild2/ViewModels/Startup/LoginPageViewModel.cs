@@ -12,6 +12,8 @@ using CommunityToolkit.Mvvm.Input;
 using SmartGloveRebuild2.Views.Startup;
 using SmartGloveRebuild2.Services;
 using Microsoft.Maui.Networking;
+using SmartGloveOvertime.Handlers;
+using CommunityToolkit.Maui.Views;
 
 namespace SmartGloveRebuild2.ViewModels.Startup
 {
@@ -40,7 +42,9 @@ namespace SmartGloveRebuild2.ViewModels.Startup
         {
             if (IsBusy)
                 return;
-
+            IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             try
             {
                 if (_connectivity.NetworkAccess != NetworkAccess.Internet)
@@ -94,10 +98,12 @@ namespace SmartGloveRebuild2.ViewModels.Startup
                     await AppShell.Current.DisplayAlert("No User Name or Password", "Please Enter Users Name or Passwword", "OK");
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 await Shell.Current.DisplayAlert("Internet Error", "Failed to Conenct to Server. ", "OK");
             }
+            p.Close();
+            IsBusy = false;
             #endregion
         }
 

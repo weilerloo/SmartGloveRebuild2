@@ -1,5 +1,7 @@
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.ViewModels.Admin;
 using SmartGloveRebuild2.ViewModels.Dashboard;
 using SmartGloveRebuild2.Views.Admin;
@@ -27,6 +29,11 @@ public partial class HRDashboardPage : ContentPage
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
+        IsBusy = true;
+        PopupPages p = new PopupPages();
+        Application.Current.MainPage.ShowPopup(p);
         await Shell.Current.GoToAsync(nameof(GenerateReportPage));
+        p.Close();
+        IsBusy = false;
     }
 }

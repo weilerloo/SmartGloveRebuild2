@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Models.ClerkDTO;
 using SmartGloveRebuild2.Models.Schedule;
@@ -465,7 +467,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             await ColorStatus();
+            p.Close();
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -481,7 +486,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             await ColorStatus();
+            p.Close();
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -494,6 +502,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         public async Task ColorStatus()
         {
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
             TotalHours = 0;
             if (App.UserDetails.GroupName != "Unassigned")
             {
@@ -645,6 +655,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             {
                 Notesforot = "You are Eligible for OT's.";
             }
+            p.Close();
             IsRefreshing = false;
             IsBusy = false;
         }

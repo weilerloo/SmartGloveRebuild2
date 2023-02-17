@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Models.ClerkDTO;
 using SmartGloveRebuild2.Models.Group;
@@ -127,6 +129,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 }
 
                 IsBusy = true;
+                PopupPages p = new PopupPages();
+                Application.Current.MainPage.ShowPopup(p);
                 foreach (var group in FetchedRejectList)
                 {
                     var getSchedule = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
@@ -241,6 +245,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         }
                     }
                 }
+                p.Close();
                 IsBusy = false;
                 await Shell.Current.DisplayAlert("Messages", "Submit Successful.", "Ok");
                 await Shell.Current.GoToAsync("../..");

@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Views;
 using SmartGloveRebuild2.ViewModels.Startup;
 
 namespace SmartGloveRebuild2.Views.Startup;
