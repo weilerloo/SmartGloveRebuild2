@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              CanBeDismissedByTappingOutsideOfPopup="False"
-             x:Class="SmartGloveOvertime.Handlers.PopupPages">
+             x:Class="SmartGloveOvertime.Handlers.WindowPopupPages">
 
         <Grid BackgroundColor="White" HeightRequest="250" WidthRequest="250" RowDefinitions="150,50,20">
             <ActivityIndicator Grid.Row="0" Color="#013292" HeightRequest="50" WidthRequest="50" Margin="0,40,0,20" IsRunning="True" VerticalOptions="Center" HorizontalOptions="Center"/>

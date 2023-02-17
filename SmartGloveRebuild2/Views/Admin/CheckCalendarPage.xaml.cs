@@ -17,6 +17,7 @@ public partial class CheckCalendarPage : ContentPage
         IsBusy = true;
         PopupPages p = new PopupPages();
         Application.Current.MainPage.ShowPopup(p);
+        await Task.Delay(100);
         await Shell.Current.GoToAsync(nameof(ExclusionMultipleDatePage));
         p.Close();
         IsBusy = false;

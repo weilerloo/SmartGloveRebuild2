@@ -30,6 +30,7 @@ public partial class HODDashboardPage : ContentPage
         IsBusy = true;
         PopupPages p = new PopupPages();
         Application.Current.MainPage.ShowPopup(p);
+        await Task.Delay(100);
         await Shell.Current.GoToAsync(nameof(ScheduleOT));
         p.Close();
         IsBusy = false;
@@ -39,6 +40,7 @@ public partial class HODDashboardPage : ContentPage
         IsBusy = true;
         PopupPages p = new PopupPages();
         Application.Current.MainPage.ShowPopup(p);
+        await Task.Delay(100);
         await Shell.Current.GoToAsync(nameof(GroupPage));
         p.Close();
         IsBusy = false;
@@ -48,6 +50,7 @@ public partial class HODDashboardPage : ContentPage
         IsBusy = true;
         PopupPages p = new PopupPages();
         Application.Current.MainPage.ShowPopup(p);
+        await Task.Delay(100);
         await Shell.Current.GoToAsync(nameof(CheckCalendarPage));
         p.Close();
         IsBusy = false;

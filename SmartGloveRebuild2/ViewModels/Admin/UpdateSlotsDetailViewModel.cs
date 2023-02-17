@@ -108,6 +108,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             foreach (var content in addedGroupSchedule)
             {
                 if ((content.Paxs == 0 || content.Hours == 0) && content.Status == true)

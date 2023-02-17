@@ -32,6 +32,7 @@ public partial class HRDashboardPage : ContentPage
         IsBusy = true;
         PopupPages p = new PopupPages();
         Application.Current.MainPage.ShowPopup(p);
+        await Task.Delay(100);
         await Shell.Current.GoToAsync(nameof(GenerateReportPage));
         p.Close();
         IsBusy = false;

@@ -30,6 +30,7 @@ public partial class EmployeeDashboardPage : ContentPage
         IsBusy = true;
         PopupPages p = new PopupPages();
         Application.Current.MainPage.ShowPopup(p);
+        await Task.Delay(100);
         await Shell.Current.GoToAsync(nameof(ScheduleOT));
         p.Close();
         IsBusy = false;

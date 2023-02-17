@@ -123,6 +123,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
 
             if (DepartmentList != null)
             {
@@ -163,6 +164,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
 
             var groupList = new List<string>();
 
@@ -206,6 +208,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
 
             var employeeList = new List<string>();
 
@@ -245,6 +248,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             if (selectedDepartment == null)
             {
                 await Shell.Current.DisplayAlert("Messages", "Please select a Department First or Select Start/End Date.", "OK");

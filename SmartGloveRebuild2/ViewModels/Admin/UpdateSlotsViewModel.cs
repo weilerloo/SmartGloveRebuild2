@@ -430,17 +430,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public void DecreaseMonth()
         {
             if (IsBusy) return;
-            IsBusy = true;
-            PopupPages p = new PopupPages();
-            Application.Current.MainPage.ShowPopup(p);
             ListCalendar.Clear();
             Datename.Clear();
             Monthname.Clear();
             ReduceMonth();
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
-            p.Close();
-            IsBusy = false;
         }
 
 
@@ -449,17 +444,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public void IncreaseMonth()
         {
             if (IsBusy) return;
-            IsBusy = true;
-            PopupPages p = new PopupPages();
-            Application.Current.MainPage.ShowPopup(p);
             ListCalendar.Clear();
             Datename.Clear();
             Monthname.Clear();
             AddMonth();
             now = DateTime.Now.AddMonths(month);
             DisplayDays(); 
-            p.Close();
-            IsBusy = false;
         }
 
         #endregion
@@ -471,6 +461,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             await Shell.Current.GoToAsync(nameof(UpdateSlotsPage));
             p.Close();
             IsBusy = false;
@@ -550,6 +541,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             await Shell.Current.GoToAsync(nameof(UpdateSlotsDetails), true, new Dictionary<string, object>
             {
             {"UpdateSlotsModel", updateSlotsModel

@@ -464,6 +464,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             if (RejectedList != null)
             {
                 RejectedList.Clear();

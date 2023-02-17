@@ -45,6 +45,7 @@ namespace SmartGloveRebuild2.ViewModels.Startup
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             try
             {
                 if (_connectivity.NetworkAccess != NetworkAccess.Internet)

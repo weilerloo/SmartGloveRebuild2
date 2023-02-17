@@ -453,12 +453,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             ReduceMonth();
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
-            IsBusy = true;
-            PopupPages p = new PopupPages();
-            Application.Current.MainPage.ShowPopup(p);
             ColorStatus();
-            p.Close();
-            IsBusy = false;
         }
 
         [RelayCommand]
@@ -471,12 +466,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             AddMonth();
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
-            IsBusy = true;
-            PopupPages p = new PopupPages();
-            Application.Current.MainPage.ShowPopup(p);
             ColorStatus();
-            p.Close();
-            IsBusy = false;
         }
 
         #endregion
@@ -491,6 +481,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             if (SelectedGroupname != null)
             {
                 if (GroupNameList.Count > 0)
@@ -546,6 +537,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             var response = await _groupServices.DisplayGroupFromUsers();
 
             if (response.Count > 0)
@@ -628,7 +620,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public void DeleteButtonSelected()
         {
             if(IsBusy) { return; }
-            IsBusy = true;
             foreach (var ccm in CalendarDetails)
             {
                 if (ccm.IsSelected == true)
@@ -642,11 +633,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             Datename.Clear();
             Monthname.Clear();
             DisplayDays();
-            PopupPages p = new PopupPages();
-            Application.Current.MainPage.ShowPopup(p);
             ColorStatus();
-            p.Close();
-            IsBusy = false;
         }
 
         [RelayCommand]

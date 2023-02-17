@@ -31,6 +31,7 @@ public partial class ClerkDashboardPage : ContentPage
         IsBusy = true;
         PopupPages p = new PopupPages();
         Application.Current.MainPage.ShowPopup(p);
+        await Task.Delay(100);
         await Shell.Current.GoToAsync(nameof(UpdateSlotsPage)); 
         p.Close();
         IsBusy = false;
@@ -40,6 +41,7 @@ public partial class ClerkDashboardPage : ContentPage
         IsBusy = true;
         PopupPages p = new PopupPages();
         Application.Current.MainPage.ShowPopup(p);
+        await Task.Delay(100);
         await Shell.Current.GoToAsync(nameof(DisplayGroupPage)); 
         p.Close();
         IsBusy = false;
@@ -49,8 +51,17 @@ public partial class ClerkDashboardPage : ContentPage
         IsBusy = true;
         PopupPages p = new PopupPages();
         Application.Current.MainPage.ShowPopup(p);
+        await Task.Delay(100);
         await Shell.Current.GoToAsync(nameof(ScheduleOT));
         p.Close();
         IsBusy = false;
+    }    
+    
+    private async void Button_Clicked_4(object sender, EventArgs e)
+    {
+        PopupPages p = new PopupPages();
+        Application.Current.MainPage.ShowPopup(p);
+        await Task.Delay(100);
+
     }
 }

@@ -131,6 +131,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 IsBusy = true;
                 PopupPages p = new PopupPages();
                 Application.Current.MainPage.ShowPopup(p);
+                await Task.Delay(100);
                 foreach (var group in FetchedRejectList)
                 {
                     var getSchedule = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO

@@ -469,6 +469,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             await ColorStatus();
             p.Close();
             IsRefreshing = false;
@@ -488,6 +489,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             await ColorStatus();
             p.Close();
             IsRefreshing = false;
@@ -504,6 +506,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             TotalHours = 0;
             if (App.UserDetails.GroupName != "Unassigned")
             {

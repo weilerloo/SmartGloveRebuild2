@@ -477,12 +477,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             ReduceMonth();
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
-            IsBusy = true;
-            PopupPages p = new PopupPages();
-            Application.Current.MainPage.ShowPopup(p);
             ColorStatus();
-            p.Close();
-            IsBusy = false;
         }
 
         [RelayCommand]
@@ -494,13 +489,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             Monthname.Clear();
             AddMonth();
             now = DateTime.Now.AddMonths(month);
-            IsBusy = true;
-            PopupPages p = new PopupPages();
-            Application.Current.MainPage.ShowPopup(p);
             DisplayDays(); 
             ColorStatus();
-            p.Close();
-            IsBusy = false;
         }
 
         #endregion
@@ -513,6 +503,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             if (SelectedGroupname != null)
             {
                 if (GroupNameList.Count > 0)
@@ -599,6 +590,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             var response = await _groupServices.DisplayGroup();
 
             if (response.Count > 0)
@@ -649,6 +641,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             IsBusy = true;
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
+            await Task.Delay(100);
             if (RejectList != null)
             {
                 RejectList.Clear();
