@@ -121,10 +121,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             if (IsBusy)
                 return;
             IsBusy = true;
-            PopupPages p = new PopupPages();
-            Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
-
             if (DepartmentList != null)
             {
                 DepartmentList.Clear();
@@ -154,7 +150,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                 }
             }
-            p.Close();
             IsBusy = false;
         }
 
@@ -162,10 +157,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         {
             if (IsBusy || selectedDepartment == null) { return; }
             IsBusy = true;
-            PopupPages p = new PopupPages();
+#if ANDROID
+PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
-
             var groupList = new List<string>();
 
             var response = await _groupServices.DisplayGroupFromUsers();
@@ -173,7 +167,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             {
                 if (FromGroupList.Count > 0)
                 {
-                    FromGroupList.Clear(); 
+                    FromGroupList.Clear();
                     EmployeeList.Clear();
                 }
 
@@ -200,18 +194,50 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 }
             }
             p.Close();
+#elif WINDOWS
+            var groupList = new List<string>();
+            var response = await _groupServices.DisplayGroupFromUsers();
+            if (response.Count > 0)
+            {
+                if (FromGroupList.Count > 0)
+                {
+                    FromGroupList.Clear();
+                    EmployeeList.Clear();
+                }
+
+                foreach (var dep in response)
+                {
+                    if (dep.GroupName == "Unassigned")
+                    {
+                        continue;
+                    }
+                    else if (dep.Department == selectedDepartment.Department)
+                    {
+                        groupList.Add(dep.GroupName);
+                    }
+                }
+
+                groupList = groupList.Distinct().ToList();
+
+                foreach (var grp in groupList)
+                {
+                    FromGroupList.Add(new GroupList
+                    {
+                        GroupName = grp,
+                    });
+                }
+            }
+#endif
             IsBusy = false;
         }
         public async void GetScheduleByEmployee()
         {
             if (IsBusy || selectedGroup == null) { return; }
             IsBusy = true;
-            PopupPages p = new PopupPages();
+#if ANDROID
+PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
-
             var employeeList = new List<string>();
-
             var response = await _groupServices.DisplayGroupFromUsers();
             if (response.Count > 0)
             {
@@ -232,6 +258,28 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 }
             }
             p.Close();
+#elif WINDOWS
+            var employeeList = new List<string>();
+            var response = await _groupServices.DisplayGroupFromUsers();
+            if (response.Count > 0)
+            {
+                if (EmployeeList.Count > 0)
+                {
+                    EmployeeList.Clear();
+                }
+
+                foreach (var employee in response)
+                {
+
+                    if (employee.Department == selectedDepartment.Department
+                        && employee.GroupName == selectedGroup.GroupName)
+                    {
+                        EmployeeList.Add(employee);
+                    }
+
+                }
+            }
+#endif
             IsBusy = false;
         }
         #endregion
@@ -245,14 +293,190 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public async Task<bool> ConfirmGenerate()
         {
             if (IsBusy == true) { return false; }
-            IsBusy = true;
+            try
+            {
+                IsBusy = true;
+#if ANDROID
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
+
             if (selectedDepartment == null)
             {
                 await Shell.Current.DisplayAlert("Messages", "Please select a Department First or Select Start/End Date.", "OK");
+                IsBusy = false;
                 p.Close();
+                return false;
+            }
+            else if (selectedDepartment != null && selectedGroup != null && selectedEmployee != null)
+            {
+                if (FinalList != null)
+                {
+                    FinalList.Clear();
+                }
+                var mindate = selectedmindaymonthyear.ToString("d/m/yyyy");
+                var maxdate = selectedmaxdaymonthyear.ToString("d/m/yyyy");
+                foreach (DateTime day in EachDay(selectedmindaymonthyear, selectedmaxdaymonthyear))
+                {
+                    var dymday = day.Day;
+                    var dymmonth = day.Month;
+                    var dymyear = day.ToString("yyyy");
+                    var concatenateddmy = dymday + "%2F" + dymmonth + "%2F" + dymyear;
+                    var getfromDep = await _scheduleServices.GetScheduleLogsByDepartmentGroupDate(new Models.Schedule.GetScheduleLogsByDepartmentGroupDateDTO
+                    {
+                        Department = selectedDepartment.Department,
+                        GruopName = selectedGroup.GroupName,
+                        ScheduleDate = concatenateddmy,
+                    });
+                    if (getfromDep != null)
+                    {
+                        foreach (var item in getfromDep)
+                        {
+                            var getUsername = await _groupServices.DisplayGroupFromUsers();
+                            if (getUsername != null)
+                            {
+                                foreach (var usn in getUsername)
+                                {
+                                    if (usn.UserName == item.EmployeeNumber)
+                                    {
+                                        item.UserName = usn.EmployeeName;
+                                    }
+                                }
+                            }
+                            if (item.EmployeeNumber == selectedEmployee.UserName && item.GroupName == selectedGroup.GroupName)
+                            {
+                                DateTime converted = DateTime.ParseExact(item.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
+                                item.DayMonthYear = converted.ToString("d");
+                                FinalList.Add(item);
+                            }
+                        }
+                        Grouplistfrompicker = await CalculateSection();
+                    }
+                }
+                if (FinalList.Count == 0)
+                {
+                    await Shell.Current.DisplayAlert("Messages", "No Schedule Found. Please change to a valid date.", "OK");
+                    IsBusy = false;
+                    p.Close();
+                    return false;
+                }
+                IsBusy = false;
+                p.Close();
+                return true;
+            }
+            else if (selectedDepartment != null && selectedGroup != null)
+            {
+                if (FinalList != null)
+                {
+                    FinalList.Clear();
+                }
+                var mindate = selectedmindaymonthyear.ToString("d/m/yyyy");
+                var maxdate = selectedmaxdaymonthyear.ToString("d/m/yyyy");
+                foreach (DateTime day in EachDay(selectedmindaymonthyear, selectedmaxdaymonthyear))
+                {
+                    var dymday = day.Day;
+                    var dymmonth = day.Month;
+                    var dymyear = day.ToString("yyyy");
+                    var concatenateddmy = dymday + "%2F" + dymmonth + "%2F" + dymyear;
+                    var getfromDep = await _scheduleServices.GetScheduleLogsByDepartmentGroupDate(new Models.Schedule.GetScheduleLogsByDepartmentGroupDateDTO
+                    {
+                        Department = selectedDepartment.Department,
+                        GruopName = selectedGroup.GroupName,
+                        ScheduleDate = concatenateddmy,
+                    });
+                    if (getfromDep != null)
+                    {
+                        foreach (var item in getfromDep)
+                        {
+                            var getUsername = await _groupServices.DisplayGroupFromUsers();
+                            if (getUsername != null)
+                            {
+                                foreach (var usn in getUsername)
+                                {
+                                    if (usn.UserName == item.EmployeeNumber)
+                                    {
+                                        item.UserName = usn.EmployeeName;
+                                    }
+                                }
+                            }
+                            if (item.GroupName == selectedGroup.GroupName)
+                            {
+                                FinalList.Add(item);
+                            }
+                        }
+                        Grouplistfrompicker = await CalculateSection();
+                    }
+                }
+                if (FinalList.Count == 0)
+                {
+                    await Shell.Current.DisplayAlert("Messages", "No Schedule Found. Please change to a valid date.", "OK");
+                    IsBusy = false;
+                    p.Close();
+                    return false;
+                }
+                IsBusy = false;
+                p.Close();
+                return true;
+            }
+            else if (selectedDepartment != null)
+            {
+                if (FinalList != null)
+                {
+                    FinalList.Clear();
+                }
+                var mindate = selectedmindaymonthyear.ToString("d/m/yyyy");
+                var maxdate = selectedmaxdaymonthyear.ToString("d/m/yyyy");
+                foreach (DateTime day in EachDay(selectedmindaymonthyear, selectedmaxdaymonthyear))
+                {
+                    var getfromDep = await _scheduleServices.GetScheduleLogsByDepartmentandDate(new Models.Schedule.GetSchedulebyGroupandDateDTO
+                    {
+                        GroupName = selectedDepartment.Department,
+                        ScheduleDate = day.ToString("d/M/yyyy"),
+                    });
+                    if (getfromDep != null)
+                    {
+                        foreach (var item in getfromDep)
+                        {
+                            var getUsername = await _groupServices.DisplayGroupFromUsers();
+                            if (getUsername != null)
+                            {
+                                foreach (var usn in getUsername)
+                                {
+                                    if (usn.UserName == item.EmployeeNumber)
+                                    {
+                                        item.UserName = usn.EmployeeName;
+                                    }
+                                }
+                            }
+
+                            FinalList.Add(item);
+                        }
+                    }
+                }
+                if (FinalList.Count == 0)
+                {
+                    await Shell.Current.DisplayAlert("Messages", "No Schedule Found. Please change to a valid date.", "OK");
+                    IsBusy = false;
+                    p.Close();
+                    return false;
+                }
+                IsBusy = false;
+                p.Close();
+                return true;
+            }
+            else
+            {
+                IsBusy = false;
+                p.Close();
+                return false;
+            }
+            IsBusy = false;
+            p.Close();
+            return false;
+#elif WINDOWS
+
+            if (selectedDepartment == null)
+            {
+                await Shell.Current.DisplayAlert("Messages", "Please select a Department First or Select Start/End Date.", "OK");
                 IsBusy = false;
                 return false;
             }
@@ -304,11 +528,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 if (FinalList.Count == 0)
                 {
                     await Shell.Current.DisplayAlert("Messages", "No Schedule Found. Please change to a valid date.", "OK");
-                    p.Close();
                     IsBusy = false;
                     return false;
                 }
-                p.Close();
                 IsBusy = false;
                 return true;
             }
@@ -358,11 +580,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 if (FinalList.Count == 0)
                 {
                     await Shell.Current.DisplayAlert("Messages", "No Schedule Found. Please change to a valid date.", "OK");
-                    p.Close();
                     IsBusy = false;
                     return false;
                 }
-                p.Close();
                 IsBusy = false;
                 return true;
             }
@@ -405,19 +625,28 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 if (FinalList.Count == 0)
                 {
                     await Shell.Current.DisplayAlert("Messages", "No Schedule Found. Please change to a valid date.", "OK");
-                    p.Close();
                     IsBusy = false;
                     return false;
                 }
-                p.Close();
                 IsBusy = false;
                 return true;
             }
             else
             {
-                p.Close();
                 IsBusy = false;
                 return false;
+            }
+#endif
+                return false;
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Failed to Confirm Generate Report", "Please Try Again", "Ok");
+                return false;
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
@@ -437,7 +666,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             {
                 foreach (var grp in GroupsfromDepartment)
                 {
-                    if(grp.GroupName == "Unassigned")
+                    if (grp.GroupName == "Unassigned")
                     {
                         continue;
                     }
@@ -515,7 +744,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         table.Cell().Row(6).Column(4).ColumnSpan(2).BoldEmptyCell("DATE :");
                         table.Cell().Row(6).Column(5).ColumnSpan(2).PaddingLeft(60).AlignRight().EmptyCell($"{Selectedmindaymonthyear.ToString("d")} ~ {Selectedmaxdaymonthyear.ToString("d")}"); // Report Date
                         table.Cell().Row(7).Column(1).ColumnSpan(2).BoldEmptyCell("SECTION :");
-                        table.Cell().Row(7).Column(2).ColumnSpan(2).PaddingLeft(60).AlignRight().EmptyCell($"Unavaible"); // Report Date
+                        table.Cell().Row(7).Column(2).ColumnSpan(2).PaddingLeft(60).AlignRight().EmptyCell($"Unavailable"); // Report Date
                     }
                     else if (selectedGroup != null && selectedDepartment != null)  // When department, and selected group is there
                     {
@@ -542,6 +771,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             return container;
         }
 
+        [Obsolete]
         async Task<IContainer> ComposeContent(IContainer container)
         {
 
@@ -568,6 +798,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 }
 
                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
+                IContainer CellStyle2(IContainer container) => DefaultCellStyle(container, Colors.Grey.Medium);
 
 
                 table.ColumnsDefinition(columns =>
@@ -591,7 +822,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                     header.Cell().RowSpan(2).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("NO.").FontSize(6);
                     header.Cell().RowSpan(2).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("EMP NO.").FontSize(6);
-                    header.Cell().RowSpan(2).ColumnSpan(2).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("NAME").FontSize(6);
+                    header.Cell().RowSpan(2).ColumnSpan(2).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("ACCEPTED BY").FontSize(6);
                     //header.Cell().RowSpan(2).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("TIME").FontSize(6);
 
                     header.Cell().ColumnSpan(3).Element(CellStyle).Text("OVERTIME DETAILS").FontSize(6);
@@ -618,14 +849,15 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     if (page.IsRejected == true)
                     {
                         table.Cell().Element(CellStyle).Text("\u221A").FontSize(6);
-                        table.Cell().Element(CellStyle).Text("").FontSize(6);
+                        table.Cell().Element(CellStyle2).Text("").FontSize(6);
                     }
                     else
                     {
-                        table.Cell().Element(CellStyle).Text("").FontSize(6);
+                        table.Cell().Element(CellStyle2).Text("").FontSize(6);
                         table.Cell().Element(CellStyle).Text("\u221A").FontSize(6);
                     }
-                    table.Cell().ColumnSpan(2).Element(CellStyle).Text(page.DayMonthYear).WrapAnywhere(true).FontSize(6);
+                    DateTime converted = DateTime.ParseExact(page.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
+                    table.Cell().ColumnSpan(2).Element(CellStyle).Text(converted.ToString("d/M/yyyy")).WrapAnywhere(true).FontSize(6);
                     if (page.RejectedBy != null)
                     {
                         table.Cell().ColumnSpan(2).Element(CellStyle).Text(
@@ -655,7 +887,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             if (await ConfirmGenerate())
             {
                 //var imageStream = await imagePth("planet.png");
-#if ANDROID
+                //#if ANDROID
                 Document.Create(container =>
                 {
                     container.Page(async page =>
@@ -667,11 +899,23 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                         await ComposeHeader(page.Header().ShowOnce());
                         await ComposeContent(page.Content());
                         page.Footer()
-                            .AlignCenter()
-                            .Text(x =>
+                            .Row(row =>
                             {
-                                x.Span("Page ");
-                                x.CurrentPageNumber();
+
+                                row.RelativeItem()
+                                    .AlignLeft()
+                                    .Padding(0)
+                                    .Text("* This Report generated by Smart Glove Overtime Applications. *")
+                                    .FontSize(5);
+
+                                row.RelativeItem(2)
+                                    .AlignRight()
+                                    .Padding(0)
+                                    .Text(x =>
+                                    {
+                                        x.Span("Page ");
+                                        x.CurrentPageNumber();
+                                    });
                             });
                     });
                 }).GeneratePdf(Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("d_M_yyyy")}.pdf"));
@@ -683,42 +927,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     File = new ReadOnlyFile(filepath),
 
                 });
-#elif WINDOWS
-                    Document.Create(container =>
-            {
-               container.Page(async page =>
-                {
-                    page.Size(PageSizes.A4);
-                    page.Margin(1, Unit.Centimetre);
-                    page.PageColor(Colors.White);
-                    page.DefaultTextStyle(x => x.FontSize(12));
-                    await ComposeHeader(page.Header().ShowOnce());
-                    await ComposeContent(page.Content());
-                    page.Footer()
-                        .AlignCenter()
-                        .Text(x =>
-                        {
-                            x.Span("Page ");
-                            x.CurrentPageNumber();
-                        });
-                });
-            })
-            
-            
-            
-            
-            
-            
-            .GeneratePdf(Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("d_M_yyyy")}.pdf"));
-
-
-            var filepath = Path.Combine(FileSystem.Current.AppDataDirectory, $"REPORT_OT_{DateTime.Now.ToString("d_M_yyyy")}.pdf");
-            await Launcher.OpenAsync(new OpenFileRequest
-            {
-                File = new ReadOnlyFile(filepath),
-
-            });
-#endif
             }
         }
     }

@@ -109,7 +109,7 @@
                     </Frame> <!--Hour-->
 
                 </Grid>
-                <Button Margin="0,40,0,0" Text="Generate Report" Clicked="Button_Clicked"/>
+                <Button HeightRequest="60" Margin="0,40,0,0" Text="Generate Report" Clicked="Button_Clicked"/>
 
 
                 <Image Source="sglogo_new.png.png" 

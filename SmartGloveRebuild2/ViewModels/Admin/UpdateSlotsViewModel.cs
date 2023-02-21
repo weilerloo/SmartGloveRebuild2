@@ -459,11 +459,14 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         private async Task UpdateSlots()
         {
             IsBusy = true;
+#if ANDROID
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
             await Shell.Current.GoToAsync(nameof(UpdateSlotsPage));
             p.Close();
+#elif WINDOWS
+            await Shell.Current.GoToAsync(nameof(UpdateSlotsPage));
+#endif
             IsBusy = false;
         }
 
@@ -482,7 +485,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             var getGroup = await _groupServices.DisplayGroup();
             if (updateSlotsModel != null)
             {
-                if (response.Count() > 0 && getGroup != null)
+                if(response == null && getGroup.Count() == 1)
+                {
+                    await Shell.Current.DisplayAlert("No Group are Found", "Please Assign/ Create group members.", "OK");
+                    return;
+                }
+                else if (response.Count() > 0 && getGroup != null)
                 {
                     foreach (var Group in response)// 14/12/2022, Biomas, Sigma, GX2
                     {
@@ -539,18 +547,25 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             }
 
             IsBusy = true;
+#if ANDROID
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
             await Shell.Current.GoToAsync(nameof(UpdateSlotsDetails), true, new Dictionary<string, object>
             {
             {"UpdateSlotsModel", updateSlotsModel
     }
 });
             p.Close();
+#elif WINDOWS
+            await Shell.Current.GoToAsync(nameof(UpdateSlotsDetails), true, new Dictionary<string, object>
+            {
+            {"UpdateSlotsModel", updateSlotsModel
+    }
+});
+#endif
             IsBusy = false;
         }
 
-        #endregion
+#endregion
     }
 }

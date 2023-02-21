@@ -84,7 +84,6 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         {
             _scheduleServices = scheduleServices;
             DisplayDays();
-            Init = ColorStatus();
             Title = "Your OT Schedule";
             Items = new ObservableCollection<CalendarModel>();
             SelectedItem = new CalendarModel();
@@ -146,7 +145,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         }
 
         [RelayCommand]
-        public void DisplayDays()
+        public async void DisplayDays()
         {
             var month = now.Month;  // Current Date
             year = now.Year; // 2022
@@ -454,6 +453,8 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     }
                 }
             }
+            await ColorStatus(); 
+
         }
 
         [RelayCommand]
@@ -467,11 +468,11 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             now = DateTime.Now.AddMonths(month); // 1
             DisplayDays();
             IsBusy = true;
-            PopupPages p = new PopupPages();
-            Application.Current.MainPage.ShowPopup(p);
             await Task.Delay(100);
-            await ColorStatus();
-            p.Close();
+            if (App.UserDetails.GroupName != "Unassigned")
+            {
+                await ColorStatus();
+            }
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -487,11 +488,19 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             now = DateTime.Now.AddMonths(month);
             DisplayDays();
             IsBusy = true;
-            PopupPages p = new PopupPages();
-            Application.Current.MainPage.ShowPopup(p);
             await Task.Delay(100);
-            await ColorStatus();
-            p.Close();
+            if (App.UserDetails.GroupName != "Unassigned")
+            {
+                await ColorStatus();
+            }
+            else
+            {
+                PopupPages p = new PopupPages();
+                Application.Current.MainPage.ShowPopup(p);
+                await Task.Delay(1500);
+                await Shell.Current.DisplayAlert("You are Unassigned", "Please get a group to be assigned first.", "OK");
+                p.Close();
+            }
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -504,10 +513,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         public async Task ColorStatus()
         {
             IsBusy = true;
+            TotalHours = 0;
+#if ANDROID
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
-            TotalHours = 0;
             if (App.UserDetails.GroupName != "Unassigned")
             {
                 foreach (var cm in CalendarDetails)
@@ -646,8 +655,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             }
             else
             {
+                IsRefreshing = false;
+                IsBusy = false;
                 await Shell.Current.DisplayAlert("You are Unassigned", "Please get a group to be assigned first.", "OK");
-
+                return;
             }
 
             if (TotalHours >= 104)
@@ -661,6 +672,138 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             p.Close();
             IsRefreshing = false;
             IsBusy = false;
+#elif WINDOWS
+            if (App.UserDetails.GroupName != "Unassigned")
+            {
+                foreach (var cm in CalendarDetails)
+                {
+                    var getEmployeeSchedule = await _scheduleServices.GetScheduleByEmployeeNumberandDate(new GetScheduleByEmployeeNumberandDateDTO
+                    {
+                        DayMonthYear = cm.DayMonthYear,
+                        EmployeeNumber = App.UserDetails.EmployeeNumber,
+                    });
+
+                    var response = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
+                    {
+                        GroupName = App.UserDetails.GroupName,
+                        ScheduleDate = cm.DayMonthYear,
+                    });
+                    if (getEmployeeSchedule != null)
+                    {
+                        if (getEmployeeSchedule != null && getEmployeeSchedule.IsRejected == true)  //Red
+                        {
+                            cm.Color = Color.FromArgb("#FF0000");
+                            cm.IsRejected = true;
+                            cm.LastCurrentMonth = "red";
+                        }
+                        else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber == App.UserDetails.EmployeeNumber)
+                        {
+                            cm.Color = Color.FromArgb("#FFA500");
+                            cm.IsBooked = true;
+                            //cm.Remark = sdl.Remarks;
+                            cm.Hours = getEmployeeSchedule.Hours;
+                            cm.GroupName = getEmployeeSchedule.GroupName;
+                            cm.LastCurrentMonth = "yellow";
+                        }
+
+                        var convertedstring = getEmployeeSchedule.ScheduleDate.ToString("d/M/yyyy");
+                        if (convertedstring == cm.DayMonthYear && getEmployeeSchedule.IsRejected == false)
+                        {
+                            TotalHours = getEmployeeSchedule.Hours + TotalHours;
+                        }
+                        if (TotalHours >= 104)
+                        {
+                            Notesforot = "You are NOT Eligible for OT's.";
+                        }
+                        else
+                        {
+                            Notesforot = "You are Eligible for OT's.";
+                        }
+                    }
+                    else
+                    {
+                        Notesforot = "You are Eligible for OT's.";
+                    }
+
+                    if (response != null)
+                    {
+                        DateTime sDate = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
+                        var DayDifferences = (DateTime.Now - sDate.Date).Days;
+                        var checkIsFull = response.Find(f => f.AvailablePaxs >= f.Paxs && f.Status == true);
+                        if (DayDifferences < 7 && response.Count() != 0)
+                        {
+                            if (checkIsFull != null && cm.LastCurrentMonth == null)
+                            {
+                                cm.Color = Color.FromArgb("#FF0000");
+                            }
+                            else if (getEmployeeSchedule != null)
+                            {
+                                foreach (var sdl in response)
+                                {
+                                    DateTime cmdaymonthyear = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
+
+                                    if (sdl.Status == true && cmdaymonthyear >= DateTime.Now && getEmployeeSchedule.GroupName != sdl.GroupName && getEmployeeSchedule.IsRejected == true)
+                                    {
+                                        cm.Hours = sdl.Hours;
+                                        cm.Color = Color.FromArgb("#32CD32");//green
+                                        cm.IsAvailable = true;
+                                        cm.GroupName = sdl.GroupName;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                foreach (var sdl in response)
+                                {
+                                    DateTime cmdaymonthyear = DateTime.ParseExact(cm.DayMonthYear, "d/M/yyyy", null);
+
+                                    if (sdl.Status == true && cmdaymonthyear >= DateTime.Now)
+                                    {
+                                        cm.Hours = sdl.Hours;
+                                        cm.Color = Color.FromArgb("#32CD32");//green
+                                        cm.IsAvailable = true;
+                                        cm.GroupName = sdl.GroupName;
+                                    }
+                                    else
+                                    {
+                                        cm.Color = Color.FromArgb("#778899");//grey
+                                        cm.IsAvailable = false;
+                                    }
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            if (cm.LastCurrentMonth == null)
+                            {
+                                cm.Color = Color.FromArgb("#778899");//grey
+                                cm.IsAvailable = false;
+                            }
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                IsRefreshing = false;
+                IsBusy = false;
+                await Shell.Current.DisplayAlert("You are Unassigned", "Please get a group to be assigned first.", "OK");
+                return;
+            }
+
+            if (TotalHours >= 104)
+            {
+                Notesforot = "You are NOT Eligible for OT's.";
+            }
+            else
+            {
+                Notesforot = "You are Eligible for OT's.";
+            }
+            IsRefreshing = false;
+            IsBusy = false;
+#endif
         }
 
         #endregion

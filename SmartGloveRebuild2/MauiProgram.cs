@@ -90,6 +90,7 @@ builder.ConfigureLifecycleEvents(events =>
         builder.Services.AddTransient<GenerateReportPage>();
         builder.Services.AddTransient<EmployeeDashboardPage>();
         builder.Services.AddTransient<ClerkDashboardPage>();
+        builder.Services.AddTransient<BUHeadDashboardPage>();
         builder.Services.AddTransient<HODDashboardPage>();
         builder.Services.AddTransient<HRDashboardPage>();
         builder.Services.AddTransient<SupervisorDashboardPage>();

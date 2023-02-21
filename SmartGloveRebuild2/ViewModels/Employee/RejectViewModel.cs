@@ -67,7 +67,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         {
             _scheduleService = scheduleServices;
             DisplayDays();
-            this.Init = GetRejectedList();
+            Init = GetRejectedList();
             Title = "Reject List";
         }
 
@@ -460,11 +460,10 @@ namespace SmartGloveRebuild2.ViewModels.Employee
         public async Task GetRejectedList()
         {
             if (IsBusy) return;
-
             IsBusy = true;
+#if ANDROID
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
             if (RejectedList != null)
             {
                 RejectedList.Clear();
@@ -497,6 +496,39 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                 }
             }
             p.Close();
+#elif WINDOWS
+            if (RejectedList != null)
+            {
+                RejectedList.Clear();
+            }
+            foreach (var cm in ListCalendar)
+            {
+                var getEmployeeSchedule = await _scheduleService.GetRejectedScheduleLog(new GetScheduleByEmployeeNumberandDateDTO
+                {
+                    DayMonthYear = cm.DayMonthYear,
+                    EmployeeNumber = App.UserDetails.EmployeeNumber,
+                });
+
+                if (getEmployeeSchedule != null)
+                {
+                    foreach (var s in getEmployeeSchedule)
+                    {
+                        if (s.IsRejected == true)
+                        {
+                            RejectedList.Add(new CalendarModel
+                            {
+                                Day = cm.Day,
+                                Month = cm.Month,
+                                Year = cm.Year,
+                                Rejectedreason = s.RejectedReason,
+                                IsRejected = s.IsRejected,
+                                RejectedBy = s.RejectedBy,
+                            });
+                        }
+                    }
+                }
+            }
+#endif
             IsRefreshing = false;
             IsBusy = false;
         }

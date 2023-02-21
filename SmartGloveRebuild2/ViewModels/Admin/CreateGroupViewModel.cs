@@ -29,6 +29,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public async Task CreateGroup(CreateGroupDTO createGroupDTO)
         {
+            if(creategroupname.Count() > 10)
+            {
+                await Shell.Current.DisplayAlert("Group Name Limits", "Please enter the name only with maximum of 10.", "Ok");
+                return;
+            }
             var FindGroup = await _groupService.CreateGroup(new CreateGroupDTO
             {
                 GroupName = creategroupname,

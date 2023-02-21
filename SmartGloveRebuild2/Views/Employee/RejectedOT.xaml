@@ -34,7 +34,7 @@
                 </CollectionView>
                 <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2" Command="{Binding IncreaseMonthCommand}"/>
                 <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="2" Text="-" Margin="2" Command="{Binding DecreaseMonthCommand}"/>
-                <ActivityIndicator Grid.Row="3" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+                <!--<ActivityIndicator Grid.Row="3" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>-->
             </Grid>
             <Frame Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
                 <Grid ColumnDefinitions="*,*,*">

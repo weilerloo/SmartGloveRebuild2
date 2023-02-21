@@ -91,12 +91,20 @@ namespace SmartGloveRebuild2.ViewModels.Startup
                     }
                     else
                     {
+                        await Task.Delay(1500);
+                        p.Close();
+                        IsBusy = false;
                         await AppShell.Current.DisplayAlert("Invalid User Name Or Password", "Invalid UserName or Password", "OK");
+                        return;
                     }
                 }
                 else
                 {
+                    await Task.Delay(1500);
+                    p.Close();
+                    IsBusy = false;
                     await AppShell.Current.DisplayAlert("No User Name or Password", "Please Enter Users Name or Passwword", "OK");
+                    return;
                 }
             }
             catch 

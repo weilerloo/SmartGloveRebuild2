@@ -36,6 +36,8 @@ namespace SmartGloveRebuild2.Models
             var ClerkDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(ClerkDashboardPage)).FirstOrDefault();
             if (ClerkDashboardInfo != null) AppShell.Current.Items.Remove(ClerkDashboardInfo);
 
+            var BUHeadDashboardInfo = AppShell.Current.Items.Where(f => f.Route == nameof(BUHeadDashboardPage)).FirstOrDefault();
+            if (BUHeadDashboardInfo != null) AppShell.Current.Items.Remove(BUHeadDashboardInfo);
 
 
             if (App.UserDetails.RoleID == (int)RoleDetails.Employee || App.UserDetails.RoleID == (int)RoleDetails.Technician)
@@ -337,6 +339,53 @@ namespace SmartGloveRebuild2.Models
                     else
                     {
                         await Shell.Current.GoToAsync($"//{nameof(ExecutiveDashboardPage)}");
+                    }
+                }
+            }
+
+            if (App.UserDetails.RoleID == (int)RoleDetails.BUH)
+            {
+                var flyoutItem = new FlyoutItem()
+                {
+                    Title = "Dashboard Page",
+                    Route = nameof(BUHeadDashboardPage),
+                    FlyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems,
+                    Items =
+                    {
+                                new ShellContent
+                                {
+                                    Icon = Icons.Dashboard,
+                                    Title = "BUH Dashboard",
+                                    ContentTemplate = new DataTemplate(typeof(BUHeadDashboardPage)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.CheckCalendar,
+                                    Title = "BUH Check Calendar",
+                                    ContentTemplate = new DataTemplate(typeof(CheckCalendarPage)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.GenerateReport,
+                                    Title = "Generate Report",
+                                    ContentTemplate = new DataTemplate(typeof(GenerateReportPage)),
+                                },
+                   }
+                };
+
+                if (!AppShell.Current.Items.Contains(flyoutItem))
+                {
+                    AppShell.Current.Items.Add(flyoutItem);
+                    if (DeviceInfo.Platform == DevicePlatform.WinUI)
+                    {
+                        AppShell.Current.Dispatcher.Dispatch(async () =>
+                        {
+                            await Shell.Current.GoToAsync($"//{nameof(BUHeadDashboardPage)}");
+                        });
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync($"//{nameof(BUHeadDashboardPage)}");
                     }
                 }
             }

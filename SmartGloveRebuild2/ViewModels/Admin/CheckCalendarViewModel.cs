@@ -489,7 +489,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             Monthname.Clear();
             AddMonth();
             now = DateTime.Now.AddMonths(month);
-            DisplayDays(); 
+            DisplayDays();
             ColorStatus();
         }
 
@@ -501,9 +501,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             if (IsBusy)
                 return;
             IsBusy = true;
+#if ANDROID
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
             if (SelectedGroupname != null)
             {
                 if (GroupNameList.Count > 0)
@@ -555,13 +555,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                     cm.Color = Color.FromArgb("#A52A2A");//chocolate
                                     cm.GroupName = selectedgroupname.GroupName;
                                 }
-                                //else
-                                //{
-                                //    cm.IsSelected = true;
-                                //    cm.GroupName = selectedgroupname.GroupName;
-                                //    cm.Color = Color.FromArgb("#778899");
-                                //    cm.IsAvailable = false;
-                                //}
                             }
                         }
                     }
@@ -575,6 +568,71 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 }
             }
             p.Close();
+#elif WINDOWS
+            if (SelectedGroupname != null)
+            {
+                if (GroupNameList.Count > 0)
+                {
+                    GroupNameList.Clear();
+                }
+                foreach (var cm in CalendarDetails)
+                {
+                    var GetSchedulebyGroupandDateresponse = await _scheduleServices.GetSchedulebyGroupandDate(new GetSchedulebyGroupandDateDTO
+                    {
+                        GroupName = SelectedGroupname.GroupName,
+                        ScheduleDate = cm.DayMonthYear,
+                    });
+
+                    if (GetSchedulebyGroupandDateresponse.Count > 0)
+                    {
+                        foreach (var getschdule in GetSchedulebyGroupandDateresponse)
+                        {
+                            if (getschdule.Hours == 0 && getschdule.Paxs == 0)
+                            {
+                                cm.IsSelected = true;
+                                cm.GroupName = selectedgroupname.GroupName;
+                                cm.Color = Color.FromArgb("#778899");//grey
+                                cm.IsAvailable = false;
+                            }
+                            else
+                            {
+                                var checkIsFull = GetSchedulebyGroupandDateresponse.Find(f => f.AvailablePaxs >= f.Paxs);
+                                var checkIsNotFull = GetSchedulebyGroupandDateresponse.Find(f => (f.AvailablePaxs / f.Paxs) * 100 <= 80.00);
+                                var checkIsOFF = GetSchedulebyGroupandDateresponse.Find(f => f.Status == false);
+
+                                if (checkIsFull != null)
+                                {
+                                    cm.IsSelected = false;
+                                    cm.IsAvailable = true;
+                                    cm.Color = Color.FromArgb("#0000FF"); //BLUE
+                                    cm.GroupName = selectedgroupname.GroupName;
+                                }
+                                else if (checkIsOFF != null)
+                                {
+                                    cm.IsSelected = true;
+                                    cm.Color = Color.FromArgb("#778899");
+                                    cm.GroupName = selectedgroupname.GroupName;
+                                }
+                                else if (checkIsNotFull != null)
+                                {
+                                    cm.IsSelected = false;
+                                    cm.IsAvailable = true; //not relevant
+                                    cm.Color = Color.FromArgb("#A52A2A");//chocolate
+                                    cm.GroupName = selectedgroupname.GroupName;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        cm.IsSelected = true;
+                        cm.GroupName = selectedgroupname.GroupName;
+                        cm.Color = Color.FromArgb("#778899");
+                        cm.IsAvailable = false;
+                    }
+                }
+            }
+#endif
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -588,11 +646,10 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             if (IsBusy)
                 return;
             IsBusy = true;
+#if ANDROID
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
             var response = await _groupServices.DisplayGroup();
-
             if (response.Count > 0)
             {
                 foreach (var grp in response)
@@ -626,6 +683,41 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
             ColorStatus();
             p.Close();
+#elif WINDOWS
+            var response = await _groupServices.DisplayGroup();
+            if (response.Count > 0)
+            {
+                foreach (var grp in response)
+                {
+                    var res = GroupTitleList.Where(f => f.GroupName.Equals(grp.GroupName)).FirstOrDefault();
+                    if (res != null)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        if (grp.GroupName == "Unassigned")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            GroupTitleList.Add(new GroupList
+                            {
+                                GroupName = grp.GroupName,
+                                SelectedIndex = GroupTitleList.IndexOf(new GroupList
+                                {
+                                    GroupName = grp.GroupName,
+                                }),
+                            });
+
+                        }
+                    }
+                }
+            }
+
+            ColorStatus();
+#endif
             IsRefreshing = false;
             IsBusy = false;
         }
@@ -639,15 +731,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             if (IsBusy)
                 return;
             IsBusy = true;
+#if ANDROID
             PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
             if (RejectList != null)
             {
                 RejectList.Clear();
             }
-
-
             if (selectedItem == null || selectedItem.IsSelected == true)
             {
                 p.Close();
@@ -705,10 +795,70 @@ namespace SmartGloveRebuild2.ViewModels.Admin
     }
 });
             p.Close();
+
+#elif WINDOWS
+            if (RejectList != null)
+            {
+                RejectList.Clear();
+            }
+            if (selectedItem == null || selectedItem.IsSelected == true)
+            {
+                IsBusy = false;
+                await Shell.Current.DisplayAlert("Messages", "Please choose the Colored Days to Exclude.", "OK");
+                return;
+            }
+            else if (selectedItem.Color == null)
+            {
+                IsBusy = false;
+                await Shell.Current.DisplayAlert("Messages", "Please choose the Groups First.", "OK");
+                return;
+            }
+
+            var getUsersname = await _scheduleServices.GetScheduleLogsByGroupandDate(new GetSchedulebyGroupandDateDTO
+            {
+                GroupName = selectedItem.GroupName,
+                ScheduleDate = selectedItem.DayMonthYear,
+            });
+
+            var getEmployeeName = await _groupServices.DisplayGroupFromUsers();
+
+            if (getUsersname != null && getEmployeeName != null)
+            {
+
+                foreach (var i in getUsersname)
+                {
+                    foreach (var o in getEmployeeName)
+                    {
+                        if (o.UserName == i.EmployeeNumber)
+                        {
+                            RejectList.Add(new GroupList
+                            {
+                                IsRejected = i.IsRejected,
+                                DayMonthYear = selectedItem.DayMonthYear,
+                                UserName = i.EmployeeNumber,
+                                EmployeeName = o.EmployeeName,
+                                GroupName = i.GroupName,
+                            });
+                        }
+                    }
+                }
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Messages", "Group Schedule not found with date.", "OK");
+                IsBusy = false;
+            }
+
+            await Shell.Current.GoToAsync(nameof(ExclusionListPage), true, new Dictionary<string, object>
+            {
+            {"CalendarModel", selectedItem
+    }
+});
+#endif
             IsBusy = false;
         }
 
     }
-    #endregion
+#endregion
 }
 

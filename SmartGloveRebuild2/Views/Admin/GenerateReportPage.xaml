@@ -16,7 +16,7 @@
                             ItemsSource="{Binding DepartmentList}" 
                             SelectedItem="{Binding SelectedDepartment}"
                             ItemDisplayBinding="{Binding Department}"/>
-                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+                <!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>-->
             </StackLayout>
             <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center">
                 <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Group List" 
@@ -25,12 +25,12 @@
                             ItemDisplayBinding="{Binding GroupName}"/>
                 <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
             </StackLayout>
-            <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center">
+            <StackLayout x:Name="EmployeePicker" Grid.Row="2" Margin="10" HorizontalOptions="Center">
                 <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Employee List" 
                             ItemsSource="{Binding EmployeeList}" 
                             SelectedItem="{Binding SelectedEmployee}"
                             ItemDisplayBinding="{Binding UserName}"/>
-                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+                <!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>-->
             </StackLayout>
             <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center" Spacing="20">
                 <HorizontalStackLayout Spacing="10">
@@ -42,7 +42,7 @@
                     <DatePicker Date="{Binding Selectedmaxdaymonthyear}" />
                 </HorizontalStackLayout>
                 <Button Margin="0,20,0,20" Text="Generate Report" WidthRequest="200" HeightRequest="50" Command="{Binding DownloadReportCommand}"/>
-                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+                <!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>-->
             </StackLayout>
         </VerticalStackLayout>
     </ScrollView>

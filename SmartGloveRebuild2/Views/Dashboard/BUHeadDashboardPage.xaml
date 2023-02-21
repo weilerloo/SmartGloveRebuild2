@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SmartGloveRebuild2.Views.Dashboard.ExecutiveDashboardPage"
-             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"	
-             Title="Executive Dashboard">
+             x:Class="SmartGloveRebuild2.Views.Dashboard.BUHeadDashboardPage"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Dashboard"	
+             Title="Business Unit Head">
     <ScrollView>
         <Grid BackgroundColor="Transparent">
 
@@ -76,12 +76,13 @@
                    
 
                 </Grid>
-                <Button HeightRequest="60" Margin="0,40,0,0" Text="Generate Report" Clicked="Button_Clicked"/>
+                <Button HeightRequest="60" Text="Check Calendar"/>
+                <Button HeightRequest="60" Text="Generate Report"/>
 
 
-                <Image Source="sglogo_new.png.png" 
-                       HeightRequest="20" 
-                       WidthRequest="300" 
+                <Image Source="sglogo_new.png" 
+                       HeightRequest="30" 
+                       WidthRequest="300"
                        Margin="0,50,0,0"/>
             </VerticalStackLayout>
 

@@ -8,5 +8,10 @@ public partial class GenerateReportPage : ContentPage
 	{
 		InitializeComponent();
         this.BindingContext = hRGenerateReportViewModel;
+
+        if (App.UserDetails.Role == "EXECUTIVE")
+        {
+            EmployeePicker.IsVisible = false;
+        }
     }
 }

@@ -106,9 +106,9 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public async Task UpdateStatus()
         {
             IsBusy = true;
-            PopupPages p = new PopupPages();
+#if ANDROID
+PopupPages p = new PopupPages();
             Application.Current.MainPage.ShowPopup(p);
-            await Task.Delay(100);
             foreach (var content in addedGroupSchedule)
             {
                 if ((content.Paxs == 0 || content.Hours == 0) && content.Status == true)
@@ -127,6 +127,24 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             }
 
             p.Close();
+#elif WINDOWS
+            foreach (var content in addedGroupSchedule)
+            {
+                if ((content.Paxs == 0 || content.Hours == 0) && content.Status == true)
+                {
+                    content.Status = false;
+                    content.OnOff = "OFF";
+                }
+                var response = await _scheduleServices.updateScheduleStatusByGroupName(new UpdateScheduleStatusByGroupNameDTO
+                {
+                    DayMonthYear = content.DayMonthYear,
+                    GroupName = content.GroupName,
+                    Status = content.Status,
+                    Hours = content.Hours,
+                    Paxs = content.Paxs,
+                });
+            }
+#endif
             IsRefreshing = false;
             IsBusy = false;
             await Shell.Current.DisplayAlert("Messages", "Schedule Updated.", "OK");
