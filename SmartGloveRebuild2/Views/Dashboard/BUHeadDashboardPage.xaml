@@ -76,8 +76,8 @@
                    
 
                 </Grid>
-                <Button HeightRequest="60" Text="Check Calendar"/>
-                <Button HeightRequest="60" Text="Generate Report"/>
+                <Button Clicked="Button_Clicked_3" HeightRequest="60" Text="Check Calendar"/>
+                <Button Clicked="Button_Clicked" HeightRequest="60" Text="Generate Report"/>
 
 
                 <Image Source="sglogo_new.png" 

@@ -25,27 +25,27 @@ public partial class BUHeadDashboardPage : ContentPage
         }
     }
 
-    //private async void Button_Clicked(object sender, EventArgs e)
-    //{
-    //    if (IsBusy)
-    //        return;
-    //    IsBusy = true;
-    //    PopupPages p = new PopupPages();
-    //    Application.Current.MainPage.ShowPopup(p);
-    //    await Shell.Current.GoToAsync(nameof(GenerateReportPage));
-    //    p.Close();
-    //    IsBusy = false;
-    //}
+    private async void Button_Clicked(object sender, EventArgs e)
+    {
+        if (IsBusy)
+            return;
+        IsBusy = true;
+        PopupPages p = new PopupPages();
+        Application.Current.MainPage.ShowPopup(p);
+        await Shell.Current.GoToAsync(nameof(GenerateReportPage));
+        p.Close();
+        IsBusy = false;
+    }
 
-    //private async void Button_Clicked_3(object sender, EventArgs e)
-    //{
-    //    if (IsBusy)
-    //        return;
-    //    IsBusy = true;
-    //    PopupPages p = new PopupPages();
-    //    Application.Current.MainPage.ShowPopup(p);
-    //    await Shell.Current.GoToAsync(nameof(CheckCalendarPage));
-    //    p.Close();
-    //    IsBusy = false;
-    //}
+    private async void Button_Clicked_3(object sender, EventArgs e)
+    {
+        if (IsBusy)
+            return;
+        IsBusy = true;
+        PopupPages p = new PopupPages();
+        Application.Current.MainPage.ShowPopup(p);
+        await Shell.Current.GoToAsync(nameof(CheckCalendarPage));
+        p.Close();
+        IsBusy = false;
+    }
 }
