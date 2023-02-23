@@ -32,6 +32,13 @@
                     </Grid>
                 </Frame>
                 <CollectionView ItemsSource="{Binding GroupNameList}">
+                    <CollectionView.EmptyView>
+                        <Label Text="No Group Members Found"
+                           HorizontalOptions="FillAndExpand"
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" />
+                    </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:GroupList">
                             <Grid ColumnDefinitions="*,*">
