@@ -10,6 +10,7 @@ using SmartGloveRebuild2.Views.Startup;
 using CommunityToolkit.Maui;
 using SmartGloveRebuild2.Services;
 using Microsoft.Maui.LifecycleEvents;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 #if WINDOWS
 using Microsoft.UI;
@@ -23,7 +24,10 @@ public static class MauiProgram
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
-        builder.UseMauiApp<App>().ConfigureFonts(fonts =>
+        builder
+            .UseMauiApp<App>()
+            .UseSkiaSharp()
+            .ConfigureFonts(fonts =>
         {
             fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
             fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
