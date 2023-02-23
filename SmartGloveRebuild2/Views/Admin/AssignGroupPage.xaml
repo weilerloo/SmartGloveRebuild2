@@ -21,7 +21,7 @@
                 </Frame>
                 <CollectionView ItemsSource="{Binding EditGroupList}">
                     <CollectionView.EmptyView>
-                        <Label Text="No Groups Found"
+                        <Label Text="No Group Members Found"
                            HorizontalOptions="FillAndExpand"
                            HorizontalTextAlignment="Center"
                            VerticalOptions="FillAndExpand"

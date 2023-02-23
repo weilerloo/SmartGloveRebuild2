@@ -73,20 +73,20 @@
 
                     </Frame>
                     <!--Department-->
-                   
+
 
                 </Grid>
                 <Button Clicked="Button_Clicked_3" HeightRequest="60" Text="Check Calendar"/>
                 <Button Clicked="Button_Clicked" HeightRequest="60" Text="Generate Report"/>
 
-
                 <Image Source="sglogo_new.png" 
                        HeightRequest="30" 
                        WidthRequest="300"
                        Margin="0,50,0,0"/>
+
             </VerticalStackLayout>
 
         </Grid>
-        
+
     </ScrollView>
 </ContentPage>
