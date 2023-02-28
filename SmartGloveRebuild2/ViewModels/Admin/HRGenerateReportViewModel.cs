@@ -109,6 +109,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             _scheduleServices = scheduleServices;
             _groupServices = groupServices;
             GetScheduleByDepartment();
+            GetStorageAccess();
         }
         //var response = await _scheduleServices.GetScheduleLogsByGroupandDate(new Models.Schedule.GetSchedulebyGroupandDateDTO
         //{
@@ -230,6 +231,28 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         {
             for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
                 yield return day;
+        }
+
+        public async void GetStorageAccess()
+        {
+            var status = PermissionStatus.Unknown;
+            status = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+            if (status == PermissionStatus.Granted)
+            {
+                return;
+            }
+
+            if (Permissions.ShouldShowRationale<Permissions.StorageWrite>())
+            {
+                await Shell.Current.DisplayAlert("Alert", "Storage Permission Required", "OK");
+            }
+
+            status = await Permissions.RequestAsync<Permissions.StorageWrite>();
+
+            if (status != PermissionStatus.Granted)
+            {
+                await Shell.Current.DisplayAlert("Alert", "Storage Permission Required", "OK");
+            }
         }
 
         public async Task<bool> ConfirmGenerate()

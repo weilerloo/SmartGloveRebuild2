@@ -23,12 +23,11 @@
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-                    <StackLayout Grid.Row="2" Margin="20" HorizontalOptions="Start">
-                        <Picker FontSize="19" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="180" Title="Click me to Choose." TitleColor="SlateGrey" 
+                    <StackLayout Grid.Row="2" HorizontalOptions="Start">
+                        <Picker FontSize="19" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="180" Margin="15,0,0,0" Title="Click me to Choose." TitleColor="SlateGrey" 
                             ItemsSource="{Binding GroupTitleList}" 
                             SelectedItem="{Binding SelectedGroupname}"
                             ItemDisplayBinding="{Binding GroupName}"/>
-                        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
                     </StackLayout>
                     <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="2" Text="-" Margin="5,20,0,0" Command="{Binding DecreaseMonthCommand}"/>
                     <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2,20,2,0" Command="{Binding IncreaseMonthCommand}"/>

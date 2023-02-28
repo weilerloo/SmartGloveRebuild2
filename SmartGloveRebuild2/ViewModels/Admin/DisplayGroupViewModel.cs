@@ -15,6 +15,8 @@ using SmartGloveRebuild2.Models.ClerkDTO;
 using Microsoft.Maui.Controls;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
+using CommunityToolkit.Maui.Views;
+using SmartGloveOvertime.Handlers;
 
 namespace SmartGloveRebuild2.ViewModels.Admin
 {
@@ -151,6 +153,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 return;
             }
             IsBusy = true;
+            PopupPages p = new PopupPages();
+            Application.Current.MainPage.ShowPopup(p);
 
             if (DisplayGroupList.Count > 0)
             {
@@ -177,6 +181,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             {
                 [nameof(GroupList)] = selectedgroupname
             });
+            p.Close();
         }
     }
 }

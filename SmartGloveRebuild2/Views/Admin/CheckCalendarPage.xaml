@@ -10,8 +10,8 @@
     <ScrollView>
         <Grid RowDefinitions="Auto,*,Auto">
             <VerticalStackLayout Grid.Row="0">
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="0,0,0,30">
-                    <Label Text="Choose the Groups." FontSize="20" Margin="20,20,0,10" TextColor="Black"/>
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="0,0,0,20">
+                    <Label Text="Choose the Groups." FontSize="20" Margin="20,20,0,0" TextColor="Black"/>
                     <CollectionView Grid.Row="1" ItemsSource="{Binding Monthname}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:CalendarModel">
@@ -27,7 +27,6 @@
                             ItemsSource="{Binding GroupTitleList}" 
                             SelectedItem="{Binding SelectedGroupname}"
                             ItemDisplayBinding="{Binding GroupName}"/>
-                        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
                     </StackLayout>
                     <!--<ImageButton Grid.Row="2" Grid.Column="2" Source="leftpage.png" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="0,0,5,0" Command="{Binding DecreaseMonthCommand}"/>
                     <ImageButton Grid.Row="2" Grid.Column="2" Source="leftpage.png" Opacity="10" Rotation="180" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="70,0,20,0" Command="{Binding IncreaseMonthCommand}" />-->
@@ -35,7 +34,7 @@
                     <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2,20,10,0" Command="{Binding IncreaseMonthCommand}"/>
                     <!--<Button Grid.Row="3" Grid.Column="4" Text="Reset" Margin="2"/>-->
                 </Grid>
-                <CollectionView ItemsSource="{Binding Datename}" Margin="0,-10,0,0">
+                <CollectionView ItemsSource="{Binding Datename}">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="7"/>
                     </CollectionView.ItemsLayout>
@@ -83,7 +82,7 @@
                 </Grid>
             </RefreshView>
             <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto"
-                  Margin="20">
+                  Margin="0,0,0,55">
                 <Grid ColumnDefinitions="*,*,*,*"
                                   RowDefinitions="Auto,Auto">
                     <Ellipse 
@@ -102,7 +101,7 @@
                             Fill="Brown"
                             Grid.Column="0"
                             Grid.Row="1"/>
-                    <Label Grid.Row="1" Grid.Column="1" Margin="0,0,0,0" Text="Insufficient Worker"/>
+                    <Label Grid.Row="1" Grid.Column="1" Text="Insufficient Worker"/>
                     <Ellipse Stroke="{StaticResource Gray300}"
                             StrokeThickness="4"
                             HeightRequest="10"

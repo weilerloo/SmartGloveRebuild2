@@ -655,6 +655,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
             }
             else
             {
+                p.Close();
                 IsRefreshing = false;
                 IsBusy = false;
                 await Shell.Current.DisplayAlert("You are Unassigned", "Please get a group to be assigned first.", "OK");
