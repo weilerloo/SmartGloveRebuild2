@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using SmartGloveOvertime.Handlers;
 using SmartGloveRebuild2.Controls;
@@ -10,12 +11,13 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SmartGloveRebuild2.ViewModels.Startup
 {
 
-    public partial class LoadingPageViewModel
+    public partial class LoadingPageViewModel : BaseViewModel
     {
         private readonly IConnectivity _connectivity;
 
@@ -24,11 +26,27 @@ namespace SmartGloveRebuild2.ViewModels.Startup
             _connectivity = connectivity;
             CheckInternetAccess();
             CheckUserLoginDetails();
+#if ANDROID
+            getAppVersion();
+#endif
         }
-        
+
+        [RelayCommand]
+        public async Task GoToLoginPage()
+        {
+            if (IsBusy)
+            {
+                await Shell.Current.DisplayAlert("Messages", "Please check your internet access, or update your version to latest, or check it from Google Play.", "OK");
+                return;
+            }
+            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+        }
+
 
         private async void CheckUserLoginDetails()
         {
+            if (IsBusy) { return; }
+            IsBusy = true;
             string userDetailsStr = Preferences.Get(nameof(App.UserDetails), "");
 
             if (string.IsNullOrWhiteSpace(userDetailsStr))
@@ -66,10 +84,13 @@ namespace SmartGloveRebuild2.ViewModels.Startup
                     await AppConstant.AddFlyoutMenusDetails();
                 }
             }
+            IsBusy = false;
         }
 
         private async void CheckInternetAccess()
         {
+            if (IsBusy) { return; }
+            IsBusy = true;
             try
             {
                 if (_connectivity.NetworkAccess != NetworkAccess.Internet)
@@ -101,6 +122,65 @@ namespace SmartGloveRebuild2.ViewModels.Startup
             {
                 await Shell.Current.DisplayAlert("Internet Error", "Failed to Conenct to Server. ", "OK");
             }
+            IsBusy = false;
         }
+#if ANDROID
+        public async Task<string> getPlayStoreVersion()
+        {
+            var version = await Task.Run(async () =>
+            {
+                var uri = new Uri($"https://play.google.com/store/apps/details?id={AppInfo.Current.PackageName}&hl=en");
+                using (var client = new HttpClient())
+                using (var request = new HttpRequestMessage(HttpMethod.Get, uri))
+                {
+                    request.Headers.TryAddWithoutValidation("Accept", "text/html");
+                    request.Headers.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
+                    request.Headers.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
+                    using (var response = await client.SendAsync(request).ConfigureAwait(false))
+                    {
+                        try
+                        {
+                            response.EnsureSuccessStatusCode();
+                            var responseHTML = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var rx = new Regex(@"\[\[\[""\d{1,3}\.\d{1,3}\.{0,1}\d{0,3}""]]", RegexOptions.Compiled);
+                            MatchCollection matches = rx.Matches(responseHTML);
+                            return matches.Count > 0 ? matches[0].Value : "Unknown";
+                        }
+                        catch
+                        {
+                            return "Error";
+                        }
+                    }
+                }
+            }
+            );
+            char[] charsToTrim = { '[', ']' };
+            string trimmedversion = version.Trim(charsToTrim);
+            string correctversion = trimmedversion.Substring(1, trimmedversion.Length - 2);
+            return correctversion;
+        }
+
+        public async void getAppVersion()
+        {
+            if (IsBusy) { return; }
+            IsBusy = true;
+            var currentPlaystoreversion = await getPlayStoreVersion();
+            if (currentPlaystoreversion != null)
+            {
+                if (AppInfo.Current.Version.ToString() == currentPlaystoreversion)
+                {
+                    IsBusy = false;
+                    return;
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Alert", "New Version Detected, Please update to the latest version from Play Store.", "OK");
+                    var uri = new Uri($"https://play.google.com/store/apps/details?id={AppInfo.Current.PackageName}&hl=en");
+                    await Launcher.OpenAsync(uri);
+                }
+            }
+            IsBusy = false;
+        }
+#endif
     }
 }

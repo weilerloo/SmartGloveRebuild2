@@ -310,7 +310,20 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                 if (item.EmployeeNumber == selectedEmployee.UserName && item.GroupName == selectedGroup.GroupName)
                                 {
                                     DateTime converted = DateTime.ParseExact(item.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
-                                    item.DayMonthYear = converted.ToString("d");
+                                    item.DayMonthYear = converted.ToString("d/M/yyyy");
+                                    var getRemark = await _scheduleServices.GetSchedulebyGroupandDate(new Models.Schedule.GetSchedulebyGroupandDateDTO
+                                    {
+                                        GroupName = selectedGroup.GroupName,
+                                        ScheduleDate = item.DayMonthYear,
+                                    });
+                                    foreach (var rmk in getRemark)
+                                    {
+                                        if (getRemark != null)
+                                        {
+                                            item.Remark = rmk.Remarks;
+                                        }
+                                        break;
+                                    }
                                     FinalList.Add(item);
                                 }
                             }
@@ -363,6 +376,21 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                         }
                                     }
                                 }
+                                DateTime converted = DateTime.ParseExact(item.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
+                                item.DayMonthYear = converted.ToString("d/M/yyyy");
+                                var getRemark = await _scheduleServices.GetSchedulebyGroupandDate(new Models.Schedule.GetSchedulebyGroupandDateDTO
+                                {
+                                    GroupName = selectedGroup.GroupName,
+                                    ScheduleDate = item.DayMonthYear,
+                                });
+                                foreach (var rmk in getRemark)
+                                {
+                                    if (getRemark != null)
+                                    {
+                                        item.Remark = rmk.Remarks;
+                                    }
+                                    break;
+                                }
                                 if (item.GroupName == selectedGroup.GroupName)
                                 {
                                     FinalList.Add(item);
@@ -412,7 +440,21 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                         }
                                     }
                                 }
-
+                                DateTime converted = DateTime.ParseExact(item.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
+                                item.DayMonthYear = converted.ToString("d/M/yyyy");
+                                var getRemark = await _scheduleServices.GetSchedulebyGroupandDate(new Models.Schedule.GetSchedulebyGroupandDateDTO
+                                {
+                                    GroupName = item.GroupName,
+                                    ScheduleDate = item.DayMonthYear,
+                                });
+                                foreach (var rmk in getRemark)
+                                {
+                                    if (getRemark != null)
+                                    {
+                                        item.Remark = rmk.Remarks;
+                                    }
+                                    break;
+                                }
                                 FinalList.Add(item);
                             }
                         }
@@ -724,15 +766,16 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
                         table.Cell().Row(6).Column(1).ColumnSpan(2).BoldEmptyCell("DEPARTMENT :");
                         table.Cell().Row(6).Column(2).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{SelectedDepartment.Department}"); // Report Date
-                        table.Cell().Row(6).Column(4).ColumnSpan(2).BoldEmptyCell("DATE :");
+                        table.Cell().Row(6).Column(4).ColumnSpan(2).BoldEmptyCell("DAY :");
                         table.Cell().Row(6).Column(5).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{Selectedmindaymonthyear.ToString("d")} ~ {Selectedmaxdaymonthyear.ToString("d")}"); // Report Date
                         table.Cell().Row(7).Column(1).ColumnSpan(2).BoldEmptyCell("SECTION :");
                         table.Cell().Row(7).Column(2).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{Grouplistfrompicker}"); // Report Date)
-                    }else if (selectedGroup != null && selectedDepartment != null)  // When department, and selected group is there
+                    }
+                    else if (selectedGroup != null && selectedDepartment != null)  // When department, and selected group is there
                     {
                         table.Cell().Row(6).Column(1).ColumnSpan(2).BoldEmptyCell("DEPARTMENT :");
                         table.Cell().Row(6).Column(2).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{SelectedDepartment.Department}"); // Report Date
-                        table.Cell().Row(6).Column(4).ColumnSpan(2).BoldEmptyCell("DATE :");
+                        table.Cell().Row(6).Column(4).ColumnSpan(2).BoldEmptyCell("DAY :");
                         table.Cell().Row(6).Column(5).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{Selectedmindaymonthyear.ToString("d")} ~ {Selectedmaxdaymonthyear.ToString("d")}"); // Report Date
                         table.Cell().Row(7).Column(1).ColumnSpan(2).BoldEmptyCell("SECTION :");
                         table.Cell().Row(7).Column(2).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{selectedGroup.GroupName}"); // Report Date)
@@ -787,15 +830,23 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
                         table.ColumnsDefinition(columns =>
                         {
-                            columns.ConstantColumn(40);
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
+                            columns.ConstantColumn(30); //1
+                            columns.RelativeColumn();//2
+                            columns.RelativeColumn();//3
+                            columns.RelativeColumn();//3,4
 
-                            columns.ConstantColumn(50);
-                            columns.ConstantColumn(50);
-                            columns.RelativeColumn();
-                            columns.RelativeColumn();
+                            columns.ConstantColumn(25);//5
+                            columns.ConstantColumn(25);   //6                         
+                            columns.ConstantColumn(25);      //7                     
+                            columns.ConstantColumn(30);          //8                  
+                            columns.ConstantColumn(30);             //9               
+
+                            columns.ConstantColumn(25);//10
+                            columns.ConstantColumn(25);//11
+                            columns.ConstantColumn(25);//12
+                            columns.ConstantColumn(40);//13
+
+                            columns.RelativeColumn();//14
                             columns.RelativeColumn();
                             columns.RelativeColumn();
                         });
@@ -804,15 +855,18 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
                         table.ColumnsDefinition(columns =>
                         {
-                            columns.ConstantColumn(40);
+                            columns.ConstantColumn(20);
                             columns.RelativeColumn();
                             columns.RelativeColumn();
                             columns.RelativeColumn();
 
+                            columns.ConstantColumn(20);
                             columns.ConstantColumn(30);
                             columns.ConstantColumn(30);
-                            columns.ConstantColumn(30);
-                            columns.RelativeColumn();
+                            columns.ConstantColumn(25);
+                            columns.ConstantColumn(25);
+                            columns.ConstantColumn(25);
+                            columns.ConstantColumn(40);
                             columns.RelativeColumn();
                             columns.RelativeColumn();
                             columns.RelativeColumn();
@@ -823,18 +877,26 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
                         if (App.UserDetails.Role == "EXECUTIVE")
                         {
-                            header.Cell().RowSpan(2).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("NO.").FontSize(6);
-                            header.Cell().RowSpan(2).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("EMP NO.").FontSize(6);
-                            header.Cell().RowSpan(2).ColumnSpan(2).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("EMP NAME").FontSize(6);
+                            header.Cell().RowSpan(3).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("NO.").FontSize(6); //1
+                            header.Cell().RowSpan(3).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("EMP NO.").FontSize(6); //2
+                            header.Cell().RowSpan(3).ColumnSpan(2).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("EMP NAME").FontSize(6); //3,4
                             //header.Cell().RowSpan(2).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("TIME").FontSize(6);
 
-                            header.Cell().ColumnSpan(2).Element(CellStyle).Text("OVERTIME DETAILS").FontSize(6);
+                            header.Cell().ColumnSpan(5).Element(CellStyle).Text("OVERTIME DETAILS").FontSize(6);
 
-                            header.Cell().Row(2).Column(5).Element(CellStyle).Text("HOURS").FontSize(4);
-                            header.Cell().Row(2).Column(6).Element(CellStyle).Text("APPROVED BY").FontSize(4);
+                            header.Cell().Row(2).RowSpan(2).Column(5).Element(CellStyle).Text("HOURS").FontSize(4);
+                            header.Cell().Row(2).RowSpan(2).Column(6).ColumnSpan(2).Element(CellStyle).Text("YES/ NO").FontSize(4);
+                            header.Cell().Row(2).RowSpan(2).Column(8).ColumnSpan(2).Element(CellStyle).Text("APPROVED BY").FontSize(4);
 
-                            header.Cell().ColumnSpan(2).RowSpan(2).Row(1).Column(7).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("DATE").FontSize(6);
-                            header.Cell().ColumnSpan(2).RowSpan(2).Row(1).Column(9).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("REMARKS").FontSize(6);
+                            header.Cell().ColumnSpan(4).Row(1).Column(10).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("DAY").FontSize(6);
+
+                            header.Cell().Row(2).RowSpan(2).Column(10).Element(CellStyle).Text("NORMAL DAY").FontSize(4);
+                            header.Cell().Row(2).RowSpan(2).Column(11).Element(CellStyle).Text("REST DAY").FontSize(4);
+                            header.Cell().Row(2).RowSpan(2).Column(12).Element(CellStyle).Text("PUBLIC HOLIDAY").FontSize(4);
+                            header.Cell().Row(2).RowSpan(2).Column(13).Element(CellStyle).Text("DATE").FontSize(4);
+                            //header.Cell().ColumnSpan(2).RowSpan(2).Row(1).Column(8).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("DATE").FontSize(6);
+                            header.Cell().ColumnSpan(3).RowSpan(3).Row(1).Column(14).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("TIME /REMARKS").FontSize(6);
+
 
                             // you can extend already existing styles by creating additional methods
                             IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
@@ -849,11 +911,17 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             header.Cell().ColumnSpan(3).Element(CellStyle).Text("OVERTIME DETAILS").FontSize(6);
 
                             header.Cell().Row(2).Column(5).Element(CellStyle).Text("HOURS").FontSize(4);
-                            header.Cell().Row(2).Column(6).Element(CellStyle).Text("EXCLUDED").FontSize(4);
-                            header.Cell().Row(2).Column(7).Element(CellStyle).Text("APPROVED BY").FontSize(4);
+                            //header.Cell().Row(2).Column(6).Element(CellStyle).Text("EXCLUDED").FontSize(4);
+                            header.Cell().Row(2).Column(6).ColumnSpan(2).Element(CellStyle).Text("APPROVED BY").FontSize(4);
 
-                            header.Cell().ColumnSpan(2).RowSpan(2).Row(1).Column(8).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("DATE").FontSize(6);
-                            header.Cell().ColumnSpan(2).RowSpan(2).Row(1).Column(10).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("REMARKS").FontSize(6);
+                            header.Cell().ColumnSpan(4).Row(1).Column(8).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("DAY").FontSize(6);
+
+                            header.Cell().Row(2).Column(8).Element(CellStyle).Text("NORMAL DAY").FontSize(4);
+                            header.Cell().Row(2).Column(9).Element(CellStyle).Text("REST DAY").FontSize(4);
+                            header.Cell().Row(2).Column(10).Element(CellStyle).Text("PUBLIC HOLIDAY").FontSize(4);
+                            header.Cell().Row(2).Column(11).Element(CellStyle).Text("DATE").FontSize(4);
+                            //header.Cell().ColumnSpan(2).RowSpan(2).Row(1).Column(8).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("DATE").FontSize(6);
+                            header.Cell().ColumnSpan(3).RowSpan(2).Row(1).Column(12).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("TIME /REMARKS").FontSize(6);
 
                             // you can extend already existing styles by creating additional methods
                             IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
@@ -865,22 +933,77 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
                         if (App.UserDetails.Role == "EXECUTIVE")
                         {
+                            //if (page.IsRejected == true)
+                            //{
+                            //    continue;
+                            //}
+                            //else
+                            //{
+                            table.Cell().Element(CellStyle).Text(counter++).FontSize(6);
+                            table.Cell().Element(CellStyle).Text(page.EmployeeNumber).FontSize(6);
+                            table.Cell().ColumnSpan(2).Element(CellStyle).Text(page.UserName).FontSize(6);
+                            table.Cell().Element(CellStyle).Text(page.Hours).FontSize(6);
+                            if (page.RejectedBy != null)
+                            {
+                                table.Cell().ColumnSpan(2).Element(CellStyle).Text("X").FontSize(6);
+                            }
+                            else
+                            {
+                                table.Cell().ColumnSpan(2).Element(CellStyle).Text("\u221A").FontSize(6);
+                            }
+                            //table.Cell().Element(CellStyle).Text("HOD").FontSize(6);
+                            //table.Cell().Element(CellStyle2).Text("").FontSize(6);
+                            table.Cell().ColumnSpan(2).Element(CellStyle).Text("HOD/ PLANT HEAD").FontSize(6);
+                            table.Cell().Element(CellStyle).Text("").FontSize(6);
+                            table.Cell().Element(CellStyle).Text("").FontSize(6);
+                            table.Cell().Element(CellStyle).Text("").FontSize(6);
+                            //DateTime converted = DateTime.ParseExact(page.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
+                            table.Cell().Element(CellStyle).Text(page.DayMonthYear).WrapAnywhere(true).FontSize(6);
+                            if (page.RejectedBy != null)
+                            {
+                                table.Cell().ColumnSpan(3).Element(CellStyle).Text(
+                                    $"Schedule is excluded by {page.RejectedBy} " +
+                                    $"because of {page.RejectedReason} " +
+                                    $"at {page.RejectedDate}.").FontSize(6);
+                            }
+                            else if (page.Remark != null)
+                            {
+                                table.Cell().ColumnSpan(3).Element(CellStyle).Text(page.Remark).FontSize(6);
+                            }
+                            else
+                            {
+                                table.Cell().ColumnSpan(3).Element(CellStyle).Text("Not Stated.").FontSize(6);
+
+                            }
+                            //}
+                        }
+                        else
+                        {
                             if (page.IsRejected == true)
                             {
                                 continue;
                             }
                             else
                             {
+
                                 table.Cell().Element(CellStyle).Text(counter++).FontSize(6);
                                 table.Cell().Element(CellStyle).Text(page.EmployeeNumber).FontSize(6);
                                 table.Cell().ColumnSpan(2).Element(CellStyle).Text(page.UserName).FontSize(6);
                                 table.Cell().Element(CellStyle).Text(page.Hours).FontSize(6);
-                                //table.Cell().Element(CellStyle).Text("HOD").FontSize(6);
-                                //table.Cell().Element(CellStyle2).Text("").FontSize(6);
-                                //table.Cell().Element(CellStyle2).Text("").FontSize(6);
-                                table.Cell().Element(CellStyle).Text("HOD").FontSize(6);
-                                DateTime converted = DateTime.ParseExact(page.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
-                                table.Cell().ColumnSpan(2).Element(CellStyle).Text(converted.ToString("d/M/yyyy")).WrapAnywhere(true).FontSize(6);
+                                if (page.IsRejected == true)
+                                {
+                                    table.Cell().ColumnSpan(2).Element(CellStyle).Text("HOD/ PLANT HEAD").FontSize(6);
+                                    //table.Cell().Element(CellStyle2).Text("").FontSize(6);
+                                }
+                                else
+                                {
+                                    //table.Cell().Element(CellStyle2).Text("").FontSize(6);
+                                    table.Cell().ColumnSpan(2).Element(CellStyle).Text("HOD/ PLANT HEAD").FontSize(6);
+                                }
+                                table.Cell().Element(CellStyle).Text("").FontSize(6);
+                                table.Cell().Element(CellStyle).Text("").FontSize(6);
+                                table.Cell().Element(CellStyle).Text("").FontSize(6);
+                                table.Cell().Element(CellStyle).Text(page.DayMonthYear).WrapAnywhere(true).FontSize(6);
                                 //if (page.RejectedBy != null)
                                 //{
                                 //    table.Cell().ColumnSpan(2).Element(CellStyle).Text(
@@ -892,50 +1015,12 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                                 if (page.Remark != null)
                                 {
-                                    table.Cell().ColumnSpan(2).Element(CellStyle).Text(page.Remark).FontSize(6);
+                                    table.Cell().ColumnSpan(3).Element(CellStyle).Text(page.Remark).FontSize(6);
                                 }
                                 else
                                 {
-                                    table.Cell().ColumnSpan(2).Element(CellStyle).Text("Not Stated.").FontSize(6);
-
+                                    table.Cell().ColumnSpan(3).Element(CellStyle).Text("Not Stated.").FontSize(6);
                                 }
-                            }
-                        }
-                        else
-                        {
-                            table.Cell().Element(CellStyle).Text(counter++).FontSize(6);
-                            table.Cell().Element(CellStyle).Text(page.EmployeeNumber).FontSize(6);
-                            table.Cell().ColumnSpan(2).Element(CellStyle).Text(page.UserName).FontSize(6);
-                            table.Cell().Element(CellStyle).Text(page.Hours).FontSize(6);
-                            if (page.IsRejected == true)
-                            {
-                                table.Cell().Element(CellStyle).Text("HOD").FontSize(6);
-                                table.Cell().Element(CellStyle2).Text("").FontSize(6);
-                            }
-                            else
-                            {
-                                table.Cell().Element(CellStyle2).Text("").FontSize(6);
-                                table.Cell().Element(CellStyle).Text("HOD").FontSize(6);
-                            }
-                            DateTime converted = DateTime.ParseExact(page.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
-                            table.Cell().ColumnSpan(2).Element(CellStyle).Text(converted.ToString("d/M/yyyy")).WrapAnywhere(true).FontSize(6);
-                            //if (page.RejectedBy != null)
-                            //{
-                            //    table.Cell().ColumnSpan(2).Element(CellStyle).Text(
-                            //        $"Schedule is excluded by {page.RejectedBy} " +
-                            //        $"because of {page.RejectedReason} " +
-                            //        $"at {page.RejectedDate}.").FontSize(6);
-                            //}
-                            //else 
-
-                            if (page.Remark != null)
-                            {
-                                table.Cell().ColumnSpan(2).Element(CellStyle).Text(page.Remark).FontSize(6);
-                            }
-                            else
-                            {
-                                table.Cell().ColumnSpan(2).Element(CellStyle).Text("Not Stated.").FontSize(6);
-
                             }
                         }
 
@@ -992,13 +1077,29 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     if (App.UserDetails.Role != "EXECUTIVE")
                     {
                         table.Cell().ColumnSpan(11).EmptyCell("");
+                        table.Cell().EmptyCell("");
+                        table.Cell().ColumnSpan(2).EmptyCell("Signature By :");
+                        table.Cell().EmptyCell("");
+                        table.Cell().ColumnSpan(3).EmptyCell("Verified By : HOD");
+                        table.Cell().EmptyCell("");
+                        table.Cell().ColumnSpan(3).EmptyCell("Approved By : PLANT HEAD /COO");
+                        table.Cell().EmptyCell("");
                         table.Cell().ColumnSpan(11).EmptyCell("");
                         table.Cell().ColumnSpan(11).EmptyCell("");
                         table.Cell().EmptyCell("");
+                        table.Cell().ColumnSpan(2).SignatureSubscriptCell("Name :");
                         table.Cell().EmptyCell("");
-                        table.Cell().ColumnSpan(2).SignatureSubscriptCell("Signature By BU Head :");
+                        table.Cell().ColumnSpan(3).SignatureSubscriptCell("Name :");
+                        table.Cell().EmptyCell("");
+                        table.Cell().ColumnSpan(2).SignatureSubscriptCell("Name :");
+                        table.Cell().EmptyCell("");
+
+                        table.Cell().EmptyCell("");
+                        table.Cell().ColumnSpan(2).SignatureEmptyCell("Position :");
+                        table.Cell().EmptyCell("");
                         table.Cell().ColumnSpan(3).EmptyCell("");
-                        table.Cell().ColumnSpan(2).SignatureSubscriptCell("Signature By Supervisor :");
+                        table.Cell().EmptyCell("");
+                        table.Cell().ColumnSpan(2).EmptyCell("");
                         table.Cell().EmptyCell("");
                         table.Cell().ColumnSpan(11).EmptyCell("");
                     } // Signature 

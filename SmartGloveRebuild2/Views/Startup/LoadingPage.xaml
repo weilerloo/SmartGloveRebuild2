@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Startup.LoadingPage"
              xmlns:Loadingviewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Startup"
+             x:DataType="Loadingviewmodel:LoadingPageViewModel"
              Shell.FlyoutBehavior="Disabled"
              Title="LoadingPage"
              Shell.NavBarIsVisible="False"
@@ -18,6 +19,6 @@
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"
                        Text="Malaysia’s leading innovative glove manufacturers recognised on a global front"/>
-        <Button VerticalOptions="Center" Grid.Row="3" Text="Log In" WidthRequest="200" HeightRequest="50" Clicked="Button_Clicked"/>
+        <Button Command="{Binding GoToLoginPageCommand}" VerticalOptions="Center" Grid.Row="3" Text="Log In" WidthRequest="200" HeightRequest="50"/>
     </Grid>
 </ContentPage>

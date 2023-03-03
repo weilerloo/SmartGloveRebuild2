@@ -25,7 +25,7 @@
                            BorderColor="Transparent"
                            BackgroundColor="#F0F0F0"
                            Grid.Row="1">
-                        <handlers:BorderlessEntry PlaceholderColor="Gray" Margin="15,5,15,5" Placeholder="Password" IsPassword="True" TextColor="Black" FontSize="20" Text="{Binding Password}"/>
+                        <handlers:BorderlessEntry ZIndex="3" PlaceholderColor="Gray" Margin="15,5,15,5" Placeholder="Password" IsPassword="True" TextColor="Black" FontSize="20" Text="{Binding Password}"/>
                     </Frame>
                 </VerticalStackLayout>
             </Grid>
@@ -36,6 +36,7 @@
                     SemanticProperties.Description="LoginPage image!"
                     RepeatCount="-1"
                     HeightRequest="400"
+                    ZIndex="-1"
                     WidthRequest="350"
                     TranslationY="-100"/>
         <Button Grid.Row="1" TranslationY="50" WidthRequest="150" HeightRequest="50" HorizontalOptions="Center" Text="Sign in" Command="{Binding LoginCommand}"/>

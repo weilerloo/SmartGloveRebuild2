@@ -5,16 +5,10 @@ namespace SmartGloveRebuild2.Views.Startup;
 
 public partial class LoadingPage : ContentPage
 {
-	public LoadingPage(LoadingPageViewModel viewModel)
-	{
-		InitializeComponent();
-		this.BindingContext = viewModel;
-
-    }
-
-    private async void Button_Clicked(object sender, EventArgs e)
+    public LoadingPage(LoadingPageViewModel viewModel)
     {
-        await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
-    }
+        InitializeComponent();
+        this.BindingContext = viewModel;
 
+    }
 }
