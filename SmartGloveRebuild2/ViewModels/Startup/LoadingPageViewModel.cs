@@ -24,8 +24,8 @@ namespace SmartGloveRebuild2.ViewModels.Startup
         public LoadingPageViewModel(IConnectivity connectivity)
         {
             _connectivity = connectivity;
-            CheckInternetAccess();
             CheckUserLoginDetails();
+            CheckInternetAccess();
 #if ANDROID
             getAppVersion();
 #endif
@@ -55,11 +55,13 @@ namespace SmartGloveRebuild2.ViewModels.Startup
                 {
                     AppShell.Current.Dispatcher.Dispatch(async () =>
                     {
+                        IsBusy = false;
                         await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
                     });
                 }
                 else
                 {
+                    IsBusy = false;
                     await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
                 }
                 // navigate to Login Page
@@ -73,11 +75,13 @@ namespace SmartGloveRebuild2.ViewModels.Startup
 
                 if (jsonToken.ValidTo < DateTime.UtcNow)
                 {
+                    IsBusy = false;
                     await AppShell.Current.DisplayAlert("User session expired", "Login Again To conitnue", "OK");
                     await Shell.Current.GoToAsync($"//{nameof(LoadingPage)}");
                 }
                 else
                 {
+                    IsBusy = false;
                     var userInfo = JsonConvert.DeserializeObject<UserBasicInfo>(userDetailsStr);
                     App.UserDetails = userInfo;
                     App.Token = tokenDetails;
@@ -124,7 +128,6 @@ namespace SmartGloveRebuild2.ViewModels.Startup
             }
             IsBusy = false;
         }
-#if ANDROID
         public async Task<string> getPlayStoreVersion()
         {
             var version = await Task.Run(async () =>
@@ -181,6 +184,5 @@ namespace SmartGloveRebuild2.ViewModels.Startup
             }
             IsBusy = false;
         }
-#endif
     }
 }

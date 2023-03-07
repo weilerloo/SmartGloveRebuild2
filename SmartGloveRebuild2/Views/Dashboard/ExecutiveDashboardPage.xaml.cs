@@ -15,14 +15,14 @@ public partial class ExecutiveDashboardPage : ContentPage
         InitializeComponent();
         this.BindingContext = dashboardPageViewModel;
 
-        if (App.UserDetails != null)
-        {
-            EmployeeName.Text = App.UserDetails.EmployeeName;
-            EmployeeNumber.Text = App.UserDetails.EmployeeNumber;
-            Plant.Text = App.UserDetails.Plant;
-            Department.Text = App.UserDetails.Department;
-            Group.Text = App.UserDetails.GroupName;
-        }
+        //if (App.UserDetails != null)
+        //{
+        //    EmployeeName.Text = App.UserDetails.EmployeeName;
+        //    EmployeeNumber.Text = App.UserDetails.EmployeeNumber;
+        //    Plant.Text = App.UserDetails.Plant;
+        //    Department.Text = App.UserDetails.Department;
+        //    Group.Text = App.UserDetails.GroupName;
+        //}
     }
 
     private async void Button_Clicked(object sender, EventArgs e)

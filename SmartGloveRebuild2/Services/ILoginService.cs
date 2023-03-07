@@ -12,5 +12,6 @@ namespace SmartGloveRebuild2.Services
     {
         Task<LoginResponse> Authenticate(LoginRequest loginRequest);
         Task<string> CheckRefreshToken(LoginRequest loginRequest);
+        Task<UserBasicInfo> GetUserBasicInfo(LoginRequest loginRequest);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using SmartGloveRebuild2.Controls;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Services;
@@ -17,15 +18,76 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
 {
     public partial class DashboardPageViewModel : BaseViewModel
     {
-        private readonly ILoginService _loginService;
+        [ObservableProperty]
+        string empnum, empnam, grpname, plt, depart, payr;
 
+        [ObservableProperty]
+        int ttdayofot;
+
+        [ObservableProperty]
+        double tthoursofot;
+
+        private readonly ILoginService _loginService;
         public DashboardPageViewModel(ILoginService loginServices)
         {
             _loginService = loginServices;
             AppShell.Current.FlyoutHeader = new FlyoutHeaderControl();
+            GetUserBasicInfo();
             CheckUserActivity();
             LoopCheckActivity();
         }
+
+        public async void GetUserBasicInfo()
+        {
+            IsBusy = true;
+            if (App.UserDetails.Passport == "")
+            {
+                var checktoken = await _loginService.GetUserBasicInfo(new LoginRequest
+                {
+                    UserName = App.UserDetails.EmployeeNumber,
+                    Password = App.UserDetails.NRIC,
+                });
+
+                if (checktoken != null)
+                {
+                    string userDetailStr = JsonConvert.SerializeObject(checktoken);
+                    Preferences.Set(nameof(App.UserDetails), userDetailStr);
+                    App.UserDetails = checktoken;
+                    Empnum = App.UserDetails.EmployeeNumber;
+                    Empnam = App.UserDetails.EmployeeName;
+                    Grpname = App.UserDetails.GroupName;
+                    Plt = App.UserDetails.Plant;
+                    Depart = App.UserDetails.Department;
+                    Payr = App.UserDetails.Payroll;
+                    Ttdayofot = App.UserDetails.TotalOTDay;
+                    Tthoursofot = App.UserDetails.TotalHour;
+                }
+            }
+            else
+            {
+                var checktoken = await _loginService.GetUserBasicInfo(new LoginRequest
+                {
+                    UserName = App.UserDetails.EmployeeNumber,
+                    Password = App.UserDetails.Passport,
+                });
+                if (checktoken != null)
+                {
+                    string userDetailStr = JsonConvert.SerializeObject(checktoken);
+                    Preferences.Set(nameof(App.UserDetails), userDetailStr);
+                    App.UserDetails = checktoken;
+                    Empnum = App.UserDetails.EmployeeNumber;
+                    Empnam = App.UserDetails.EmployeeName;
+                    Grpname = App.UserDetails.GroupName;
+                    Plt = App.UserDetails.Plant;
+                    Depart = App.UserDetails.Department;
+                    Payr = App.UserDetails.Payroll;
+                    Ttdayofot = App.UserDetails.TotalOTDay;
+                    Tthoursofot = App.UserDetails.TotalHour;
+                }
+            }
+            IsBusy = false;
+        }
+
         public async void CheckUserActivity()
         {
             IsBusy = true;
@@ -142,6 +204,7 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
                 if (Preferences.ContainsKey(nameof(App.UserDetails)))
                 {
                     CheckUserActivity();
+                    GetUserBasicInfo();
                 }
             }
         }

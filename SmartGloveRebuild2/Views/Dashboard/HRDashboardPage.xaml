@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Dashboard.HRDashboardPage"
-             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"	
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             xmlns:viewmodeldas="clr-namespace:SmartGloveRebuild2.ViewModels.Dashboard"
+             x:DataType="viewmodeldas:DashboardPageViewModel"
              Title="HR Dashboard">
     <ScrollView>
         <Grid BackgroundColor="Transparent">
@@ -20,7 +22,7 @@
                            Grid.Row="0"
                            Grid.Column="1">
 
-                        <Label x:Name="EmployeeNumber" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Empnum}" x:Name="EmployeeNumber" HorizontalOptions="Center"/>
 
 
                     </Frame> <!--EmployeeNumber-->                    
@@ -34,7 +36,7 @@
                            Grid.Row="1"
                            Grid.Column="1">
 
-                        <Label x:Name="EmployeeName" HorizontalOptions="Center"/>
+                        <Label TextTransform="Uppercase" Text="{Binding Empnam}" x:Name="EmployeeName" HorizontalOptions="Center"/>
 
 
                     </Frame> <!--EmployeeName-->
@@ -48,7 +50,7 @@
                            Grid.Row="2"
                            Grid.Column="1">
 
-                        <Label x:Name="Plant" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Plt}" x:Name="Plant" HorizontalOptions="Center"/>
 
 
                     </Frame> <!--Plant-->
@@ -62,7 +64,7 @@
                            Grid.Row="3"
                            Grid.Column="1">
 
-                        <Label x:Name="Department" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Depart}" x:Name="Department" HorizontalOptions="Center"/>
 
 
                     </Frame> <!--Department-->
@@ -76,7 +78,7 @@
                            Grid.Row="4"
                            Grid.Column="1">
 
-                        <Label x:Name="Payroll" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Payr}" x:Name="Payroll" HorizontalOptions="Center"/>
 
 
                     </Frame> <!--Payroll-->
@@ -90,7 +92,7 @@
                            Grid.Row="5"
                            Grid.Column="1">
 
-                        <Label x:Name="TotalDayOT" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Ttdayofot}" x:Name="TotalDayOT" HorizontalOptions="Center"/>
 
 
                     </Frame> <!--Day-->
@@ -104,7 +106,7 @@
                            Grid.Row="6"
                            Grid.Column="1">
 
-                        <Label x:Name="TotalHour" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Tthoursofot}" x:Name="TotalHour" HorizontalOptions="Center"/>
 
                     </Frame> <!--Hour-->
 

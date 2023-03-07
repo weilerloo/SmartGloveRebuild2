@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SmartGloveRebuild2.Views.Dashboard.SupervisorDashboardPage">
+             x:Class="SmartGloveRebuild2.Views.Dashboard.SupervisorDashboardPage"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Dashboard"
+             x:DataType="viewmodel:DashboardPageViewModel">
     <ScrollView>
         <Grid BackgroundColor="Transparent">
 
             <VerticalStackLayout Margin="20,0,20,20" Spacing="20">
                 <Grid ColumnDefinitions="*,*" Margin="0,25,0,15">
                     <Image Source="admin.png" HeightRequest="60" WidthRequest="300"/>
-                    <Label FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" Grid.Column="1" x:Name="EmployeeName"/>
+                    <Label FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center" TextTransform="Uppercase" HorizontalOptions="Start" Grid.Column="1" Text="{Binding Empnam}" x:Name="EmployeeName"/>
                 </Grid>
                 <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
                     <Label Grid.Column="0" 
                            Grid.Row="0" 
-                           FontSize="16" 
+                           FontSize="16"
                            HorizontalOptions="Start" 
                            VerticalOptions="Center">Employee Number</Label>
                     <Frame Padding="10"
@@ -21,7 +23,7 @@
                            Grid.Row="0"
                            Grid.Column="1">
 
-                        <Label x:Name="EmployeeNumber" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Empnum}" x:Name="EmployeeNumber" HorizontalOptions="Center"/>
 
 
                     </Frame>
@@ -36,7 +38,7 @@
                            Grid.Row="1"
                            Grid.Column="1">
 
-                        <Label x:Name="Group" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Grpname}" x:Name="Group" HorizontalOptions="Center"/>
 
 
                     </Frame>
@@ -51,7 +53,7 @@
                            Grid.Row="2"
                            Grid.Column="1">
 
-                        <Label x:Name="Plant" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Plt}" x:Name="Plant" HorizontalOptions="Center"/>
 
 
                     </Frame>
@@ -66,7 +68,7 @@
                            Grid.Row="3"
                            Grid.Column="1">
 
-                        <Label x:Name="Department" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Depart}" x:Name="Department" HorizontalOptions="Center"/>
 
 
                     </Frame>
@@ -81,7 +83,7 @@
                            Grid.Row="4"
                            Grid.Column="1">
 
-                        <Label x:Name="Payroll" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Payr}" x:Name="Payroll" HorizontalOptions="Center"/>
 
 
                     </Frame>
@@ -96,7 +98,7 @@
                            Grid.Row="5"
                            Grid.Column="1">
 
-                        <Label x:Name="TotalDayOT" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Ttdayofot}" x:Name="TotalDayOT" HorizontalOptions="Center"/>
 
 
                     </Frame>
@@ -111,12 +113,13 @@
                            Grid.Row="6"
                            Grid.Column="1">
 
-                        <Label x:Name="TotalHour" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Tthoursofot}" x:Name="TotalHour" HorizontalOptions="Center"/>
 
                     </Frame>
                     <!--Hour-->
 
                 </Grid>
+
                 <Grid RowDefinitions="*,*,*" Margin="10,0,10,0" RowSpacing="10">
                     <Button Clicked="Button_Clicked_3" HeightRequest="60" Text="Check Calendar"/>
                     <Button HeightRequest="60" Grid.Row="1" Text="Manage Group" Clicked="Button_Clicked_2"/>

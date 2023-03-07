@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SmartGloveRebuild2.Services
@@ -20,7 +21,7 @@ namespace SmartGloveRebuild2.Services
             {
                 string loginRequestStr = JsonConvert.SerializeObject(loginRequest);
 
-                var response = await client.PostAsync("http://172.16.12.195:7006/api/Users/AuthenticateUser",
+                var response = await client.PostAsync("http://172.16.12.165:7006/api/Users/AuthenticateUser",
                       new StringContent(loginRequestStr, Encoding.UTF8,
                       "application/json"));
 
@@ -44,12 +45,34 @@ namespace SmartGloveRebuild2.Services
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string loginRequestStr = JsonConvert.SerializeObject(loginRequest);
 
-                var response = await client.GetAsync($"http://172.16.12.195:7006/api/Users/CheckUserActivity?UserName={loginRequest.UserName}&Password={loginRequest.Password}");
+                var response = await client.GetAsync($"http://172.16.12.165:7006/api/Users/CheckUserActivity?UserName={loginRequest.UserName}&Password={loginRequest.Password}");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var rspond = await response.Content.ReadAsStringAsync();
                     return rspond;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public async Task<UserBasicInfo> GetUserBasicInfo(LoginRequest loginRequest)
+        {
+            using (var client = new HttpClient())
+            {
+
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
+                string loginRequestStr = JsonConvert.SerializeObject(loginRequest);
+
+                var response = await client.GetAsync($"http://172.16.12.165:7006/api/Users/GetUserActivity?UserName={loginRequest.UserName}&Password={loginRequest.Password}");
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var rspond = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<UserBasicInfo>(rspond);
                 }
                 else
                 {

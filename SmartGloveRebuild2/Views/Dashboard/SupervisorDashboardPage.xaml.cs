@@ -14,18 +14,6 @@ public partial class SupervisorDashboardPage : ContentPage
         InitializeComponent();
         this.BindingContext = dashboardPageViewModel;
 
-        if (App.UserDetails != null)
-        {
-            EmployeeName.Text = App.UserDetails.EmployeeName;
-            EmployeeNumber.Text = App.UserDetails.EmployeeNumber;
-            Plant.Text = App.UserDetails.Plant;
-            Department.Text = App.UserDetails.Department;
-            Payroll.Text = App.UserDetails.Payroll;
-            TotalDayOT.Text = App.UserDetails.TotalOTDay.ToString();
-            TotalHour.Text = App.UserDetails.TotalHour.ToString();
-            Group.Text = App.UserDetails.GroupName;
-        }
-
     }
 
     private async void Button_Clicked_1(object sender, EventArgs e)

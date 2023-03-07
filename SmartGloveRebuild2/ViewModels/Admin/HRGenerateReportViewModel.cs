@@ -766,7 +766,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
                         table.Cell().Row(6).Column(1).ColumnSpan(2).BoldEmptyCell("DEPARTMENT :");
                         table.Cell().Row(6).Column(2).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{SelectedDepartment.Department}"); // Report Date
-                        table.Cell().Row(6).Column(4).ColumnSpan(2).BoldEmptyCell("DAY :");
+                        table.Cell().Row(6).Column(4).ColumnSpan(2).BoldEmptyCell("DATE :");
                         table.Cell().Row(6).Column(5).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{Selectedmindaymonthyear.ToString("d")} ~ {Selectedmaxdaymonthyear.ToString("d")}"); // Report Date
                         table.Cell().Row(7).Column(1).ColumnSpan(2).BoldEmptyCell("SECTION :");
                         table.Cell().Row(7).Column(2).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{Grouplistfrompicker}"); // Report Date)
@@ -775,7 +775,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     {
                         table.Cell().Row(6).Column(1).ColumnSpan(2).BoldEmptyCell("DEPARTMENT :");
                         table.Cell().Row(6).Column(2).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{SelectedDepartment.Department}"); // Report Date
-                        table.Cell().Row(6).Column(4).ColumnSpan(2).BoldEmptyCell("DAY :");
+                        table.Cell().Row(6).Column(4).ColumnSpan(2).BoldEmptyCell("DATE :");
                         table.Cell().Row(6).Column(5).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{Selectedmindaymonthyear.ToString("d")} ~ {Selectedmaxdaymonthyear.ToString("d")}"); // Report Date
                         table.Cell().Row(7).Column(1).ColumnSpan(2).BoldEmptyCell("SECTION :");
                         table.Cell().Row(7).Column(2).ColumnSpan(2).PaddingLeft(60).AlignCenter().EmptyCell($"{selectedGroup.GroupName}"); // Report Date)
@@ -802,6 +802,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
             var pageSizes = FinalList.OrderBy(n => n.UserName);
 
+            int totalemployee = 0;
+            double totalhour = 0;
             int counter = 1;
 
             container.Column(column =>
@@ -885,8 +887,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             header.Cell().ColumnSpan(5).Element(CellStyle).Text("OVERTIME DETAILS").FontSize(6);
 
                             header.Cell().Row(2).RowSpan(2).Column(5).Element(CellStyle).Text("HOURS").FontSize(4);
-                            header.Cell().Row(2).RowSpan(2).Column(6).ColumnSpan(2).Element(CellStyle).Text("YES/ NO").FontSize(4);
-                            header.Cell().Row(2).RowSpan(2).Column(8).ColumnSpan(2).Element(CellStyle).Text("APPROVED BY").FontSize(4);
+                            header.Cell().Row(2).RowSpan(2).Column(6).Element(CellStyle).Text("YES/ NO").FontSize(4);
+                            header.Cell().Row(2).RowSpan(2).Column(7).ColumnSpan(3).Element(CellStyle).Text("APPROVED BY").FontSize(4);
 
                             header.Cell().ColumnSpan(4).Row(1).Column(10).Element(CellStyle).ExtendHorizontal().AlignCenter().Text("DAY").FontSize(6);
 
@@ -929,6 +931,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                     });  //Table Header
 
+                    var repeated = pageSizes.DistinctBy(p => p.EmployeeNumber).ToList();
+                    totalemployee = repeated.Count();
                     foreach (var page in pageSizes)
                     {
                         if (App.UserDetails.Role == "EXECUTIVE")
@@ -942,18 +946,20 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             table.Cell().Element(CellStyle).Text(counter++).FontSize(6);
                             table.Cell().Element(CellStyle).Text(page.EmployeeNumber).FontSize(6);
                             table.Cell().ColumnSpan(2).Element(CellStyle).Text(page.UserName).FontSize(6);
-                            table.Cell().Element(CellStyle).Text(page.Hours).FontSize(6);
                             if (page.RejectedBy != null)
                             {
-                                table.Cell().ColumnSpan(2).Element(CellStyle).Text("X").FontSize(6);
+                                table.Cell().Element(CellStyle).Text("").FontSize(6);
+                                table.Cell().Element(CellStyle).Text("X").FontSize(6);
                             }
                             else
                             {
-                                table.Cell().ColumnSpan(2).Element(CellStyle).Text("\u221A").FontSize(6);
+                                totalhour += page.Hours;
+                                table.Cell().Element(CellStyle).Text(page.Hours).FontSize(6);
+                                table.Cell().Element(CellStyle).Text("\u221A").FontSize(6);
                             }
                             //table.Cell().Element(CellStyle).Text("HOD").FontSize(6);
                             //table.Cell().Element(CellStyle2).Text("").FontSize(6);
-                            table.Cell().ColumnSpan(2).Element(CellStyle).Text("HOD/ PLANT HEAD").FontSize(6);
+                            table.Cell().ColumnSpan(3).Element(CellStyle).Text("HOD/ PLANT HEAD").FontSize(6);
                             table.Cell().Element(CellStyle).Text("").FontSize(6);
                             table.Cell().Element(CellStyle).Text("").FontSize(6);
                             table.Cell().Element(CellStyle).Text("").FontSize(6);
@@ -985,7 +991,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                             }
                             else
                             {
-
+                                totalhour += page.Hours;
                                 table.Cell().Element(CellStyle).Text(counter++).FontSize(6);
                                 table.Cell().Element(CellStyle).Text(page.EmployeeNumber).FontSize(6);
                                 table.Cell().ColumnSpan(2).Element(CellStyle).Text(page.UserName).FontSize(6);
@@ -1026,6 +1032,94 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
                     }  //Table Content
 
+
+                });
+
+                column.Item()
+                .PaddingTop(10)
+                .PaddingHorizontal(2)
+                .MinimalBox()
+                .Border(1)
+                .Table(table =>
+                {
+                    IContainer DefaultCellStyle(IContainer container, string backgroundColor)
+                    {
+                        return container
+                            .Border(1)
+                            .BorderColor(Colors.Grey.Lighten1)
+                            .Padding(2)
+                            .Background(backgroundColor)
+                            .AlignCenter()
+                            .AlignMiddle();
+                    }
+                    IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.White).ShowOnce();
+                    //IContainer CellStyle2(IContainer container) => DefaultCellStyle(container, Colors.Grey.Medium);
+
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(30); //1
+                        columns.RelativeColumn();//2
+                        columns.RelativeColumn();//3
+                        columns.RelativeColumn();//3,4
+
+                        columns.ConstantColumn(25);//5
+                        columns.ConstantColumn(25);//6                         
+                        columns.ConstantColumn(25);//7                     
+                        columns.ConstantColumn(30);//8                  
+                        columns.ConstantColumn(30);//9               
+
+                        columns.ConstantColumn(25);//10
+                        columns.ConstantColumn(25);//11
+                        columns.ConstantColumn(25);//12
+                        columns.ConstantColumn(40);//13
+
+                        columns.RelativeColumn();//14
+                        columns.RelativeColumn();
+                        columns.RelativeColumn();
+                    });
+                    //Format
+
+                    table.Header(header =>
+                    {
+
+                        table.Cell().RowSpan(10).ColumnSpan(8).Element(CellStyle).Text($"Total Employee : {totalemployee}").FontSize(10);
+                        table.Cell().RowSpan(10).ColumnSpan(8).Element(CellStyle).Text($"Total Hour : {totalhour}").FontSize(10);
+                    });
+
+                    //if (App.UserDetails.Role == "EXECUTIVE")
+                    //{
+                    //    table.Cell().Element(CellStyle).Text("1").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("2").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("3").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("4").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("5").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("6").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("7").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("8").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("9").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("10").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("11").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("12").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("13").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("14").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("15").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("16").FontSize(6);
+                    //    //}
+                    //}
+                    //else
+                    //{
+                    //    table.Cell().Element(CellStyle).Text("1").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("2").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("3").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("4").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("5").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("6").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("7").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("8").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("9").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("10").FontSize(6);
+                    //    table.Cell().Element(CellStyle).Text("11").FontSize(6);
+                    //}
 
                 });
 
@@ -1134,7 +1228,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                                 row.RelativeItem()
                                     .AlignLeft()
                                     .Padding(0)
-                                    .Text("* This Report generated by Smart Glove Overtime Apps. *")
+                                    .Text($"* This Report generated by {App.UserDetails.EmployeeName} from Smart Glove Overtime Application.*")
                                     .FontSize(10);
 
                                 row.RelativeItem()
