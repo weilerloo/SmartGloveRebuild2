@@ -11,6 +11,7 @@ using CommunityToolkit.Maui;
 using SmartGloveRebuild2.Services;
 using Microsoft.Maui.LifecycleEvents;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using Plugin.LocalNotification;
 
 #if WINDOWS
 using Microsoft.UI;
@@ -27,6 +28,9 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseSkiaSharp()
+#if ANDROID
+            .UseLocalNotification()
+#endif
             .ConfigureFonts(fonts =>
         {
             fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -540,7 +540,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                             cm.IsRejected = true;
                             cm.LastCurrentMonth = "red";
                         }
-                        else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber == App.UserDetails.EmployeeNumber)
+                        else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber.ToUpper() == App.UserDetails.EmployeeNumber.ToUpper())
                         {
                             cm.Color = Color.FromArgb("#FFA500");
                             cm.IsBooked = true;
@@ -697,7 +697,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                             cm.IsRejected = true;
                             cm.LastCurrentMonth = "red";
                         }
-                        else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber == App.UserDetails.EmployeeNumber)
+                        else if (getEmployeeSchedule != null && getEmployeeSchedule.EmployeeNumber.ToUpper() == App.UserDetails.EmployeeNumber.ToUpper())
                         {
                             cm.Color = Color.FromArgb("#FFA500");
                             cm.IsBooked = true;
@@ -922,7 +922,7 @@ namespace SmartGloveRebuild2.ViewModels.Employee
                     var response = await _scheduleServices.EmployeeAddSchedule(new EmployeeAddScheduleDTO
                     {
                         DayMonthYear = rqt.DayMonthYear,
-                        EmployeeNumber = App.UserDetails.EmployeeNumber,
+                        EmployeeNumber = App.UserDetails.EmployeeNumber.ToUpper(),
                         ScheduleDate = DateTime.ParseExact(rqt.DayMonthYear, "d/M/yyyy", null),
                         GroupName = App.UserDetails.GroupName,
                         Status = true,

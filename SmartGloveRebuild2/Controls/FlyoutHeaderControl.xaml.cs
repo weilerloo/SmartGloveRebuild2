@@ -12,14 +12,14 @@ public partial class FlyoutHeaderControl : StackLayout
 
         if (App.UserDetails != null)
         {
-            lblUserName.Text = App.UserDetails.EmployeeName;
+            lblUserName.Text = App.UserDetails.EmployeeName.ToUpper();
             lblUserEmail.Text = App.UserDetails.EmployeeNumber;
             lblUserRole.Text = App.UserDetails.Role;
         }
 
 
 
-        if (App.UserDetails.RoleID == (int)RoleDetails.Employee || App.UserDetails.RoleID == (int)RoleDetails.Technician)
+        if (App.UserDetails.RoleID == (int)RoleDetails.Employee || App.UserDetails.RoleID == (int)RoleDetails.Technician || App.UserDetails.RoleID == (int)RoleDetails.Leader)
         {
             imagesourceflyoutcontrol = "employeeflyout.png";
         }

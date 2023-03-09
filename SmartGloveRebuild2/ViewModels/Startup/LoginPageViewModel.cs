@@ -60,7 +60,7 @@ namespace SmartGloveRebuild2.ViewModels.Startup
 
                     var response = await _loginService.Authenticate(new LoginRequest
                     {
-                        UserName = EmployeeNumber,
+                        UserName = EmployeeNumber.ToUpper(),
                         Password = Password
                     });
 

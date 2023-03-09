@@ -40,7 +40,7 @@ namespace SmartGloveRebuild2.Models
             if (BUHeadDashboardInfo != null) AppShell.Current.Items.Remove(BUHeadDashboardInfo);
 
 
-            if (App.UserDetails.RoleID == (int)RoleDetails.Employee || App.UserDetails.RoleID == (int)RoleDetails.Technician)
+            if (App.UserDetails.RoleID == (int)RoleDetails.Employee || App.UserDetails.RoleID == (int)RoleDetails.Technician || App.UserDetails.RoleID == (int)RoleDetails.Leader)
             {
                 var flyoutItem = new FlyoutItem()
                 {
@@ -302,7 +302,7 @@ namespace SmartGloveRebuild2.Models
                     }
                 }
             }
-            if (App.UserDetails.RoleID == (int)RoleDetails.Executive)
+            if (App.UserDetails.RoleID == (int)RoleDetails.Executive || App.UserDetails.RoleID == (int)RoleDetails.Engineer)
             {
                 var flyoutItem = new FlyoutItem()
                 {
@@ -314,7 +314,7 @@ namespace SmartGloveRebuild2.Models
                                 new ShellContent
                                 {
                                     Icon = Icons.Dashboard,
-                                    Title = "Executive Dashboard",
+                                    Title = "Dashboard",
                                     ContentTemplate = new DataTemplate(typeof(ExecutiveDashboardPage)),
                                 },
                                 new ShellContent

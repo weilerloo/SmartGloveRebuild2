@@ -41,5 +41,7 @@ namespace SmartGloveRebuild2.Models
         Worker,
         Executive,
         BUH,
+        Leader,
+        Engineer,
     }
 }

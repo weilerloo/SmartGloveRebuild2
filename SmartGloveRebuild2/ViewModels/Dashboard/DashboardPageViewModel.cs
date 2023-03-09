@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
+using Plugin.LocalNotification;
+using Plugin.LocalNotification.AndroidOption;
 using SmartGloveRebuild2.Controls;
 using SmartGloveRebuild2.Models;
 using SmartGloveRebuild2.Services;
@@ -28,6 +30,22 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
         double tthoursofot;
 
         private readonly ILoginService _loginService;
+        private readonly INotificationService _notificationServices;
+        private readonly IScheduleServices _scheduleServices;
+
+#if ANDROID
+        public DashboardPageViewModel(ILoginService loginServices, INotificationService notificationServices, IScheduleServices scheduleServices)
+        {
+            _loginService = loginServices;
+            _notificationServices = notificationServices;
+            _scheduleServices = scheduleServices;
+            AppShell.Current.FlyoutHeader = new FlyoutHeaderControl();
+            GetUserBasicInfo();
+            CheckUserActivity();
+            LoopCheckActivity();
+            getNotification();
+        }
+#else 
         public DashboardPageViewModel(ILoginService loginServices)
         {
             _loginService = loginServices;
@@ -36,6 +54,7 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             CheckUserActivity();
             LoopCheckActivity();
         }
+#endif
 
         public async void GetUserBasicInfo()
         {
@@ -193,6 +212,62 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
                 }
             }
             IsBusy = false;
+        }
+
+        public async void getNotification()
+        {
+            var checkaccess = await _notificationServices.AreNotificationsEnabled();
+            if (checkaccess != true)
+            {
+                await _notificationServices.RequestNotificationPermission();
+            }
+            else
+            {
+                DateTime now = DateTime.Now;
+                var currentdaynimonth = DateTime.DaysInMonth(now.Year, now.Month);
+                _notificationServices.CancelAll();
+                for (int day = 1; day < currentdaynimonth; day++)
+                {
+                    int counter = 0;
+                    DateTime dateTime = new DateTime(now.Year, now.Month, day);
+                    string currentday = dateTime.ToString("d/M/yyyy");
+                    var getNotifications = await _scheduleServices.GetScheduleByEmployeeNumberandDate(new Models.ClerkDTO.GetScheduleByEmployeeNumberandDateDTO
+                    {
+                        DayMonthYear = currentday,
+                        EmployeeNumber = App.UserDetails.EmployeeNumber,
+                    });
+
+                    if (getNotifications != null && getNotifications.IsRejected == false)
+                    {
+                        var hm = new DateTime(now.Year, now.Month, day, 8, 0, 0);
+                        counter++;
+                        DateTime converted = DateTime.ParseExact(getNotifications.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
+                        getNotifications.DayMonthYear = converted.ToString("d/M/yyyy");
+                        var request = new NotificationRequest()
+                        {
+                            Android = new AndroidOptions
+                            {
+                                Priority = AndroidPriority.Max,
+                                VisibilityType = AndroidVisibilityType.Public,
+                                ChannelId = "0829",
+                            },
+                            CategoryType = NotificationCategoryType.Reminder,
+                            Group = "Schedule OT",
+                            NotificationId = day + 1000,
+                            Title = $"Your next overtime on {getNotifications.DayMonthYear}",
+                            Subtitle = $"Smart Glove",
+                            Description = $"At : {getNotifications.GroupName}, Hours : {getNotifications.Hours}",
+                            BadgeNumber = counter,
+                            Schedule = new NotificationRequestSchedule
+                            {
+                                NotifyTime = hm,
+                                RepeatType = NotificationRepeat.No,
+                            }
+                        };
+                        await LocalNotificationCenter.Current.Show(request);
+                    }
+                }
+            }
         }
 
         public async void LoopCheckActivity()
