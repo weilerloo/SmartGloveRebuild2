@@ -4,7 +4,7 @@
              x:Class="SmartGloveRebuild2.Views.Dashboard.ClerkDashboardPage"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Dashboard"
              x:DataType="viewmodel:DashboardPageViewModel"
-             Title="Clerk Dashboard">
+             Title="Admin Dashboard">
     <ScrollView>
         <Grid BackgroundColor="Transparent">
 
@@ -120,10 +120,12 @@
                     <!--Hour-->
 
                 </Grid>
-                <Grid RowDefinitions="*,*,*" Margin="10,0,10,0" RowSpacing="10">
-                    <Button HeightRequest="60" Grid.Row="0" Text="Update Slots" Clicked="Button_Clicked_1"/>
-                    <Button HeightRequest="60" Grid.Row="1" Text="Display Group" Clicked="Button_Clicked_2"/>
-                    <Button HeightRequest="60" Grid.Row="2" Text="Schedule OT" Clicked="Button_Clicked_3"/>
+                <Grid RowDefinitions="*,*,*,*,*" Margin="10,0,10,10" RowSpacing="10">
+                    <Button HeightRequest="60" Grid.Row="0" Text="Manage Group" Clicked="Button_Clicked_2"/>
+                    <Button HeightRequest="60" Grid.Row="1" Text="Update Slots" Clicked="Button_Clicked_1"/>
+                    <Button HeightRequest="60" Grid.Row="2" Text="Check Calender" Clicked="Button_Clicked_4"/>
+                    <Button HeightRequest="60" Grid.Row="3" Text="Generate Report" Clicked="Button_Clicked"/>
+                    <Button HeightRequest="60" Grid.Row="4" Text="Schedule OT" Clicked="Button_Clicked_3"/>
                 </Grid>
             </VerticalStackLayout>
 

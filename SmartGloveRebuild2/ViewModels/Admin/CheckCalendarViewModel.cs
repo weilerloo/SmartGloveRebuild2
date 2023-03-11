@@ -96,7 +96,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             DisplayDays();
             DisplayGroupMember();
             ColorStatus();
-            Title = "Check Calendar";
+            //Title = "Check Calendar";
             Items = new ObservableCollection<CalendarModel>();
             SelectedItem = new CalendarModel();
 

@@ -10,21 +10,25 @@
     <Grid RowDefinitions="*,Auto">
         <ScrollView>
             <VerticalStackLayout>
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto" Margin="0,0,0,30">
-                    <Label FontAttributes="Bold" Text="Display Groups" FontSize="22" Margin="20,20,0,10" TextColor="Black"/>
-                    <Label Grid.Row="1" Text="Please SELECT a group." FontSize="22" Margin="20,0,0,10" TextColor="Black"/>
-                    <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center">
-                        <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Click me to Choose" TitleColor="SlateGrey"
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto" Margin="0,0,0,20">
+                    <Label FontSize="22" Margin="20,20,0,10" TextColor="Black"/>
+                    <Label  FontAttributes="Bold" Text="Please SELECT a group." FontSize="19" Margin="20,20,0,0" TextColor="Black"/>
+                    <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto" Margin="70,0,0,0">
+
+                        <Picker Grid.Column="0" FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Click me to Choose" TitleColor="SlateGrey"
                             ItemsSource="{Binding GroupTitleList}" 
                             SelectedItem="{Binding SelectedGroupname}"
                             ItemDisplayBinding="{Binding GroupName}"/>
-                        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
-                    </StackLayout>
+                        <ActivityIndicator Grid.Column="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+
+                    </Grid>
                     <Grid Grid.Row="3" ColumnDefinitions="*,*" HorizontalOptions="Center">
                         <Label HorizontalTextAlignment="End" Grid.Column="0" Text="Total of Worker:" FontSize="16" HorizontalOptions="Center" TextColor="Black"/>
-                        <Label HorizontalTextAlignment="Start" Grid.Column="1" Text="{Binding Numworker}" FontSize="16" Margin="5,0,0,10" HorizontalOptions="Center" TextColor="Black"/>
+                        <Label HorizontalTextAlignment="Start" Grid.Column="1" Text="{Binding Numworker}" FontSize="16" Margin="5,0,0,0" HorizontalOptions="Center" TextColor="Black"/>
                     </Grid>
                 </Grid>
+                    <SearchBar BackgroundColor="LightGray" Margin="20,0,20,20"
+                               Text="{Binding TextSearch}"/>
                 <Frame CornerRadius="0">
                     <Grid ColumnDefinitions="*,*">
                         <Label HorizontalOptions="Center" Margin="0,0,60,0" Grid.Column="0" Text="Members" FontSize="17"/>

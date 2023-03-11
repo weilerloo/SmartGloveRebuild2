@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using CommunityToolkit.Maui.Views;
 using SmartGloveOvertime.Handlers;
+using System.Windows.Input;
 
 namespace SmartGloveRebuild2.ViewModels.Admin
 {
@@ -25,9 +26,10 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public ObservableCollection<GroupList> GroupNameList { get; set; } = new ObservableCollection<GroupList>();
         public ObservableCollection<GroupList> GroupTitleList { get; set; } = new ObservableCollection<GroupList>();
         public static ObservableCollection<GroupList> DisplayGroupList { get; set; } = new ObservableCollection<GroupList>();
+        public ICommand SearchEmptyLoadContactCommand { get; private set; }
 
         [ObservableProperty]
-        string entrygroupname;
+        string entrygroupname, textsearch;
 
         [ObservableProperty]
         bool isRefreshing;
@@ -50,7 +52,39 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             get => cansee;
             set => SetProperty(ref cansee, value);
         }
+        public string TextSearch
+        {
+            get => textsearch;
+            set
+            {
+                textsearch = value;
+                OnPropertyChanged();
+                if (textsearch.Length > 0)
+                {
+                    OnSearchContactCommand();
+                }
+                else
+                {
+                    SearchEmptyLoadContactCommand.Execute(null);
+                }
+            }
+        }
+        private void OnSearchContactCommand()
+        {
+            var founContacts = GroupNameList.Where(found =>
+            found.UserName.Contains(TextSearch) ||
+            found.EmployeeName.Contains(TextSearch)
+            ).ToList();
 
+            if (founContacts.Count > 0)
+            {
+                GroupNameList.Clear();
+                foreach (var contact in founContacts)
+                {
+                    GroupNameList.Add(contact);
+                }
+            }
+        }
 
         private GroupList selectedgroupname;
         public GroupList SelectedGroupname
@@ -71,9 +105,18 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         {
             _groupServices = groupServices;
             DisplayGroupMember();
+            SearchEmptyLoadContactCommand = new Command(async ()=> await LoadCollectionContacts());
         }
 
-
+        private async Task LoadCollectionContacts()
+        {
+            GroupNameList.Clear();
+            var contacts = await _groupServices.DisplayGroupbyGroupName(selectedgroupname.GroupName);
+            foreach (var contact in contacts)
+            {
+                GroupNameList.Add(contact);
+            }
+        }
         [RelayCommand]
         public async void DisplayGroupMember()
         {

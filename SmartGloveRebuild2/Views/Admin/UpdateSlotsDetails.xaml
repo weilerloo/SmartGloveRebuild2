@@ -9,13 +9,13 @@
              Title="Update Slots Page">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
         </ResourceDictionary>
         <Style x:Key="InvalidEntryStyle" TargetType="Entry">
-            <Setter Property="TextColor" Value="Red" />
+            <Setter Property="TextColor" Value="Red"/>
         </Style>
         <Style x:Key="ValidEntryStyle" TargetType="Entry">
-            <Setter Property="TextColor" Value="Green" />
+            <Setter Property="TextColor" Value="Green"/>
         </Style>
     </ContentPage.Resources>
     <Grid RowDefinitions="Auto,Auto,*,Auto">

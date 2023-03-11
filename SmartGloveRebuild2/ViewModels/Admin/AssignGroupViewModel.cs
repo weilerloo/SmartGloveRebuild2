@@ -14,6 +14,7 @@ using SmartGloveRebuild2.Views.Admin;
 using SmartGloveRebuild2.Models.Schedule;
 using Microsoft.IdentityModel.Tokens;
 using SmartGloveRebuild2.Views.Dashboard;
+using System.Windows.Input;
 
 namespace SmartGloveRebuild2.ViewModels.Admin
 {
@@ -23,6 +24,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public ObservableCollection<GroupList> EditGroupList { get; set; } = new ObservableCollection<GroupList>();
         public IList<CreateGroupDTO> NameGroupList { get; set; } = new List<CreateGroupDTO>();
 
+        public ICommand SearchEmptyLoadContactCommand { get; private set; }
+
         [ObservableProperty]
         bool isRefreshing, cannotdelete;
 
@@ -30,15 +33,60 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [ObservableProperty]
         GroupList groupList;
 
+        [ObservableProperty]
+        string textsearch;
+
 
         private readonly IGroupServices _groupService;
         public AssignGroupViewModel(IGroupServices groupService)
         {
             _groupService = groupService;
             DisplayGroupMember();
+            SearchEmptyLoadContactCommand = new Command(async () => await LoadCollectionContacts());
         }
 
+        public string TxtSearch
+        {
+            get => textsearch;
+            set
+            {
+                textsearch = value;
+                OnPropertyChanged();
+                if (textsearch.Length > 0)
+                {
+                    OnSearchContactCommand();
+                }
+                else
+                {
+                    SearchEmptyLoadContactCommand.Execute(null);
+                }
+            }
+        }
+        private void OnSearchContactCommand()
+        {
+            var founContacts = EditGroupList.Where(found =>
+            found.UserName.Contains(TxtSearch) ||
+            found.EmployeeName.Contains(TxtSearch)
+            ).ToList();
 
+            if (founContacts.Count > 0)
+            {
+                EditGroupList.Clear();
+                foreach (var contact in founContacts)
+                {
+                    EditGroupList.Add(contact);
+                }
+            }
+        }
+        private async Task LoadCollectionContacts()
+        {
+            EditGroupList.Clear();
+            var contacts = await _groupService.DisplayGroupFromUsers();
+            foreach (var contact in contacts)
+            {
+                EditGroupList.Add(contact);
+            }
+        }
         public async Task CheckUnassignedGroup()
         {
             var response = await _groupService.DisplayGroup();

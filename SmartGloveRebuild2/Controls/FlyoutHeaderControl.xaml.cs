@@ -19,7 +19,7 @@ public partial class FlyoutHeaderControl : StackLayout
 
 
 
-        if (App.UserDetails.RoleID == (int)RoleDetails.Employee || App.UserDetails.RoleID == (int)RoleDetails.Technician || App.UserDetails.RoleID == (int)RoleDetails.Leader)
+        if (App.UserDetails.RoleID == (int)RoleDetails.Employee)
         {
             imagesourceflyoutcontrol = "employeeflyout.png";
         }

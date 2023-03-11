@@ -36,12 +36,7 @@ namespace SmartGloveRebuild2.Models
         Supervisor,
         HR,
         HOD,
-        Clerk,
-        Technician,
-        Worker,
-        Executive,
         BUH,
-        Leader,
-        Engineer,
+        Admin,
     }
 }

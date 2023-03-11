@@ -40,7 +40,7 @@ namespace SmartGloveRebuild2.Models
             if (BUHeadDashboardInfo != null) AppShell.Current.Items.Remove(BUHeadDashboardInfo);
 
 
-            if (App.UserDetails.RoleID == (int)RoleDetails.Employee || App.UserDetails.RoleID == (int)RoleDetails.Technician || App.UserDetails.RoleID == (int)RoleDetails.Leader)
+            if (App.UserDetails.RoleID == (int)RoleDetails.Employee)
             {
                 var flyoutItem = new FlyoutItem()
                 {
@@ -148,7 +148,7 @@ namespace SmartGloveRebuild2.Models
                 }
             }
 
-            if (App.UserDetails.RoleID == (int)RoleDetails.Clerk)
+            if (App.UserDetails.RoleID == (int)RoleDetails.Admin)
             {
                 var flyoutItem = new FlyoutItem()
                 {
@@ -160,7 +160,7 @@ namespace SmartGloveRebuild2.Models
                                 new ShellContent
                                 {
                                     Icon = Icons.Dashboard,
-                                    Title = "Clerk Dashboard",
+                                    Title = "Admin Dashboard",
                                     ContentTemplate = new DataTemplate(typeof(ClerkDashboardPage)),
                                 },
                                 new ShellContent
@@ -168,6 +168,18 @@ namespace SmartGloveRebuild2.Models
                                     Icon = Icons.UpdateSlots,
                                     Title = "Update Slots",
                                     ContentTemplate = new DataTemplate(typeof(UpdateSlotsPage)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.CheckCalendar,
+                                    Title = "Check Calendar",
+                                    ContentTemplate = new DataTemplate(typeof(CheckCalendarPage)),
+                                },
+                                new ShellContent
+                                {
+                                    Icon = Icons.CheckCalendar,
+                                    Title = "Generate report",
+                                    ContentTemplate = new DataTemplate(typeof(GenerateReportPage)),
                                 },
                                 new ShellContent
                                 {
@@ -302,46 +314,46 @@ namespace SmartGloveRebuild2.Models
                     }
                 }
             }
-            if (App.UserDetails.RoleID == (int)RoleDetails.Executive || App.UserDetails.RoleID == (int)RoleDetails.Engineer)
-            {
-                var flyoutItem = new FlyoutItem()
-                {
-                    Title = "Dashboard Page",
-                    Route = nameof(ExecutiveDashboardPage),
-                    FlyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems,
-                    Items =
-                    {
-                                new ShellContent
-                                {
-                                    Icon = Icons.Dashboard,
-                                    Title = "Dashboard",
-                                    ContentTemplate = new DataTemplate(typeof(ExecutiveDashboardPage)),
-                                },
-                                new ShellContent
-                                {
-                                    Icon = Icons.GenerateReport,
-                                    Title = "Generate Report",
-                                    ContentTemplate = new DataTemplate(typeof(GenerateReportPage)),
-                                },
-                   }
-                };
+            //if (App.UserDetails.RoleID == (int)RoleDetails.Executive || App.UserDetails.RoleID == (int)RoleDetails.Engineer)
+            //{
+            //    var flyoutItem = new FlyoutItem()
+            //    {
+            //        Title = "Dashboard Page",
+            //        Route = nameof(ExecutiveDashboardPage),
+            //        FlyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems,
+            //        Items =
+            //        {
+            //                    new ShellContent
+            //                    {
+            //                        Icon = Icons.Dashboard,
+            //                        Title = "Dashboard",
+            //                        ContentTemplate = new DataTemplate(typeof(ExecutiveDashboardPage)),
+            //                    },
+            //                    new ShellContent
+            //                    {
+            //                        Icon = Icons.GenerateReport,
+            //                        Title = "Generate Report",
+            //                        ContentTemplate = new DataTemplate(typeof(GenerateReportPage)),
+            //                    },
+            //       }
+            //    };
 
-                if (!AppShell.Current.Items.Contains(flyoutItem))
-                {
-                    AppShell.Current.Items.Add(flyoutItem);
-                    if (DeviceInfo.Platform == DevicePlatform.WinUI)
-                    {
-                        AppShell.Current.Dispatcher.Dispatch(async () =>
-                        {
-                            await Shell.Current.GoToAsync($"//{nameof(ExecutiveDashboardPage)}");
-                        });
-                    }
-                    else
-                    {
-                        await Shell.Current.GoToAsync($"//{nameof(ExecutiveDashboardPage)}");
-                    }
-                }
-            }
+            //    if (!AppShell.Current.Items.Contains(flyoutItem))
+            //    {
+            //        AppShell.Current.Items.Add(flyoutItem);
+            //        if (DeviceInfo.Platform == DevicePlatform.WinUI)
+            //        {
+            //            AppShell.Current.Dispatcher.Dispatch(async () =>
+            //            {
+            //                await Shell.Current.GoToAsync($"//{nameof(ExecutiveDashboardPage)}");
+            //            });
+            //        }
+            //        else
+            //        {
+            //            await Shell.Current.GoToAsync($"//{nameof(ExecutiveDashboardPage)}");
+            //        }
+            //    }
+            //}
 
             if (App.UserDetails.RoleID == (int)RoleDetails.BUH)
             {
