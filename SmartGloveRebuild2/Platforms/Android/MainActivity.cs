@@ -10,6 +10,8 @@ using Plugin.LocalNotification;
 using Plugin.LocalNotification.AndroidOption;
 using SmartGloveRebuild2.Services;
 using SmartGloveRebuild2.Platforms.Android;
+using Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;
+
 
 namespace SmartGloveRebuild2;
 

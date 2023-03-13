@@ -45,11 +45,12 @@
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:GroupList">
+                            
                             <Frame BorderColor="LightGray" CornerRadius="0" Padding="10">
                                 <Grid ColumnDefinitions="220,*">
-                                    <Grid RowDefinitions="Auto,Auto">
-                                        <Label Margin="20,0,0,0" HorizontalOptions="Start" Grid.Row="0" Text="{Binding EmployeeName}" TextColor="Black" FontSize="18"/>
-                                        <Label Margin="20,0,0,0" HorizontalOptions="Start" Grid.Row="1" Text="{Binding UserName}" TextColor="Blue" FontSize="16"/>
+                                    <Grid RowDefinitions="50,25">
+                                        <Label Margin="20,0,0,0" HorizontalOptions="Start" VerticalOptions="Center" Grid.Row="0" Text="{Binding EmployeeName}" TextColor="Black" FontSize="18"/>
+                                        <Label Margin="20,0,0,0" HorizontalOptions="Start" VerticalOptions="Center" Grid.Row="1" Text="{Binding UserName}" TextColor="Blue" FontSize="16"/>
                                     </Grid>
                                     <Label Margin="0,0,45,0" Grid.Column="1" HorizontalOptions="End" Text="{Binding TotalHour}" TextColor="Black" FontSize="19"/>
                                 </Grid>

@@ -1,4 +1,5 @@
-﻿using Android;
+﻿#if ANDROID
+using Android;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -33,3 +34,4 @@ namespace SmartGloveRebuild2.Services
         }
     }
 }
+#endif

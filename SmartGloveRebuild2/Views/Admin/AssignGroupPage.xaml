@@ -17,7 +17,7 @@
                     <Label Grid.Column="0" Text="Current group:" VerticalOptions="End" FontSize="18" Margin="20,0,0,10"/>
                     <Label Grid.Column="1" Text="{Binding GroupList.GroupName}" FontSize="18" TextColor="Blue" Margin="5,0,20,0"/>
                 </Grid>
-                <SearchBar BackgroundColor="LightGray" Margin="20,0,20,20"
+                <SearchBar TextTransform="Uppercase" BackgroundColor="LightGray" Margin="20,0,20,20"
                                Text="{Binding TxtSearch}"/>
                 <Frame CornerRadius="0">
                     <Grid ColumnDefinitions="*,*">

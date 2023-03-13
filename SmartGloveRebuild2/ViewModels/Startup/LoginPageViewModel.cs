@@ -20,6 +20,9 @@ namespace SmartGloveRebuild2.ViewModels.Startup
     public partial class LoginPageViewModel : BaseViewModel
     {
         [ObservableProperty]
+        public bool cansee = true;
+
+        [ObservableProperty]
         private string _employeeNumber;
 
         [ObservableProperty]
@@ -36,6 +39,20 @@ namespace SmartGloveRebuild2.ViewModels.Startup
         }
 
         #region Commands
+
+        [RelayCommand]
+        public void ChangeCansee()
+        {
+            if (Cansee)
+            {
+                Cansee = false;
+            }
+            else
+            {
+                Cansee = true;
+            }
+        }
+
 
         [RelayCommand]
         async void Login()
@@ -107,7 +124,7 @@ namespace SmartGloveRebuild2.ViewModels.Startup
                     return;
                 }
             }
-            catch 
+            catch
             {
                 await Shell.Current.DisplayAlert("Internet Error", "Failed to Conenct to Server. ", "OK");
             }

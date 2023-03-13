@@ -9,10 +9,5 @@ public partial class DisplayGroupPage : ContentPage
     {
         InitializeComponent();
         this.BindingContext = viewModel;
-
-        if(App.UserDetails.Role == "CLERK")
-        {
-            EditButton.IsVisible = false;
-        }
     }
 }

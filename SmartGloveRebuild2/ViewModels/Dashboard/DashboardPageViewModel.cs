@@ -239,7 +239,7 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
 
                     if (getNotifications != null && getNotifications.IsRejected == false)
                     {
-                        var hm = new DateTime(now.Year, now.Month, day, 8, 0, 0);
+                        var hm = new DateTime(dateTime.Year, dateTime.Month, dateTime.AddDays(-1).Day, 20, 0, 0);
                         counter++;
                         DateTime converted = DateTime.ParseExact(getNotifications.DayMonthYear, "d/M/yyyy hh:mm:ss tt", null);
                         getNotifications.DayMonthYear = converted.ToString("d/M/yyyy");

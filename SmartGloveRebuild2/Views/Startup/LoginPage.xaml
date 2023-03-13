@@ -4,6 +4,8 @@
              x:Class="SmartGloveRebuild2.Views.Startup.LoginPage"
              Shell.FlyoutBehavior="Disabled"
              Shell.NavBarIsVisible="False"
+             xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Startup"
+             x:DataType="viewmodel:LoginPageViewModel"
              xmlns:handlers="clr-namespace:SmartGloveRebuild2.Handlers"
              xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
              Title="Login Page">
@@ -25,7 +27,10 @@
                            BorderColor="Transparent"
                            BackgroundColor="#F0F0F0"
                            Grid.Row="1">
-                        <handlers:BorderlessEntry ZIndex="3" PlaceholderColor="Gray" Margin="15,5,15,5" Placeholder="Password" IsPassword="True" TextColor="Black" FontSize="20" Text="{Binding Password}"/>
+                        <Grid ColumnDefinitions="*,50">
+                            <handlers:BorderlessEntry ZIndex="3" PlaceholderColor="Gray" Margin="15,5,5,5" Placeholder="Password" IsPassword="{Binding Cansee}" TextColor="Black" FontSize="20" Text="{Binding Password}"/>
+                            <ImageButton CornerRadius="10" ZIndex="4" Source="eyes.png" Margin="0,0,15,0" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding ChangeCanseeCommand}" Grid.Column="1"/>
+                        </Grid>
                     </Frame>
                 </VerticalStackLayout>
             </Grid>
@@ -36,7 +41,7 @@
                     SemanticProperties.Description="LoginPage image!"
                     RepeatCount="-1"
                     HeightRequest="400"
-                    ZIndex="-1"
+                    ZIndex="1"
                     WidthRequest="350"
                     TranslationY="-100"/>
         <Button Grid.Row="1" TranslationY="50" WidthRequest="150" HeightRequest="50" HorizontalOptions="Center" Text="Sign in" Command="{Binding LoginCommand}"/>

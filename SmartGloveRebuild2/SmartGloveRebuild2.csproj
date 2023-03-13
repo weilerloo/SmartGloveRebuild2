@@ -66,14 +66,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="4.0.0" />
-		<PackageReference Include="CommunityToolkit.Maui.Core" Version="4.0.0" />
-		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="3.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui.Core" Version="5.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="3.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 		<PackageReference Include="Mopups" Version="1.1.1" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3-beta1" />
-		<PackageReference Include="Plugin.LocalNotification" Version="10.1.3" />
-		<PackageReference Include="QuestPDF" Version="2022.12.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Plugin.LocalNotification" Version="10.1.4" />
+		<PackageReference Include="QuestPDF" Version="2022.12.2" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0-preview.61" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.141-beta" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
