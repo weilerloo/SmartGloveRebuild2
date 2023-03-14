@@ -24,12 +24,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
     public partial class DisplayGroupViewModel : BaseViewModel
     {
         public ObservableCollection<GroupList> GroupNameList { get; set; } = new ObservableCollection<GroupList>();
+        public ObservableCollection<GroupList> SearchedGroupList { get; set; } = new ObservableCollection<GroupList>();
         public ObservableCollection<GroupList> GroupTitleList { get; set; } = new ObservableCollection<GroupList>();
         public static ObservableCollection<GroupList> DisplayGroupList { get; set; } = new ObservableCollection<GroupList>();
         public ICommand SearchEmptyLoadContactCommand { get; private set; }
 
         [ObservableProperty]
-        string entrygroupname, textsearch;
+        string entrygroupname;
 
         [ObservableProperty]
         bool isRefreshing;
@@ -52,38 +53,79 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             get => cansee;
             set => SetProperty(ref cansee, value);
         }
-        public string TextSearch
+        private string textsearch;
+        public string TxtSearch
         {
             get => textsearch;
             set
             {
                 textsearch = value;
                 OnPropertyChanged();
-                if (textsearch.Length > 0)
-                {
-                    OnSearchContactCommand();
-                }
-                else
-                {
-                    SearchEmptyLoadContactCommand.Execute(null);
-                }
+                OnSearchContactCommand();
             }
         }
+        internal class IntermediateKey
+        {
+            public string Id { get; set; }
+            public int Value { get; set; }
+        }
+
+        internal class IntermediateKeyComparer : IEqualityComparer<IntermediateKey>
+        {
+            public bool Equals(IntermediateKey x, IntermediateKey y)
+            {
+                return x.Id == y.Id && x.Value == y.Value;
+            }
+
+            public int GetHashCode(IntermediateKey obj)
+            {
+                return obj.Id.GetHashCode() + obj.Value.GetHashCode();
+            }
+        }
+
         private void OnSearchContactCommand()
         {
-            var founContacts = GroupNameList.Where(found =>
-            found.UserName.Contains(TextSearch) ||
-            found.EmployeeName.Contains(TextSearch)
-            ).ToList();
+            //if(SearchedGroupList.ToList().Count > EditGroupList.ToList().Count)
+            //{
+            //    EditGroupList = SearchedGroupList;
+            //}
+            var someList = SearchedGroupList.ToList();
+
+            var founContacts = someList.Where(found =>
+             found.UserName.Contains(TxtSearch.ToUpper()) ||
+             found.EmployeeName.Contains(TxtSearch.ToUpper())
+             ).ToList();  //12
 
             if (founContacts.Count > 0)
             {
+
                 GroupNameList.Clear();
                 foreach (var contact in founContacts)
                 {
-                    GroupNameList.Add(contact);
+                    GroupNameList.Add(contact); //12
                 }
             }
+            else
+            {
+                GroupNameList.Clear();
+            }
+
+            var comparer = new IntermediateKeyComparer();
+            var result = SearchedGroupList
+                .GroupJoin(
+                    founContacts,
+                    uv => new IntermediateKey { Id = uv.UserName, Value = uv.SelectedIndex },
+                    lm => new IntermediateKey { Id = lm.UserName, Value = lm.SelectedIndex },
+                    (uv, lm) => new { Value = uv, Lookups = lm },
+                    comparer)
+                .SelectMany(
+                    pair => pair.Lookups.DefaultIfEmpty(),
+                    (paired, meta) => new { Value = paired.Value, Lookup = meta })
+                .Select(res =>
+                {
+                    res.Value.SelectedIndex = res.Lookup?.SelectedIndex ?? res.Value.SelectedIndex;
+                    return res.Value;
+                }); // 53
         }
 
         private GroupList selectedgroupname;
@@ -105,7 +147,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         {
             _groupServices = groupServices;
             DisplayGroupMember();
-            SearchEmptyLoadContactCommand = new Command(async ()=> await LoadCollectionContacts());
+            SearchEmptyLoadContactCommand = new Command(async () => await LoadCollectionContacts());
         }
 
         private async Task LoadCollectionContacts()
@@ -183,6 +225,15 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             }
 
             Numworker = GroupNameList.Count();
+            var list = GroupNameList.OrderBy(f => f.EmployeeName).ToList();
+            GroupNameList.Clear();
+            foreach (var contact in list)
+            {
+                GroupNameList.Add(contact); //12
+            }
+            List<GroupList> originalEnityList = GroupNameList.ToList();  //53, 12
+            ObservableCollection<GroupList> bRef = new ObservableCollection<GroupList>(originalEnityList);
+            SearchedGroupList = bRef;
             IsRefreshing = false;
             IsBusy = false;
         }

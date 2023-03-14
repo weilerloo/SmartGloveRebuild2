@@ -11,28 +11,26 @@
         <ScrollView>
             <VerticalStackLayout>
                 <Grid RowDefinitions="Auto,Auto,Auto,Auto" Margin="0,0,0,20">
-                    <Label FontSize="22" Margin="20,20,0,10" TextColor="Black"/>
-                    <Label  FontAttributes="Bold" Text="Please SELECT a group." FontSize="19" Margin="20,20,0,0" TextColor="Black"/>
-                    <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto" Margin="70,0,0,0">
-
-                        <Picker Grid.Column="0" FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Click me to Choose" TitleColor="SlateGrey"
+                    <Label FontAttributes="Bold" Text="Please SELECT a group." FontSize="22" Margin="20,20,0,0" TextColor="Black"/>
+                    <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto" Margin="20,0,0,0">
+                        <Label VerticalOptions="Center" Grid.Column="0" Text="Current Group :" FontSize="16" HorizontalOptions="Center" TextColor="Black"/>
+                        <Picker Grid.Column="1" FontSize="18" HorizontalTextAlignment="Center" Margin="10,0,0,0" TextColor="Black" Title="Click me to Choose" TitleColor="SlateGrey"
                             ItemsSource="{Binding GroupTitleList}" 
                             SelectedItem="{Binding SelectedGroupname}"
                             ItemDisplayBinding="{Binding GroupName}"/>
-                        <ActivityIndicator Grid.Column="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
-
                     </Grid>
-                    <Grid Grid.Row="3" ColumnDefinitions="*,*" HorizontalOptions="Center">
+                    <Grid Grid.Row="3" Margin="20,10,0,0" ColumnDefinitions="*,*,*" HorizontalOptions="Start">
                         <Label HorizontalTextAlignment="End" Grid.Column="0" Text="Total of Worker:" FontSize="16" HorizontalOptions="Center" TextColor="Black"/>
                         <Label HorizontalTextAlignment="Start" Grid.Column="1" Text="{Binding Numworker}" FontSize="16" Margin="5,0,0,0" HorizontalOptions="Center" TextColor="Black"/>
+                        <ActivityIndicator Grid.Column="2" Margin="20,0,0,0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
                     </Grid>
                 </Grid>
                     <SearchBar BackgroundColor="LightGray" Margin="20,0,20,20"
-                               Text="{Binding TextSearch}"/>
+                               Text="{Binding TxtSearch}"/>
                 <Frame CornerRadius="0">
-                    <Grid ColumnDefinitions="*,*">
-                        <Label HorizontalOptions="Center" Margin="0,0,60,0" Grid.Column="0" Text="Members" FontSize="17"/>
-                        <Label HorizontalOptions="End" Margin="0,0,10,0" Grid.Column="1" Text="OT Hours" FontSize="17"/>
+                    <Grid ColumnDefinitions="220,*">
+                        <Label HorizontalOptions="Start" Margin="10,0,0,0" Grid.Column="0" Text="Members" FontSize="17"/>
+                        <Label HorizontalOptions="Center" Grid.Column="1" Text="OT Hours" FontSize="17"/>
                     </Grid>
                 </Frame>
                 <CollectionView ItemsSource="{Binding GroupNameList}">
@@ -52,7 +50,7 @@
                                         <Label Margin="20,0,0,0" HorizontalOptions="Start" VerticalOptions="Center" Grid.Row="0" Text="{Binding EmployeeName}" TextColor="Black" FontSize="18"/>
                                         <Label Margin="20,0,0,0" HorizontalOptions="Start" VerticalOptions="Center" Grid.Row="1" Text="{Binding UserName}" TextColor="Blue" FontSize="16"/>
                                     </Grid>
-                                    <Label Margin="0,0,45,0" Grid.Column="1" HorizontalOptions="End" Text="{Binding TotalHour}" TextColor="Black" FontSize="19"/>
+                                    <Label Margin="0,0,0,0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding TotalHour}" TextColor="Black" FontSize="19"/>
                                 </Grid>
                             </Frame>
                         </DataTemplate>

@@ -22,9 +22,10 @@ namespace SmartGloveRebuild2.ViewModels.Admin
     public partial class AssignGroupViewModel : BaseViewModel
     {
         public ObservableCollection<GroupList> EditGroupList { get; set; } = new ObservableCollection<GroupList>();
+        public ObservableCollection<GroupList> SearchedGroupList { get; set; } = new ObservableCollection<GroupList>();
         public IList<CreateGroupDTO> NameGroupList { get; set; } = new List<CreateGroupDTO>();
 
-        public ICommand SearchEmptyLoadContactCommand { get; private set; }
+        //public ICommand SearchEmptyLoadContactCommand { get; private set; }
 
         [ObservableProperty]
         bool isRefreshing, cannotdelete;
@@ -33,8 +34,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [ObservableProperty]
         GroupList groupList;
 
-        [ObservableProperty]
-        string textsearch;
 
 
         private readonly IGroupServices _groupService;
@@ -42,9 +41,10 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         {
             _groupService = groupService;
             DisplayGroupMember();
-            SearchEmptyLoadContactCommand = new Command(async () => await LoadCollectionContacts());
+            //SearchEmptyLoadContactCommand = new Command(async () => await LoadCollectionContacts());
         }
 
+        private string textsearch;
         public string TxtSearch
         {
             get => textsearch;
@@ -52,40 +52,72 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             {
                 textsearch = value;
                 OnPropertyChanged();
-                if (textsearch.Length > 0)
-                {
-                    OnSearchContactCommand();
-                }
-                else
-                {
-                    SearchEmptyLoadContactCommand.Execute(null);
-                }
+                OnSearchContactCommand();
             }
         }
+
+        internal class IntermediateKey
+        {
+            public string Id { get; set; }
+            public int Value { get; set; }
+        }
+
+        internal class IntermediateKeyComparer : IEqualityComparer<IntermediateKey>
+        {
+            public bool Equals(IntermediateKey x, IntermediateKey y)
+            {
+                return x.Id == y.Id && x.Value == y.Value;
+            }
+
+            public int GetHashCode(IntermediateKey obj)
+            {
+                return obj.Id.GetHashCode() + obj.Value.GetHashCode();
+            }
+        }
+
         private void OnSearchContactCommand()
         {
-            var founContacts = EditGroupList.Where(found =>
-            found.UserName.Contains(TxtSearch) ||
-            found.EmployeeName.Contains(TxtSearch)
-            ).ToList();
+            //if(SearchedGroupList.ToList().Count > EditGroupList.ToList().Count)
+            //{
+            //    EditGroupList = SearchedGroupList;
+            //}
+            var someList = SearchedGroupList.ToList();
+
+            var founContacts = someList.Where(found =>
+             found.UserName.Contains(TxtSearch.ToUpper()) ||
+             found.EmployeeName.Contains(TxtSearch.ToUpper())
+             ).ToList();  //12
 
             if (founContacts.Count > 0)
             {
+
                 EditGroupList.Clear();
                 foreach (var contact in founContacts)
                 {
-                    EditGroupList.Add(contact);
+                    EditGroupList.Add(contact); //12
                 }
             }
-        }
-        private async Task LoadCollectionContacts()
-        {
-            EditGroupList.Clear();
-            var contacts = await _groupService.DisplayGroupFromUsers();
-            foreach (var contact in contacts)
+            else
             {
-                EditGroupList.Add(contact);
+                EditGroupList.Clear();
             }
+
+            var comparer = new IntermediateKeyComparer();
+            var result = SearchedGroupList
+                .GroupJoin(
+                    founContacts,
+                    uv => new IntermediateKey { Id = uv.UserName, Value = uv.SelectedIndex },
+                    lm => new IntermediateKey { Id = lm.UserName, Value = lm.SelectedIndex },
+                    (uv, lm) => new { Value = uv, Lookups = lm },
+                    comparer)
+                .SelectMany(
+                    pair => pair.Lookups.DefaultIfEmpty(),
+                    (paired, meta) => new { Value = paired.Value, Lookup = meta })
+                .Select(res =>
+                {
+                    res.Value.SelectedIndex = res.Lookup?.SelectedIndex ?? res.Value.SelectedIndex;
+                    return res.Value;
+                }); // 53
         }
         public async Task CheckUnassignedGroup()
         {
@@ -115,7 +147,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
         public async void DisplayGroupMember()
         {
-
+            IsBusy = true;
             await CheckUnassignedGroup();
 
             var response = await _groupService.DisplayGroup();
@@ -146,6 +178,16 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }),
                 });
             }
+            var list = EditGroupList.OrderBy(f => f.EmployeeName).ToList();
+            EditGroupList.Clear();
+            foreach (var contact in list)
+            {
+                EditGroupList.Add(contact); //12
+            }
+            List<GroupList> originalEnityList = EditGroupList.ToList();  //53, 12
+            ObservableCollection<GroupList> bRef = new ObservableCollection<GroupList>(originalEnityList);
+            SearchedGroupList = bRef;
+            IsBusy = false;
         }
 
         public async Task CreateUnassigned()
@@ -162,7 +204,6 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         public async Task SaveGroupChanges()
         {
             if (IsBusy) { return; }
-
             IsBusy = true;
             var checkgroup = await _groupService.DisplayGroupbyGroupName("Unassigned");
             if (checkgroup == null)

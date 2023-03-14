@@ -32,6 +32,7 @@
                             <ImageButton CornerRadius="10" ZIndex="4" Source="eyes.png" Margin="0,0,15,0" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding ChangeCanseeCommand}" Grid.Column="1"/>
                         </Grid>
                     </Frame>
+                    <Label Text="Symbol '-' is require for IC." TranslationY="-10" Margin="5,0,0,0" FontSize="12"/>
                 </VerticalStackLayout>
             </Grid>
         </Frame>
@@ -41,7 +42,7 @@
                     SemanticProperties.Description="LoginPage image!"
                     RepeatCount="-1"
                     HeightRequest="400"
-                    ZIndex="1"
+                    ZIndex="-1"
                     WidthRequest="350"
                     TranslationY="-100"/>
         <Button Grid.Row="1" TranslationY="50" WidthRequest="150" HeightRequest="50" HorizontalOptions="Center" Text="Sign in" Command="{Binding LoginCommand}"/>
