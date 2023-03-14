@@ -8,38 +8,41 @@
              x:DataType="viewmodel:HRGenerateReportViewModel"
              Title="{Binding Title}">
     <ScrollView>
-        <VerticalStackLayout>
-            <Label FontAttributes="Bold" Text="Generate Report" FontSize="22" Margin="20,20,0,10" TextColor="Black"/>
-            <Label Text="Please CHOOSE from acquires field." FontSize="22" Margin="20,0,0,10" TextColor="Black"/>
-            <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center">
-                <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Department List" 
+        <VerticalStackLayout Margin="20,0,0,0">
+            <Label FontAttributes="Bold" Text="Generate Report" FontSize="22" Margin="0,20,0,10" TextColor="Black"/>
+            <Label Text="Please CHOOSE from..." FontSize="18" Margin="0,0,0,20" TextColor="Black"/>
+            <Label VerticalOptions="Center" TextDecorations="Underline" Margin="0,10,0,20" Text="Department" FontSize="18"/>
+            <Frame Margin="0,10,10,10" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                <Picker FontSize="20" HorizontalTextAlignment="Center" HorizontalOptions="Center" TextColor="Gray" WidthRequest="200" Title="Select Department..." 
                             ItemsSource="{Binding DepartmentList}" 
                             SelectedItem="{Binding SelectedDepartment}"
                             ItemDisplayBinding="{Binding Department}"/>
                 <!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>-->
-            </StackLayout>
-            <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center">
-                <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Group List" 
+            </Frame>
+            <Label VerticalOptions="Center" Text="Group" TextDecorations="Underline" FontSize="18"/>
+            <Frame Margin="0,10,10,10" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                <Picker FontSize="20" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" WidthRequest="200" TextColor="Gray" Title="Select Group..." 
                             ItemsSource="{Binding FromGroupList}" 
                             SelectedItem="{Binding SelectedGroup}"
                             ItemDisplayBinding="{Binding GroupName}"/>
-                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
-            </StackLayout>
-            <StackLayout x:Name="EmployeePicker" Grid.Row="2" Margin="10" HorizontalOptions="Center">
-                <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Employee List" 
+            </Frame>
+            <Label VerticalOptions="Center" Text="Employee" TextDecorations="Underline" FontSize="18"/>
+            <Frame Margin="0,10,10,10" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                <!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>-->
+                <Picker FontSize="20" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" TextColor="Gray" WidthRequest="200" Title="Select Employee..." 
                             ItemsSource="{Binding EmployeeList}" 
                             SelectedItem="{Binding SelectedEmployee}"
                             ItemDisplayBinding="{Binding UserName}"/>
-                <!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>-->
-            </StackLayout>
-            <StackLayout Grid.Row="2" Margin="10" HorizontalOptions="Center" Spacing="20">
+            </Frame>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+            <StackLayout Margin="0,40,0,0" HorizontalOptions="Center" Spacing="20">
                 <HorizontalStackLayout Spacing="10">
-                    <Label Text="Starting Date" FontSize="18" FontAttributes="Bold"/>
-                    <DatePicker Date="{Binding Selectedmindaymonthyear}" />
+                    <Label Text="Starting Date :" FontSize="18" VerticalOptions="Center" FontAttributes="Bold"/>
+                    <DatePicker FontSize="18" VerticalOptions="Center" Date="{Binding Selectedmindaymonthyear}" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Spacing="10">
-                    <Label Text="Ending Date" FontSize="18" FontAttributes="Bold"/>
-                    <DatePicker Date="{Binding Selectedmaxdaymonthyear}" />
+                    <Label Text="Ending Date :" VerticalOptions="Center" FontSize="18" FontAttributes="Bold"/>
+                    <DatePicker VerticalOptions="Center" FontSize="18" Date="{Binding Selectedmaxdaymonthyear}" />
                 </HorizontalStackLayout>
                 <Button Margin="0,20,0,20" Text="Generate Report" WidthRequest="200" HeightRequest="50" Command="{Binding DownloadReportCommand}"/>
                 <!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>-->

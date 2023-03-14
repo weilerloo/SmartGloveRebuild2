@@ -8,40 +8,40 @@
              x:DataType="viewmodel:CheckCalendarViewModel"
              Title="{Binding Title}">
     <ScrollView>
-        <Grid RowDefinitions="Auto,*,Auto">
+        <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10">
             <VerticalStackLayout Grid.Row="0">
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="0,0,0,20">
-                    <Label Text="Choose the Groups." FontSize="20" Margin="20,20,0,0" TextColor="Black"/>
+                <Grid Grid.Row="0" RowDefinitions="Auto,Auto,Auto">
+                    <Label Text="Check Calendar" FontSize="22" FontAttributes="Bold" Margin="20,20,0,0" TextColor="Black"/>
                     <CollectionView Grid.Row="1" ItemsSource="{Binding Monthname}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:CalendarModel">
                                 <Grid ColumnDefinitions="Auto,*">
-                                    <Label Text="{Binding LastCurrentMonth}" TextColor="Black" FontSize="20" VerticalTextAlignment="Center" Margin="20,0,0,0"/>
-                                    <Label Grid.Column="1" Text="{Binding Year}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center" Margin="10,0,0,0"/>
+                                    <Label Text="{Binding LastCurrentMonth}" TextColor="Black" FontSize="18" VerticalTextAlignment="Center" Margin="20,0,0,0"/>
+                                    <Label Grid.Column="1" Text="{Binding Year}" TextColor="Black" FontSize="18" VerticalTextAlignment="Center" Margin="10,0,0,0"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-                    <StackLayout Grid.Row="2" Margin="5" HorizontalOptions="Center">
-                        <Picker FontSize="20" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="200" Title="Click me to Choose" TitleColor="SlateGrey"
+                </Grid>
+                <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto">
+                    <Label Margin="20,0,0,0" Grid.Row="2" VerticalOptions="Center" Text="Groups :" FontSize="18"/>
+                    <StackLayout Grid.Row="2" Grid.Column="1">
+                        <Picker FontSize="20" HorizontalTextAlignment="Center" WidthRequest="200" TextColor="Black" Title="Select Here" TitleColor="SlateGrey"
                             ItemsSource="{Binding GroupTitleList}" 
                             SelectedItem="{Binding SelectedGroupname}"
                             ItemDisplayBinding="{Binding GroupName}"/>
                     </StackLayout>
-                    <!--<ImageButton Grid.Row="2" Grid.Column="2" Source="leftpage.png" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="0,0,5,0" Command="{Binding DecreaseMonthCommand}"/>
-                    <ImageButton Grid.Row="2" Grid.Column="2" Source="leftpage.png" Opacity="10" Rotation="180" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="25" Margin="70,0,20,0" Command="{Binding IncreaseMonthCommand}" />-->
-                    <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="2" Text="-" Margin="2,20,0,0" Command="{Binding DecreaseMonthCommand}"/>
-                    <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2,20,10,0" Command="{Binding IncreaseMonthCommand}"/>
-                    <!--<Button Grid.Row="3" Grid.Column="4" Text="Reset" Margin="2"/>-->
+                    <Button x:Name="MinusButton" Grid.Row="2" HeightRequest="40" WidthRequest="35" Grid.Column="3" Margin="5,0,0,0" Text="-" HorizontalOptions="End" Command="{Binding DecreaseMonthCommand}"/>
+                    <Button x:Name="AddButton" Grid.Row="2" HeightRequest="40" WidthRequest="35" Grid.Column="4" Text="+" Margin="5,0,5,0" HorizontalOptions="End" Command="{Binding IncreaseMonthCommand}"/>
                 </Grid>
-                <CollectionView ItemsSource="{Binding Datename}">
+                <CollectionView ItemsSource="{Binding Datename}" HeightRequest="35" VerticalOptions="Center" Margin="0,20,0,-20">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="7"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:CalendarModel">
-                            <Grid RowDefinitions="*,Auto,Auto,*">
-                                <Label Grid.Row="1" Text="{Binding Currentday}" HorizontalOptions="Center" FontAttributes="Bold"/>
+                            <Grid RowDefinitions="*,Auto,Auto,*" VerticalOptions="Center">
+                                <Label Grid.Row="1" Text="{Binding Currentday}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -81,38 +81,40 @@
                     </CollectionView>
                 </Grid>
             </RefreshView>
-            <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto"
-                  Margin="0,0,0,55">
-                <Grid ColumnDefinitions="*,*,*,*"
-                                  RowDefinitions="Auto,Auto">
+            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
+                <Label HorizontalOptions="Start" Margin="0,20,0,10" VerticalOptions="Start" Text="Guide" TextDecorations="Underline" FontAttributes="Bold"/>
+                <Label HorizontalOptions="Start" Margin="0,0,0,20" VerticalOptions="Start" Text="Please press on the date to give remark." FontAttributes="Bold"/>
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,*"
+                                  RowDefinitions="Auto,Auto,Auto"
+                                  RowSpacing="10"
+                                  HorizontalOptions="Start">
                     <Ellipse 
                             Stroke="Blue"
                             StrokeThickness="4"
                             HeightRequest="10"
                             WidthRequest="10"
                             Fill="Blue"
-                            Grid.Row="0"/>
-                    <Label Grid.Row="0" Grid.Column="1" Text="Sufficient Worker"/>
-                    <Ellipse 
-                            Stroke="Brown"
+                            Grid.Column="1"/>
+                    <Label Grid.Column="2" Margin="10,0,40,0" Text="Sufficient Worker"/>
+                    <Ellipse Stroke="Brown"
                             StrokeThickness="4"
                             HeightRequest="10"
                             WidthRequest="10"
                             Fill="Brown"
-                            Grid.Column="0"
-                            Grid.Row="1"/>
-                    <Label Grid.Row="1" Grid.Column="1" Text="Insufficient Worker"/>
-                    <Ellipse Stroke="{StaticResource Gray300}"
+                            Grid.Column="3"/>
+                    <Label Grid.Column="4" Margin="10,0,40,0" Text="Insufficient Worker"/>
+                    <Ellipse 
+                            Stroke="{StaticResource Gray300}"
                             StrokeThickness="4"
                             HeightRequest="10"
                             WidthRequest="10"
                             Fill="{StaticResource Gray300}"
-                            Grid.Column="2"/>
-                    <Label Grid.Column="3" Text="N/A"/>
+                            Grid.Column="1"
+                            Grid.Row="1"/>
+                    <Label Grid.Column="2" Grid.Row="1" Margin="10,0,40,0" Text="N/A"/>
                 </Grid>
-                <Label Grid.Row="1" Text="Press on the date to give remarks." HorizontalTextAlignment="Center" FontAttributes="Bold" Margin="0,20,0,0"/>
-                <Button Text="Date Exclusions" Clicked="Button_Clicked" Grid.Row="2" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Margin="0,20,0,0"/>
-            </Grid>
+                <Button Margin="-20,30,0,40" Clicked="Button_Clicked" HorizontalOptions="Center" VerticalOptions="Center" Text="Date Exclusions" Grid.Row="1" HeightRequest="50" WidthRequest="200"/>
+            </VerticalStackLayout>
         </Grid>
     </ScrollView>
 </ContentPage>

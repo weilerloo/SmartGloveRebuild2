@@ -9,38 +9,41 @@
              x:Class="SmartGloveRebuild2.Views.Admin.ExclusionMultipleDatePage"
              BackgroundColor="White">
     <ScrollView>
-        <Grid RowDefinitions="Auto,*,Auto,Auto">
+        <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10">
             <VerticalStackLayout Grid.Row="0">
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="0,0,0,30">
-                    <Label Text="Select Multiple Dates." FontSize="18" Margin="20,20,0,10" TextColor="Black"/>
+                <Grid Grid.Row="0" RowDefinitions="Auto,Auto,Auto">
+                    <Label Text="Check Calendar" FontSize="22" FontAttributes="Bold" Margin="20,20,0,0" TextColor="Black"/>
                     <CollectionView Grid.Row="1" ItemsSource="{Binding Monthname}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:CalendarModel">
                                 <Grid ColumnDefinitions="Auto,*">
-                                    <Label Text="{Binding LastCurrentMonth}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center" Margin="20,0,0,0"/>
-                                    <Label Grid.Column="1" Text="{Binding Year}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center" Margin="10,0,0,0"/>
+                                    <Label Text="{Binding LastCurrentMonth}" TextColor="Black" FontSize="18" VerticalTextAlignment="Center" Margin="20,0,0,0"/>
+                                    <Label Grid.Column="1" Text="{Binding Year}" TextColor="Black" FontSize="18" VerticalTextAlignment="Center" Margin="10,0,0,0"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-                    <StackLayout Grid.Row="2" HorizontalOptions="Start">
-                        <Picker FontSize="19" HorizontalTextAlignment="Center" TextColor="Black" WidthRequest="180" Margin="15,0,0,0" Title="Click me to Choose." TitleColor="SlateGrey" 
+                </Grid>
+                <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto">
+                    <Label Margin="20,0,0,0" Grid.Row="2" VerticalOptions="Center" Text="Groups :" FontSize="18"/>
+                    <StackLayout Grid.Row="2" Grid.Column="1">
+                        <Picker FontSize="20" HorizontalTextAlignment="Center" WidthRequest="200" TextColor="Black" Title="Select Here" TitleColor="SlateGrey"
                             ItemsSource="{Binding GroupTitleList}" 
                             SelectedItem="{Binding SelectedGroupname}"
                             ItemDisplayBinding="{Binding GroupName}"/>
                     </StackLayout>
-                    <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="2" Text="-" Margin="5,20,0,0" Command="{Binding DecreaseMonthCommand}"/>
-                    <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2,20,2,0" Command="{Binding IncreaseMonthCommand}"/>
-                    <Button Grid.Row="2" Grid.Column="4" Text="Reset" Margin="2,20,10,0" Command="{Binding DeleteButtonSelectedCommand}"/>
+                    <Button x:Name="MinusButton" Grid.Row="2" HeightRequest="40" WidthRequest="35" Grid.Column="3" Margin="5,0,0,0" Text="-" HorizontalOptions="End" Command="{Binding DecreaseMonthCommand}"/>
+                    <Button x:Name="AddButton" Grid.Row="2" HeightRequest="40" WidthRequest="35" Grid.Column="4" Text="+" Margin="5,0,5,0" HorizontalOptions="End" Command="{Binding IncreaseMonthCommand}"/>
+                    <Button Grid.Row="2" HeightRequest="40" Grid.Column="4" Text="Reset" Margin="5,0,5,0" HorizontalOptions="End" Command="{Binding DeleteButtonSelectedCommand}"/>
                 </Grid>
-                <CollectionView ItemsSource="{Binding Datename}">
+                <CollectionView ItemsSource="{Binding Datename}" HeightRequest="35" VerticalOptions="Center" Margin="0,20,0,-20">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="7"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:CalendarModel">
-                            <Grid RowDefinitions="*,Auto, Auto,*">
-                                <Label Grid.Row="1" Text="{Binding Currentday}" HorizontalOptions="Center" FontAttributes="Bold"/>
+                            <Grid RowDefinitions="*,Auto,Auto,*" VerticalOptions="Center">
+                                <Label Grid.Row="1" Text="{Binding Currentday}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -82,10 +85,13 @@
                     </CollectionView>
                 </Grid>
             </RefreshView>
-            <VerticalStackLayout Grid.Row="2">
-                <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto,Auto,*"
-                                  RowDefinitions="Auto,Auto"
-                      Margin="30,0,0,0">
+            <VerticalStackLayout Grid.Row="2" Margin="20,0,0,0">
+                <Label HorizontalOptions="Start" Margin="0,20,0,10" VerticalOptions="Start" Text="Guide" TextDecorations="Underline" FontAttributes="Bold"/>
+                <Label HorizontalOptions="Start" Margin="0,0,0,20" VerticalOptions="Start" Text="Please Select Multiple Days to Exclude." FontAttributes="Bold"/>
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,*"
+                                  RowDefinitions="Auto,Auto,Auto"
+                                  RowSpacing="10"
+                                  HorizontalOptions="Start">
                     <Ellipse 
                             Stroke="Green"
                             StrokeThickness="4"
@@ -93,26 +99,26 @@
                             WidthRequest="10"
                             Fill="Green"
                             Grid.Column="1"/>
-                    <Label Grid.Column="2" Margin="20,0,40,0" Text="Status ON"/>
-                    <Ellipse 
-                            Stroke="Red"
+                    <Label Grid.Column="2" Margin="10,0,40,0" Text="Status ON"/>
+                    <Ellipse Stroke="Red"
                             StrokeThickness="4"
                             HeightRequest="10"
                             WidthRequest="10"
                             Fill="Red"
                             Grid.Column="3"/>
                     <Label Grid.Column="4" Margin="10,0,40,0" Text="Status OFF"/>
-                    <Ellipse Stroke="{StaticResource Gray300}"
+                    <Ellipse 
+                            Stroke="{StaticResource Gray300}"
                             StrokeThickness="4"
                             HeightRequest="10"
                             WidthRequest="10"
                             Fill="{StaticResource Gray300}"
-                            Grid.Column="5"/>
-                    <Label Grid.Column="6" Margin="10,0,40,0" Text="N/A"/>
+                            Grid.Column="1"
+                            Grid.Row="1"/>
+                    <Label Grid.Column="2" Grid.Row="1" Margin="10,0,40,0" Text="N/A"/>
                 </Grid>
-                <Label Margin="0,20,0,0" Grid.Column="1" Grid.Row="0" Text="Please Select Multiple Days to Exclude." HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                <Button Margin="-20,30,0,40" Command="{Binding GoToReasonPageCommand}" HorizontalOptions="Center" VerticalOptions="Center" Text="Confirm" Grid.Row="1" HeightRequest="50" WidthRequest="200"/>
             </VerticalStackLayout>
-            <Button Margin="0,30,0,30" Grid.Row="3" Command="{Binding GoToReasonPageCommand}" Text="Confirm" HeightRequest="50" WidthRequest="200"/>
         </Grid>
     </ScrollView>
 </ContentPage>

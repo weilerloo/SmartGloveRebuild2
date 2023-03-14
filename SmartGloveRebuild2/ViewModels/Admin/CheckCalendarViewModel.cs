@@ -91,6 +91,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
         public CheckCalendarViewModel(IScheduleServices scheduleServices, IGroupServices groupServices)
         {
+            Title = "Check Calendar Page";
             _scheduleServices = scheduleServices;
             _groupServices = groupServices;
             DisplayDays();
