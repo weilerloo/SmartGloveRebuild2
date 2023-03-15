@@ -44,7 +44,7 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             CheckUserActivity();
             LoopCheckActivity();
             getNotification();
-            if (App.UserDetails.Role == "ADMIN1" || App.UserDetails.Role == "ADMIN1" )
+            if (App.UserDetails.Role == "ADMIN1" || App.UserDetails.Role == "ADMIN2" )
             {
                 Title = "Admin Dashboard";
             }
@@ -85,7 +85,7 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             GetUserBasicInfo();
             CheckUserActivity();
             LoopCheckActivity();
-            if (App.UserDetails.Role == "ADMIN1" || App.UserDetails.Role == "ADMIN1")
+            if (App.UserDetails.Role == "ADMIN1" || App.UserDetails.Role == "ADMIN2")
             {
                 Title = "Admin Dashboard";
             }
