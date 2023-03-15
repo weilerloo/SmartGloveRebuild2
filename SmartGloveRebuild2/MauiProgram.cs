@@ -12,6 +12,7 @@ using SmartGloveRebuild2.Services;
 using Microsoft.Maui.LifecycleEvents;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Plugin.LocalNotification;
+using Maui.FixesAndWorkarounds;
 
 #if WINDOWS
 using Microsoft.UI;
@@ -28,6 +29,11 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseSkiaSharp()
+            .ConfigureMauiWorkarounds(false)
+            .ConfigureShellWorkarounds()
+            .ConfigureTabbedPageWorkarounds()
+            .ConfigureEntryNextWorkaround()
+            .ConfigureKeyboardAutoScroll()
 #if ANDROID
             .UseLocalNotification()
 #endif
@@ -65,18 +71,18 @@ builder.ConfigureLifecycleEvents(events =>
 
 
 #elif ANDROID
-builder.ConfigureLifecycleEvents(events =>
-            {
-                events.AddAndroid(android => android.OnCreate((activity, bundle) => MakeStatusBarTranslucent(activity)));
+        builder.ConfigureLifecycleEvents(events =>
+                    {
+                        events.AddAndroid(android => android.OnCreate((activity, bundle) => MakeStatusBarTranslucent(activity)));
 
-                static void MakeStatusBarTranslucent(Android.App.Activity activity)
-                {
+                        static void MakeStatusBarTranslucent(Android.App.Activity activity)
+                        {
 
-                    //activity.Window.SetFlags(Android.Views.WindowManagerFlags.TranslucentStatus, Android.Views.WindowManagerFlags.TranslucentStatus);
+                            //activity.Window.SetFlags(Android.Views.WindowManagerFlags.TranslucentStatus, Android.Views.WindowManagerFlags.TranslucentStatus);
 
-                    activity.Window.SetStatusBarColor(Android.Graphics.Color.Rgb(55, 88, 156));
-                }
-            });
+                            activity.Window.SetStatusBarColor(Android.Graphics.Color.Rgb(55, 88, 156));
+                        }
+                    });
 #endif
         //Views
         builder.Services.AddSingleton<LoginPage>();

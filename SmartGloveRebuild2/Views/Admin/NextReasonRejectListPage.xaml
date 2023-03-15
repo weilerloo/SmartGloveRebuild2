@@ -6,6 +6,7 @@
              xmlns:model="clr-namespace:SmartGloveRebuild2.Models.Group"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             xmlns:local="clr-namespace:Maui.FixesAndWorkarounds;assembly=PureWeen.Maui.FixesAndWorkarounds"
              x:DataType="viewmodel:NextReasonRejectListViewModel"
              Title="Exclude Remark">
     <ContentPage.Resources>
@@ -26,8 +27,16 @@
                     <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="Employee Name"/>
                 </Grid>
             </Frame>-->
-            <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="1" Placeholder="{Binding Reasonremark}" Text="{Binding Approvedreason}"/>
-            <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="2" Placeholder="Enter yout reject reason here..." IsVisible="{Binding Cansee}" Text="{Binding Rejectreason}"/>
+            <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="1" Placeholder="{Binding Reasonremark}" Text="{Binding Approvedreason}">
+                <Entry.Behaviors>
+                    <local:TapToCloseBehavior></local:TapToCloseBehavior>
+                </Entry.Behaviors>
+            </Entry>
+            <Entry VerticalTextAlignment="Start" Margin="10" MaxLength="50" Grid.Row="2" Placeholder="Enter yout reject reason here..." IsVisible="{Binding Cansee}" Text="{Binding Rejectreason}">
+                <Entry.Behaviors>
+                    <local:TapToCloseBehavior></local:TapToCloseBehavior>
+                </Entry.Behaviors>
+            </Entry>
             <Button Margin="50" Grid.Row="3" HeightRequest="50" WidthRequest="200" HorizontalOptions="Center" Text="Confirm" Command="{Binding ApprovedRemoveFromListCommand}"/>
         </Grid>
     </ScrollView>

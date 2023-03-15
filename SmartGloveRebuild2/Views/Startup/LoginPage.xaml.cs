@@ -16,13 +16,16 @@ public partial class LoginPage : ContentPage
     {
         base.OnAppearing();
         App.Current.On<Microsoft.Maui.Controls.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Pan);
+        Console.WriteLine("OnAppearing");
     }    
     
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
         App.Current.On<Microsoft.Maui.Controls.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Pan);
+        Console.WriteLine("OnDisAppearing");
     }
+
     protected override bool OnBackButtonPressed()
     {
         return base.OnBackButtonPressed();

@@ -73,6 +73,7 @@
 		<PackageReference Include="Mopups" Version="1.1.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Plugin.LocalNotification" Version="10.1.4" />
+		<PackageReference Include="PureWeen.Maui.FixesAndWorkarounds" Version="1.2.6" />
 		<PackageReference Include="QuestPDF" Version="2022.12.2" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0-preview.61" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.141-beta" />

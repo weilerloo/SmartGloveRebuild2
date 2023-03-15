@@ -12,7 +12,7 @@
         <Grid RowDefinitions="Auto,Auto,*" RowSpacing="10">
             <VerticalStackLayout Grid.Row="0">
                 <Grid Grid.Row="0" RowDefinitions="Auto,Auto,Auto">
-                    <Label Text="Check Calendar" FontSize="22" FontAttributes="Bold" Margin="20,20,0,0" TextColor="Black"/>
+                    <Label Text="Exclude Multiple Date" FontSize="22" FontAttributes="Bold" Margin="20,20,0,0" TextColor="Black"/>
                     <CollectionView Grid.Row="1" ItemsSource="{Binding Monthname}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:CalendarModel">
