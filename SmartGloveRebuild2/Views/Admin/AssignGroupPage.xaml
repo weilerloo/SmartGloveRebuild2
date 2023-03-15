@@ -5,6 +5,7 @@
              xmlns:model="clr-namespace:SmartGloveRebuild2.Models.Group"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewmodel:AssignGroupViewModel"
+             xmlns:local="clr-namespace:Maui.FixesAndWorkarounds;assembly=PureWeen.Maui.FixesAndWorkarounds"
              Title="Assign Group Page">
     <Grid RowDefinitions="*,Auto">
         <ScrollView>
@@ -19,7 +20,11 @@
                     <ActivityIndicator VerticalOptions="Center" HeightRequest="25" WidthRequest="25" Grid.Column="2" IsVisible="{Binding IsBusy}" IsRunning="True"/>
                 </Grid>
                 <SearchBar TextTransform="Uppercase" BackgroundColor="LightGray" Margin="20,0,20,20"
-                               Text="{Binding TxtSearch}"/>
+                               Text="{Binding TxtSearch}">
+                    <SearchBar.Behaviors>
+                        <local:TapToCloseBehavior></local:TapToCloseBehavior>
+                    </SearchBar.Behaviors>
+                </SearchBar>
                 <Frame CornerRadius="0">
                     <Grid ColumnDefinitions="*,*">
                         <Label HorizontalOptions="Start" Grid.Column="0" Text="Members" FontSize="18"/>

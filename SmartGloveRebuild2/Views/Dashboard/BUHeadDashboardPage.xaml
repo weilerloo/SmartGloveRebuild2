@@ -4,7 +4,7 @@
              x:Class="SmartGloveRebuild2.Views.Dashboard.BUHeadDashboardPage"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Dashboard"
              x:DataType="viewmodel:DashboardPageViewModel"
-             Title="Business Unit Head">
+             Title="{Binding Title}">
     <ScrollView>
         <Grid BackgroundColor="Transparent">
 
