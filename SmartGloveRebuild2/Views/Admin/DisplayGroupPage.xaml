@@ -48,7 +48,6 @@
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:GroupList">
-                            
                             <Frame BorderColor="LightGray" CornerRadius="0" Padding="10">
                                 <Grid ColumnDefinitions="220,*">
                                     <Grid RowDefinitions="50,25">
