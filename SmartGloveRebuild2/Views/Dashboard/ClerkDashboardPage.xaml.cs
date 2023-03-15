@@ -31,7 +31,7 @@ public partial class ClerkDashboardPage : ContentPage
         PopupPages p = new PopupPages();
         Application.Current.MainPage.ShowPopup(p);
         await Task.Delay(100);
-        await Shell.Current.GoToAsync(nameof(GroupPage)); 
+        await Shell.Current.GoToAsync(nameof(DisplayGroupPage)); 
         p.Close();
         IsBusy = false;
     }
@@ -42,37 +42,6 @@ public partial class ClerkDashboardPage : ContentPage
         Application.Current.MainPage.ShowPopup(p);
         await Task.Delay(100);
         await Shell.Current.GoToAsync(nameof(ScheduleOT));
-        p.Close();
-        IsBusy = false;
-    }
-
-    private async void Button_Clicked(object sender, EventArgs e)
-    {
-        if (IsBusy)
-            return;
-        IsBusy = true;
-        PopupPages p = new PopupPages();
-        Application.Current.MainPage.ShowPopup(p);
-        await Shell.Current.GoToAsync(nameof(GenerateReportPage));
-        p.Close();
-        IsBusy = false;
-    }
-
-    //private async void Button_Clicked_4(object sender, EventArgs e)
-    //{
-    //    PopupPages p = new PopupPages();
-    //    Application.Current.MainPage.ShowPopup(p);
-    //    await Task.Delay(100);
-    //}
-    private async void Button_Clicked_4(object sender, EventArgs e)
-    {
-        if (IsBusy)
-            return;
-        IsBusy = true;
-        PopupPages p = new PopupPages();
-        Application.Current.MainPage.ShowPopup(p);
-        await Task.Delay(100);
-        await Shell.Current.GoToAsync(nameof(CheckCalendarPage));
         p.Close();
         IsBusy = false;
     }
