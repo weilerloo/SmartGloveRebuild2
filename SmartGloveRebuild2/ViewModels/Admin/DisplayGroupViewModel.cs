@@ -85,10 +85,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
         private void OnSearchContactCommand()
         {
-            //if(SearchedGroupList.ToList().Count > EditGroupList.ToList().Count)
-            //{
-            //    EditGroupList = SearchedGroupList;
-            //}
+            if (IsBusy) { return; }
+            IsBusy = true;
             var someList = SearchedGroupList.ToList();
 
             var founContacts = someList.Where(found =>
@@ -98,11 +96,17 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
             if (founContacts.Count > 0)
             {
-
                 GroupNameList.Clear();
                 foreach (var contact in founContacts)
                 {
-                    GroupNameList.Add(contact); //12
+                    if (GroupNameList.Count() > 50)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        GroupNameList.Add(contact);
+                    }
                 }
             }
             else
@@ -126,6 +130,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     res.Value.SelectedIndex = res.Lookup?.SelectedIndex ?? res.Value.SelectedIndex;
                     return res.Value;
                 }); // 53
+            IsBusy = false;
         }
 
         private GroupList selectedgroupname;
@@ -234,6 +239,20 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             List<GroupList> originalEnityList = GroupNameList.ToList();  //53, 12
             ObservableCollection<GroupList> bRef = new ObservableCollection<GroupList>(originalEnityList);
             SearchedGroupList = bRef;
+
+            var amendlist = GroupNameList.ToList();
+            GroupNameList.Clear();
+            foreach (var item in amendlist)
+            {
+                if (GroupNameList.Count() > 50)
+                {
+                    break;
+                }
+                else
+                {
+                    GroupNameList.Add(item);
+                }
+            }
             IsRefreshing = false;
             IsBusy = false;
         }

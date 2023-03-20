@@ -21,6 +21,8 @@ namespace SmartGloveRebuild2.ViewModels.Admin
     {
         #region ObservableCollections
         public ObservableCollection<GroupList> FetchedRejectList { get; set; } = new ObservableCollection<GroupList>();
+        public ObservableCollection<GroupList> SearchedGroupList { get; set; } = new ObservableCollection<GroupList>();
+        public ObservableCollection<GroupList> BeforeSearchedGroupList { get; set; } = new ObservableCollection<GroupList>();
         public ObservableCollection<GroupList> BeforeReasonRejectList { get; set; } = new ObservableCollection<GroupList>();
         public static ObservableCollection<GroupList> ReasonRejectList { get; set; } = new ObservableCollection<GroupList>();
         public static ObservableCollection<GroupList> ReasonApprovedList { get; set; } = new ObservableCollection<GroupList>();
@@ -49,6 +51,30 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         {
             get => cansee;
             set => SetProperty(ref cansee, value);
+        }
+
+        private string accepttextsearch;
+        public string AcceptTxtSearch
+        {
+            get => accepttextsearch;
+            set
+            {
+                accepttextsearch = value;
+                OnPropertyChanged();
+                OnAcceptSearchContactCommand();
+            }
+        }
+
+        private string rejecttextsearch;
+        public string RejectTxtSearch
+        {
+            get => rejecttextsearch;
+            set
+            {
+                rejecttextsearch = value;
+                OnPropertyChanged();
+                OnRejectSearchContactCommand();
+            }
         }
 
         [ObservableProperty]
@@ -82,9 +108,63 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     });
                 }
             }
-
+            var list = FetchedRejectList.OrderBy(f => f.EmployeeName).ToList();
+            FetchedRejectList.Clear();
+            foreach (var contact in list)
+            {
+                FetchedRejectList.Add(contact); //12
+            }
+            List<GroupList> originalEnityList = FetchedRejectList.ToList();  //53, 12
+            ObservableCollection<GroupList> bRef = new ObservableCollection<GroupList>(originalEnityList);
+            SearchedGroupList = bRef;
             Items = new ObservableCollection<GroupList>();
             SelectedItem = new GroupList();
+        }
+
+
+        private void OnRejectSearchContactCommand()
+        {
+
+            var founContacts = SearchedGroupList.Where(found =>
+             found.UserName.Contains(RejectTxtSearch.ToUpper()) ||
+             found.EmployeeName.Contains(RejectTxtSearch.ToUpper())
+             ).ToList();  //12
+
+            if (founContacts.Count > 0)
+            {
+
+                FetchedRejectList.Clear();
+                foreach (var contact in founContacts)
+                {
+                    FetchedRejectList.Add(contact); //12
+                }
+            }
+            else
+            {
+                FetchedRejectList.Clear();
+            }
+        }
+
+        private void OnAcceptSearchContactCommand()
+        {
+            var founContacts = BeforeSearchedGroupList.Where(found =>
+             found.UserName.Contains(AcceptTxtSearch.ToUpper()) ||
+             found.EmployeeName.Contains(AcceptTxtSearch.ToUpper())
+             ).ToList();  //12
+
+            if (founContacts.Count > 0)
+            {
+
+                BeforeReasonRejectList.Clear();
+                foreach (var contact in founContacts)
+                {
+                    BeforeReasonRejectList.Add(contact); //12
+                }
+            }
+            else
+            {
+                BeforeReasonRejectList.Clear();
+            }
         }
 
 
@@ -101,6 +181,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 if (selectedItem.UserName == item.UserName)
                 {
                     FetchedRejectList.Remove(item);
+                    SearchedGroupList.Remove(item);
                     ReasonRejectList.Add(item);
                     BeforeReasonRejectList.Add(item);
                     break;
@@ -120,9 +201,11 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             {
                 if (selectedItem.UserName == item.UserName)
                 {
-                    FetchedRejectList.Add(item);
-                    ReasonRejectList.Remove(item);
+                    FetchedRejectList.Add(item); //Original
+                    SearchedGroupList.Add(item); //Original copied
+                    ReasonRejectList.Remove(item); //Delete from Reject List
                     BeforeReasonRejectList.Remove(item);
+                    BeforeSearchedGroupList.Remove(item);
                     break;
                 }
             }
@@ -138,6 +221,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     FetchedRejectList.Remove(item);
                     ReasonRejectList.Add(item);
                     BeforeReasonRejectList.Add(item);
+                    BeforeSearchedGroupList.Add(item);
                 }
             }
             else
@@ -175,12 +259,24 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         [RelayCommand]
         public void NextIsPressed()
         {
+            if (BeforeReasonRejectList.Count != 0)
+            {
+                List<GroupList> originalEnityList = BeforeReasonRejectList.ToList();  //53, 12
+                ObservableCollection<GroupList> bRef = new ObservableCollection<GroupList>(originalEnityList);
+                BeforeSearchedGroupList = bRef;
+            }
             Cansee = false;
         }
 
         [RelayCommand]
         public void BackIsPressed()
         {
+            if (BeforeReasonRejectList.Count != 0)
+            {
+                List<GroupList> originalEnityList = BeforeReasonRejectList.ToList();  //53, 12
+                ObservableCollection<GroupList> bRef = new ObservableCollection<GroupList>(originalEnityList);
+                BeforeSearchedGroupList = bRef;
+            }
             Cansee = true;
         }
     }

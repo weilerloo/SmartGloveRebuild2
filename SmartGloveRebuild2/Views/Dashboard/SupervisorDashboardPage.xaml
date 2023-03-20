@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartGloveRebuild2.Views.Dashboard.SupervisorDashboardPage"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Dashboard"
-             x:DataType="viewmodel:DashboardPageViewModel">
+             x:DataType="viewmodel:DashboardPageViewModel"
+             Title="{Binding Title}">
     <ScrollView>
         <Grid BackgroundColor="Transparent">
 

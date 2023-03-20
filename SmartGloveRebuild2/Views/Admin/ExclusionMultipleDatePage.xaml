@@ -34,7 +34,6 @@
                     </StackLayout>
                     <Button x:Name="MinusButton" Grid.Row="2" HeightRequest="40" WidthRequest="35" Grid.Column="3" Margin="5,0,0,0" Text="-" HorizontalOptions="End" Command="{Binding DecreaseMonthCommand}"/>
                     <Button x:Name="AddButton" Grid.Row="2" HeightRequest="40" WidthRequest="35" Grid.Column="4" Text="+" Margin="5,0,5,0" HorizontalOptions="End" Command="{Binding IncreaseMonthCommand}"/>
-                    <Button Grid.Row="2" HeightRequest="40" Grid.Column="4" Text="Reset" Margin="5,0,5,0" HorizontalOptions="End" Command="{Binding DeleteButtonSelectedCommand}"/>
                 </Grid>
                 <CollectionView ItemsSource="{Binding Datename}" HeightRequest="35" VerticalOptions="Center" Margin="0,20,0,-20">
                     <CollectionView.ItemsLayout>
@@ -117,7 +116,10 @@
                             Grid.Row="1"/>
                     <Label Grid.Column="2" Grid.Row="1" Margin="10,0,40,0" Text="N/A"/>
                 </Grid>
-                <Button Margin="-20,30,0,40" Command="{Binding GoToReasonPageCommand}" HorizontalOptions="Center" VerticalOptions="Center" Text="Confirm" Grid.Row="1" HeightRequest="50" WidthRequest="200"/>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="20" Margin="0,40,0,40">
+                    <Button HeightRequest="50" WidthRequest="100" Text="Reset" Margin="5,0,5,0" HorizontalOptions="End" Command="{Binding DeleteButtonSelectedCommand}"/>
+                    <Button Command="{Binding GoToReasonPageCommand}" HorizontalOptions="Center" VerticalOptions="Center" Text="Confirm" HeightRequest="50" WidthRequest="100"/>
+                </HorizontalStackLayout>
             </VerticalStackLayout>
         </Grid>
     </ScrollView>

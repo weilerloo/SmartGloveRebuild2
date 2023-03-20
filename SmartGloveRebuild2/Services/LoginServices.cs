@@ -21,7 +21,7 @@ namespace SmartGloveRebuild2.Services
             {
                 string loginRequestStr = JsonConvert.SerializeObject(loginRequest);
 
-                var response = await client.PostAsync("http://192.168.0.111:7006/api/Users/AuthenticateUser",
+                var response = await client.PostAsync("http://101.78.17.26:7006/api/Users/AuthenticateUser",
                       new StringContent(loginRequestStr, Encoding.UTF8,
                       "application/json"));
 
@@ -45,7 +45,7 @@ namespace SmartGloveRebuild2.Services
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string loginRequestStr = JsonConvert.SerializeObject(loginRequest);
 
-                var response = await client.GetAsync($"http://192.168.0.111:7006/api/Users/CheckUserActivity?UserName={loginRequest.UserName}&Password={loginRequest.Password}");
+                var response = await client.GetAsync($"http://101.78.17.26:7006/api/Users/CheckUserActivity?UserName={loginRequest.UserName}&Password={loginRequest.Password}");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -67,7 +67,7 @@ namespace SmartGloveRebuild2.Services
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + App.Token);
                 string loginRequestStr = JsonConvert.SerializeObject(loginRequest);
 
-                var response = await client.GetAsync($"http://192.168.0.111:7006/api/Users/GetUserActivity?UserName={loginRequest.UserName}&Password={loginRequest.Password}");
+                var response = await client.GetAsync($"http://101.78.17.26:7006/api/Users/GetUserActivity?UserName={loginRequest.UserName}&Password={loginRequest.Password}");
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {

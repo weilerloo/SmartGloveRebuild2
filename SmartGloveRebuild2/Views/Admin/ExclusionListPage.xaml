@@ -6,6 +6,7 @@
              xmlns:model="clr-namespace:SmartGloveRebuild2.Models.Group"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
+             xmlns:local="clr-namespace:Maui.FixesAndWorkarounds;assembly=PureWeen.Maui.FixesAndWorkarounds"
              x:DataType="viewmodel:ExclusionListViewModel"
              Title="Exclude Staff from List">
     <ContentPage.Resources>
@@ -13,89 +14,123 @@
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ScrollView>
-        <Grid RowDefinitions="Auto,Auto,Auto,*,Auto">
-            <Grid RowDefinitions="Auto,Auto,Auto" Grid.Row="0">
-                <Grid Grid.Row="0" Margin="20,20,0,20"  ColumnDefinitions="Auto,Auto,Auto">
-                    <Label FontAttributes="Bold" FontSize="24" Margin="10,0,0,0" Grid.Column="0" Text="{Binding CalendarModel.GroupName}" TextColor="Black"/>
-                    <Label FontSize="24" Grid.Column="1" Text="  on" TextColor="Black"/>
-                    <Label VerticalTextAlignment="End" FontSize="20" Margin="10,0,0,0" Grid.Column="2" Text="{Binding CalendarModel.DayMonthYear}" TextColor="Black"/>
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout>
+                <Grid RowDefinitions="Auto,Auto" Grid.Row="0">
+                    <Label Margin="20,20,0,10" FontSize="22" FontAttributes="Bold" Grid.Row="0" Text="Press 'X' to Exclude Schedule." TextColor="Black"/>
+                    <Grid Grid.Row="1" Margin="20,0,0,20" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,Auto">
+                        <Label FontSize="18" Grid.Column="0" Text="Group :" TextColor="Black"/>
+                        <Label FontAttributes="Bold" VerticalTextAlignment="Center" FontSize="18" Margin="10,0,0,0" Grid.Column="2" Text="{Binding CalendarModel.GroupName}" TextColor="Black"/>
+                        <Label FontSize="18" Grid.Column="0" Grid.Row="1" Text="Date    :" TextColor="Black"/>
+                        <Label VerticalTextAlignment="End" FontSize="18" Grid.Row="1" Margin="10,0,0,0" Grid.Column="2" Text="{Binding CalendarModel.DayMonthYear}" TextColor="Black"/>
+                    </Grid>
                 </Grid>
-                <Label Margin="20,0,0,20" FontSize="21" Grid.Row="1" Text="Please Click the 'X' to Exclude Schedule." TextColor="Black"/>
-            </Grid>
-            <Grid Grid.Row="1" ColumnDefinitions="*,*">
-                <Button Margin="30,-5,20,5" Grid.Column="0"  Text="Approved" Command="{Binding NextIsPressedCommand}" />
-                <Button Margin="30,-5,20,5" Grid.Column="1" Text="Excluded" Command="{Binding BackIsPressedCommand}" />
-            </Grid>
-            <Frame Grid.Row="2" CornerRadius="0" Padding="0,10,0,10">
-                <Grid ColumnDefinitions="*,*,*">
-                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="0" Text="EMP.NUM"/>
-                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Text="EMP.NAME"/>
-                    <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="2" Text="Remove"/>
-                </Grid>
-            </Frame>
-            <CollectionView ItemsSource="{Binding FetchedRejectList}" 
-                            Grid.Row="3"
+                <SearchBar 
+                Grid.Row="1" 
+                Placeholder="Search Employee..." 
+                FontSize="18" 
+                BackgroundColor="LightGray" 
+                Margin="20,0,20,20"
+                IsVisible="{Binding Cansee}"
+                Text="{Binding AcceptTxtSearch}">
+                    <SearchBar.Behaviors>
+                        <local:TapToCloseBehavior></local:TapToCloseBehavior>
+                    </SearchBar.Behaviors>
+                </SearchBar>
+                <SearchBar 
+                Grid.Row="1" 
+                Placeholder="Search Employee..." 
+                FontSize="18" 
+                BackgroundColor="LightGray" 
+                Margin="20,0,20,20"
+                IsVisible="{Binding Cansee ,Converter={StaticResource InvertedBoolConverter}}"
+                Text="{Binding RejectTxtSearch}">
+                    <SearchBar.Behaviors>
+                        <local:TapToCloseBehavior></local:TapToCloseBehavior>
+                    </SearchBar.Behaviors>
+                </SearchBar>
+                <Frame Grid.Row="2" CornerRadius="0" Padding="10">
+                    <Grid ColumnDefinitions="*,100">
+                        <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" Grid.Column="0" Margin="20,0,0,0" Text="Members"/>
+                        <Label FontSize="18" FontAttributes="Bold" VerticalOptions="Center" Margin="10,0,0,0" Grid.Column="1" Text="Remove"/>
+                    </Grid>
+                </Frame>
+                <CollectionView ItemsSource="{Binding FetchedRejectList}" 
                             IsVisible="{Binding Cansee ,Converter={StaticResource InvertedBoolConverter}}"
                             SelectedItem="{Binding Items}"
                             SelectionMode="Multiple">
-                <CollectionView.EmptyView>
-                    <Grid WidthRequest="300" HeightRequest="150">
-                        <Label Text="No Logs Found"
-                               Margin="5"
+                    <CollectionView.EmptyView>
+                        <Grid WidthRequest="300" HeightRequest="150">
+                            <Label Text="No Logs Found"
+                               Margin="0,50,0,0"
                                HorizontalOptions="FillAndExpand"
                                HorizontalTextAlignment="Center"
                                VerticalOptions="FillAndExpand"
                                VerticalTextAlignment="Center" />
-                    </Grid>
-                </CollectionView.EmptyView>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:GroupList">
-                        <Grid ColumnDefinitions="*,*,*" Margin="5,0,0,0">
-                            <Label FontAutoScalingEnabled="True" HorizontalOptions="Center" Text="{Binding UserName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
-                            <Label FontAutoScalingEnabled="True" HorizontalOptions="Center" Grid.Column="1" Text="{Binding EmployeeName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
-                            <Image HorizontalOptions="Center" Grid.Column="2" Source="remove.png" WidthRequest="50" Aspect="AspectFit" HeightRequest="50">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ExclusionListViewModel}},Path=AddIntoRejectEmployeeCommand}" CommandParameter="{Binding Path=.}" />
-                                </Image.GestureRecognizers>
-                            </Image>
                         </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <CollectionView ItemsSource="{Binding BeforeReasonRejectList}" 
-                            Grid.Row="3"
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:GroupList">
+                            <Frame BorderColor="LightGray" CornerRadius="0" Padding="10">
+                                <Grid ColumnDefinitions="*,100" Margin="0,0,0,0">
+                                    <Grid RowDefinitions="*,*" ColumnDefinitions="*" Grid.Column="0">
+                                        <Label FontAutoScalingEnabled="True" HorizontalOptions="Start" Grid.Row="0" Text="{Binding EmployeeName}" TextColor="Black" FontSize="18" VerticalTextAlignment="Center"/>
+                                        <Label VerticalOptions="Center" HorizontalOptions="Start" Grid.Row="1" Text="{Binding UserName}" TextColor="Blue" FontSize="16" VerticalTextAlignment="Center"/>
+                                    </Grid>
+                                    <Grid Grid.Column="1">
+                                        <Image HorizontalOptions="Center" Grid.Column="2" Source="remove.png" WidthRequest="50" Aspect="AspectFit" HeightRequest="30">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ExclusionListViewModel}},Path=AddIntoRejectEmployeeCommand}" CommandParameter="{Binding Path=.}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <CollectionView ItemsSource="{Binding BeforeReasonRejectList}" 
                             IsVisible="{Binding Cansee}"
                             SelectedItem="{Binding Items}"
                             SelectionMode="Multiple">
-                <CollectionView.EmptyView>
-                    <Grid WidthRequest="300" HeightRequest="150">
-                        <Label Text="No Logs Found"
-                               Margin="5"
+                    <CollectionView.EmptyView>
+                        <Grid WidthRequest="300" HeightRequest="150">
+                            <Label Text="No Members Found"
+                               Margin="0,50,0,0"
                            HorizontalOptions="FillAndExpand"
                            HorizontalTextAlignment="Center"
                            VerticalOptions="FillAndExpand"
                            VerticalTextAlignment="Center" />
-                    </Grid>
-                </CollectionView.EmptyView>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:GroupList">
-                        <Grid ColumnDefinitions="*,*,*" Margin="5,0,0,0">
-                            <Label FontAutoScalingEnabled="True" HorizontalOptions="Center" Text="{Binding UserName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
-                            <Label FontAutoScalingEnabled="True" HorizontalOptions="Center" Grid.Column="1" Text="{Binding EmployeeName}" TextColor="Black" FontSize="21" VerticalTextAlignment="Center"/>
-                            <Image HorizontalOptions="Center" Grid.Column="2" Source="remove.png" WidthRequest="50" Aspect="AspectFit" HeightRequest="50">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ExclusionListViewModel}},Path=DeleteFromRejectEmployeeCommand}" CommandParameter="{Binding Path=.}" />
-                                </Image.GestureRecognizers>
-                            </Image>
                         </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <Grid Grid.Row="4" Padding="10" ColumnDefinitions="*,*" HeightRequest="70">
-                <Button Margin="5" Background="Red" Grid.Column="0" Text="Exclude All" Command="{Binding RejectAllEmployeeCommand}" />
-                <Button Margin="5" Grid.Column="1" Text="Confirm" Command="{Binding NextReasonRejectListCommand}" />
-            </Grid>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:GroupList">
+                            <Frame BorderColor="LightGray" CornerRadius="0" Padding="10">
+                                <Grid ColumnDefinitions="*,100">
+                                    <Grid RowDefinitions="*,*" ColumnDefinitions="*" Grid.Column="0">
+                                        <Label FontAutoScalingEnabled="True" HorizontalOptions="Start" Grid.Row="0" Text="{Binding EmployeeName}" TextColor="Black" FontSize="18" VerticalTextAlignment="Center"/>
+                                        <Label VerticalOptions="Center" HorizontalOptions="Start" Grid.Row="1" Text="{Binding UserName}" TextColor="Red" FontSize="16" VerticalTextAlignment="Center"/>
+                                    </Grid>
+                                    <Grid Grid.Column="1">
+                                        <Image HorizontalOptions="Center" Grid.Column="2" Source="remove.png" WidthRequest="50" Aspect="AspectFit" HeightRequest="30">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewmodel:ExclusionListViewModel}},Path=DeleteFromRejectEmployeeCommand}" CommandParameter="{Binding Path=.}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid Grid.Row="1" Padding="10" ColumnDefinitions="*,*,*,*" HeightRequest="70">
+            <Button Margin="5" Grid.Column="0"  Text="Approved" Command="{Binding NextIsPressedCommand}" />
+            <Button Margin="5" Grid.Column="1" Text="Excluded" Command="{Binding BackIsPressedCommand}" />
+            <Button Margin="5" Grid.Column="2" Background="Red" Text="Exld. All" Command="{Binding RejectAllEmployeeCommand}" />
+            <Button Margin="5" Grid.Column="3" Text="Confirm" Command="{Binding NextReasonRejectListCommand}" />
         </Grid>
-    </ScrollView>
+    </Grid>
 </ContentPage>

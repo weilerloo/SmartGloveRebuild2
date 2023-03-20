@@ -44,6 +44,38 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             CheckUserActivity();
             LoopCheckActivity();
             getNotification();
+            if (App.UserDetails.Role == "ADMIN1" || App.UserDetails.Role == "ADMIN2" )
+            {
+                Title = "Admin Dashboard";
+            }
+            else if(App.UserDetails.Role == "CLERK")
+            {
+                Title = "Clerk Dashboard";
+            }
+            else if(App.UserDetails.Role == "SUPERVISOR")
+            {
+                Title = "Supervisor Dashboard";
+            }
+            else if(App.UserDetails.Role == "HOD")
+            {
+                Title = "HOD Dashboard";
+            }
+            else if(App.UserDetails.Role == "BUH")
+            {
+                Title = "Business Unit Head";
+            }
+            else if(App.UserDetails.Role == "EXECUTIVE")
+            {
+                Title = "Executive Dashboard";
+            }
+            else if(App.UserDetails.Role == "HR")
+            {
+                Title = "HR Dashboard";
+            }
+            else
+            {
+                Title = "Employee Dashboard";
+            }
         }
 #else 
         public DashboardPageViewModel(ILoginService loginServices)
@@ -53,6 +85,38 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             GetUserBasicInfo();
             CheckUserActivity();
             LoopCheckActivity();
+            if (App.UserDetails.Role == "ADMIN1" || App.UserDetails.Role == "ADMIN2")
+            {
+                Title = "Admin Dashboard";
+            }
+            else if (App.UserDetails.Role == "CLERK")
+            {
+                Title = "Clerk Dashboard";
+            }
+            else if (App.UserDetails.Role == "SUPERVISOR")
+            {
+                Title = "Supervisor Dashboard";
+            }
+            else if (App.UserDetails.Role == "HOD")
+            {
+                Title = "HOD Dashboard";
+            }
+            else if (App.UserDetails.Role == "BUH")
+            {
+                Title = "Business Unit Head";
+            }
+            else if (App.UserDetails.Role == "EXECUTIVE")
+            {
+                Title = "Executive Dashboard";
+            }
+            else if (App.UserDetails.Role == "HR")
+            {
+                Title = "HR Dashboard";
+            }
+            else
+            {
+                Title = "Employee Dashboard";
+            }
         }
 #endif
 

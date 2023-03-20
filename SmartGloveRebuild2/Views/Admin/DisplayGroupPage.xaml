@@ -5,6 +5,7 @@
              xmlns:models="clr-namespace:SmartGloveRebuild2.Models.Group"
              xmlns:viewModels="clr-namespace:SmartGloveRebuild2.ViewModels.Admin"
              x:DataType="viewModels:DisplayGroupViewModel"
+             xmlns:local="clr-namespace:Maui.FixesAndWorkarounds;assembly=PureWeen.Maui.FixesAndWorkarounds"
              Title="Display Group Page">
 
     <Grid RowDefinitions="*,Auto">
@@ -19,31 +20,38 @@
                             SelectedItem="{Binding SelectedGroupname}"
                             ItemDisplayBinding="{Binding GroupName}"/>
                     </Grid>
-                    <Grid Grid.Row="3" Margin="20,10,0,0" ColumnDefinitions="*,*,*" HorizontalOptions="Start">
-                        <Label HorizontalTextAlignment="End" Grid.Column="0" Text="Total of Worker:" FontSize="16" HorizontalOptions="Center" TextColor="Black"/>
+                    <Grid Grid.Row="3" Margin="20,10,0,0" ColumnDefinitions="*,Auto,*,*" RowDefinitions="*,*" HorizontalOptions="Start">
+                        <Label HorizontalTextAlignment="Center" Grid.Column="0" Text="Total of Worker:" FontSize="16" HorizontalOptions="Start" TextColor="Black"/>
                         <Label HorizontalTextAlignment="Start" Grid.Column="1" Text="{Binding Numworker}" FontSize="16" Margin="5,0,0,0" HorizontalOptions="Center" TextColor="Black"/>
-                        <ActivityIndicator Grid.Column="2" Margin="20,0,0,0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
+                        <Label HorizontalTextAlignment="End" Grid.Row="1" Text="Notes : Will only show 50 maximum." FontSize="16" HorizontalOptions="Center" TextColor="Black"/>
+                        <ActivityIndicator Grid.Column="3" Margin="20,0,0,0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
                     </Grid>
                 </Grid>
-                    <SearchBar BackgroundColor="LightGray" Margin="20,0,20,20"
-                               Text="{Binding TxtSearch}"/>
+                <SearchBar BackgroundColor="LightGray" Margin="20,0,20,20"
+                               Text="{Binding TxtSearch}">
+                    <SearchBar.Behaviors>
+                            <local:TapToCloseBehavior></local:TapToCloseBehavior>
+                    </SearchBar.Behaviors>
+                </SearchBar>
                 <Frame CornerRadius="0">
                     <Grid ColumnDefinitions="220,*">
                         <Label HorizontalOptions="Start" Margin="10,0,0,0" Grid.Column="0" Text="Members" FontSize="17"/>
                         <Label HorizontalOptions="Center" Grid.Column="1" Text="OT Hours" FontSize="17"/>
                     </Grid>
                 </Frame>
-                <CollectionView ItemsSource="{Binding GroupNameList}">
+                <CollectionView ItemsSource="{Binding GroupNameList}" >
                     <CollectionView.EmptyView>
-                        <Label Text="No Group Members Found"
-                           HorizontalOptions="FillAndExpand"
-                           HorizontalTextAlignment="Center"
-                           VerticalOptions="FillAndExpand"
-                           VerticalTextAlignment="Center" />
+                        <Grid WidthRequest="300" HeightRequest="150">
+                            <Label Text="No Members Found"
+                               Margin="0,50,0,0"
+                               HorizontalOptions="FillAndExpand"
+                               HorizontalTextAlignment="Center"
+                               VerticalOptions="FillAndExpand"
+                               VerticalTextAlignment="Center" />
+                        </Grid>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:GroupList">
-                            
                             <Frame BorderColor="LightGray" CornerRadius="0" Padding="10">
                                 <Grid ColumnDefinitions="220,*">
                                     <Grid RowDefinitions="50,25">

@@ -9,7 +9,7 @@
              Title="Rejected OT">
     <Grid RowDefinitions="Auto,*">
         <VerticalStackLayout>
-            <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,Auto" Margin="0,0,0,30">
+            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,*,Auto,Auto" Margin="0,0,0,30">
                 <Label Text="Reject List" FontSize="24" Margin="20,20,0,10" TextColor="Black"/>
                 <CollectionView Grid.Row="1" 
                             ItemsSource="{Binding Monthname}">
@@ -32,9 +32,9 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Button x:Name="AddButton" Grid.Row="2" Grid.Column="3" Text="+" Margin="2" Command="{Binding IncreaseMonthCommand}"/>
-                <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="2" Text="-" Margin="2" Command="{Binding DecreaseMonthCommand}"/>
-                <!--<ActivityIndicator Grid.Row="3" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>-->
+                <Button x:Name="MinusButton" Grid.Row="2" Grid.Column="3" Text="-" Margin="2" Command="{Binding DecreaseMonthCommand}"/>
+                <Button x:Name="AddButton" Grid.Row="2" Grid.Column="4" Text="+" Margin="2" Command="{Binding IncreaseMonthCommand}"/>
+                <ActivityIndicator Margin="20,0,0,0" Grid.Row="1" Grid.Column="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
             </Grid>
             <Frame Grid.Row="1" CornerRadius="0" Padding="0,10,0,10">
                 <Grid ColumnDefinitions="*,*,*">

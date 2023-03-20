@@ -4,7 +4,7 @@
              x:Class="SmartGloveRebuild2.Views.Dashboard.ClerkDashboardPage"
              xmlns:viewmodel="clr-namespace:SmartGloveRebuild2.ViewModels.Dashboard"
              x:DataType="viewmodel:DashboardPageViewModel"
-             Title="Clerk Dashboard">
+             Title="{Binding Title}">
     <ScrollView>
         <Grid BackgroundColor="Transparent">
 
