@@ -9,7 +9,7 @@
              Shell.NavBarIsVisible="False"
              NavigationPage.HasNavigationBar="False">
     <Grid RowDefinitions="*,*,*,*">
-        <Image Grid.Row="1" VerticalOptions="End" Source="sqaurelogo.png" BackgroundColor="#FFFFFF" HeightRequest="200" WidthRequest="200"/>
+        <Image Grid.Row="1" VerticalOptions="End" Source="squarelogo.png" BackgroundColor="#FFFFFF" HeightRequest="200" WidthRequest="200"/>
         <Label Grid.Row="2" 
                        VerticalOptions="End"
                        HorizontalOptions="Center"
