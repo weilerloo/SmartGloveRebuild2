@@ -41,6 +41,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
         {
             _groupService = groupService;
             DisplayGroupMember();
+
             //SearchEmptyLoadContactCommand = new Command(async () => await LoadCollectionContacts());
         }
 
@@ -55,6 +56,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 OnSearchContactCommand();
             }
         }
+
+        //[RelayCommand]
+        //public async void NextPage()
+        //{
+        //    EditGroupList
+        //}
+
 
         internal class IntermediateKey
         {
@@ -77,12 +85,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
         private void OnSearchContactCommand()
         {
-            //if(SearchedGroupList.ToList().Count > EditGroupList.ToList().Count)
-            //{
-            //    EditGroupList = SearchedGroupList;
-            //}
             var someList = SearchedGroupList.ToList();
-
             var founContacts = someList.Where(found =>
              found.UserName.Contains(TxtSearch.ToUpper()) ||
              found.EmployeeName.Contains(TxtSearch.ToUpper())
@@ -90,12 +93,19 @@ namespace SmartGloveRebuild2.ViewModels.Admin
 
             if (founContacts.Count > 0)
             {
-
+                var amendlist = EditGroupList.ToList();
                 EditGroupList.Clear();
                 foreach (var contact in founContacts)
                 {
-                    EditGroupList.Add(contact); //12
-                }
+                    if (EditGroupList.Count() > 20)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EditGroupList.Add(contact);
+                    }
+                }              
             }
             else
             {
@@ -187,6 +197,20 @@ namespace SmartGloveRebuild2.ViewModels.Admin
             List<GroupList> originalEnityList = EditGroupList.ToList();  //53, 12
             ObservableCollection<GroupList> bRef = new ObservableCollection<GroupList>(originalEnityList);
             SearchedGroupList = bRef;
+
+            var amendlist = EditGroupList.ToList();
+            EditGroupList.Clear();
+            foreach(var item in amendlist)
+            {
+                if(EditGroupList.Count() > 20)
+                {
+                    break;
+                }
+                else
+                {
+                    EditGroupList.Add(item);
+                }
+            }
             IsBusy = false;
         }
 

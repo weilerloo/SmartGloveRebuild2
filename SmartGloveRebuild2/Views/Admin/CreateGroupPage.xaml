@@ -12,7 +12,7 @@
         </Grid>
         <VerticalStackLayout Grid.Row="1" HorizontalOptions="Center">
             <Label FontSize="20" FontAttributes="Bold" Text="Enter Group Name:" />
-            <Entry FontSize="20" HeightRequest="100" HorizontalTextAlignment="Center" Text="{Binding Creategroupname}" Placeholder="GroupName"/>
+            <Entry FontSize="20" HeightRequest="100" HorizontalTextAlignment="Center" VerticalOptions="Center" VerticalTextAlignment="Center" Text="{Binding Creategroupname}" Placeholder="GroupName"/>
             <Button Margin="0,50,0,0" Text="Save" HeightRequest="50" WidthRequest="200" Command="{Binding CreateGroupCommand}"/>
             <Label HorizontalOptions="Center" Margin="0,10,0,0" Text="* Maximum 10 words." FontSize="16" TextColor="Black"/>
         </VerticalStackLayout>

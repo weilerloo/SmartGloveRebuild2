@@ -48,11 +48,11 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             {
                 Title = "Admin Dashboard";
             }
-            else if(App.UserDetails.Role == "Clerk")
+            else if(App.UserDetails.Role == "CLERK")
             {
                 Title = "Clerk Dashboard";
             }
-            else if(App.UserDetails.Role == "Supervisor")
+            else if(App.UserDetails.Role == "SUPERVISOR")
             {
                 Title = "Supervisor Dashboard";
             }
@@ -64,7 +64,7 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             {
                 Title = "Business Unit Head";
             }
-            else if(App.UserDetails.Role == "Executive")
+            else if(App.UserDetails.Role == "EXECUTIVE")
             {
                 Title = "Executive Dashboard";
             }
@@ -89,11 +89,11 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             {
                 Title = "Admin Dashboard";
             }
-            else if (App.UserDetails.Role == "Clerk")
+            else if (App.UserDetails.Role == "CLERK")
             {
                 Title = "Clerk Dashboard";
             }
-            else if (App.UserDetails.Role == "Supervisor")
+            else if (App.UserDetails.Role == "SUPERVISOR")
             {
                 Title = "Supervisor Dashboard";
             }
@@ -105,7 +105,7 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             {
                 Title = "Business Unit Head";
             }
-            else if (App.UserDetails.Role == "Executive")
+            else if (App.UserDetails.Role == "EXECUTIVE")
             {
                 Title = "Executive Dashboard";
             }

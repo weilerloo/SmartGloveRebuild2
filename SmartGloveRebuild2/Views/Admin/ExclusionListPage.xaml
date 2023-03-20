@@ -96,7 +96,7 @@
                             SelectionMode="Multiple">
                     <CollectionView.EmptyView>
                         <Grid WidthRequest="300" HeightRequest="150">
-                            <Label Text="No Logs Found"
+                            <Label Text="No Members Found"
                                Margin="0,50,0,0"
                            HorizontalOptions="FillAndExpand"
                            HorizontalTextAlignment="Center"
