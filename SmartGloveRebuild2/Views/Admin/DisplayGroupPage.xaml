@@ -11,7 +11,7 @@
     <Grid RowDefinitions="*,Auto">
         <ScrollView>
             <VerticalStackLayout>
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto" Margin="0,0,0,20">
+                <Grid RowDefinitions="Auto,Auto,Auto" Margin="0,0,0,10">
                     <Label FontAttributes="Bold" Text="Please SELECT a group." FontSize="22" Margin="20,20,0,0" TextColor="Black"/>
                     <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto" Margin="20,0,0,0">
                         <Label VerticalOptions="Center" Grid.Column="0" Text="Current Group :" FontSize="16" HorizontalOptions="Center" TextColor="Black"/>
@@ -20,17 +20,17 @@
                             SelectedItem="{Binding SelectedGroupname}"
                             ItemDisplayBinding="{Binding GroupName}"/>
                     </Grid>
-                    <Grid Grid.Row="3" Margin="20,10,0,0" ColumnDefinitions="*,Auto,*,*" RowDefinitions="*,*" HorizontalOptions="Start">
-                        <Label HorizontalTextAlignment="Center" Grid.Column="0" Text="Total of Worker:" FontSize="16" HorizontalOptions="Start" TextColor="Black"/>
-                        <Label HorizontalTextAlignment="Start" Grid.Column="1" Text="{Binding Numworker}" FontSize="16" Margin="5,0,0,0" HorizontalOptions="Center" TextColor="Black"/>
-                        <Label HorizontalTextAlignment="End" Grid.Row="1" Text="Notes : Will only show 50 maximum." FontSize="16" HorizontalOptions="Center" TextColor="Black"/>
-                        <ActivityIndicator Grid.Column="3" Margin="20,0,0,0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
-                    </Grid>
                 </Grid>
+                <HorizontalStackLayout Margin="20,0,0,0" Spacing="10">
+                    <Label Text="Total of Worker:" FontSize="16" TextColor="Black"/>
+                    <Label Text="{Binding Numworker}" FontSize="16" TextColor="Black"/>
+                </HorizontalStackLayout>
+                <Label Text="Notes : Will only show 50 maximum." FontSize="16" TextColor="Black" Margin="20,0,0,15"/>
+                <ActivityIndicator Margin="20,0,0,0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
                 <SearchBar BackgroundColor="LightGray" Margin="20,0,20,20"
                                Text="{Binding TxtSearch}">
                     <SearchBar.Behaviors>
-                            <local:TapToCloseBehavior></local:TapToCloseBehavior>
+                        <local:TapToCloseBehavior></local:TapToCloseBehavior>
                     </SearchBar.Behaviors>
                 </SearchBar>
                 <Frame CornerRadius="0">
