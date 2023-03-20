@@ -24,9 +24,9 @@
                 <HorizontalStackLayout Margin="20,0,0,0" Spacing="10">
                     <Label Text="Total of Worker:" FontSize="16" TextColor="Black"/>
                     <Label Text="{Binding Numworker}" FontSize="16" TextColor="Black"/>
+                    <ActivityIndicator Margin="20,0,0,0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
                 </HorizontalStackLayout>
                 <Label Text="Notes : Will only show 50 maximum." FontSize="16" TextColor="Black" Margin="20,0,0,15"/>
-                <ActivityIndicator Margin="20,0,0,0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HeightRequest="25" WidthRequest="25"/>
                 <SearchBar BackgroundColor="LightGray" Margin="20,0,20,20"
                                Text="{Binding TxtSearch}">
                     <SearchBar.Behaviors>
