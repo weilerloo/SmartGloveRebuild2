@@ -14,5 +14,9 @@ public partial class DisplayGroupPage : ContentPage
         {
             EditButton.IsVisible = false;
         }
+
+//#if ANDROID
+//        EditButton.IsVisible = false;
+//#endif
     }
 }

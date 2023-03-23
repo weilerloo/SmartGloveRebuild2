@@ -15,6 +15,7 @@ using SmartGloveRebuild2.Models.Schedule;
 using Microsoft.IdentityModel.Tokens;
 using SmartGloveRebuild2.Views.Dashboard;
 using System.Windows.Input;
+using System.Text.RegularExpressions;
 
 namespace SmartGloveRebuild2.ViewModels.Admin
 {
@@ -103,6 +104,13 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                     }
                     else
                     {
+                        if(contact.SelectedIndex == -1)
+                        {
+                            contact.SelectedIndex = NameGroupList.IndexOf(new CreateGroupDTO
+                            {
+                                GroupName = GroupList.GroupName,
+                            });
+                        }
                         EditGroupList.Add(contact);
                     }
                 }              
@@ -235,7 +243,7 @@ namespace SmartGloveRebuild2.ViewModels.Admin
                 await CreateUnassigned();
             }
 
-            foreach (var items in EditGroupList)
+            foreach (var items in SearchedGroupList)
             {
                 int gnmpindex = items.SelectedIndex;
                 var gnmp = items.TitleGroup[gnmpindex];

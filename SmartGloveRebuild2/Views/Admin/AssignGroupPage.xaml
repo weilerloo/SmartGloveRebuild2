@@ -45,17 +45,17 @@
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate Grid.Row="1">
                         <DataTemplate x:DataType="model:GroupList">
-                            <Grid ColumnDefinitions="*,*">
-                                <Frame CornerRadius="0">
-                                    <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
-                                        <Label HorizontalOptions="Start" Grid.Row="0" Text="{Binding EmployeeName}" TextColor="Black" FontSize="16"/>
-                                        <Label HorizontalOptions="Start"  Grid.Row="1" Text="{Binding UserName}" TextColor="Blue" FontSize="16"/>
+                            <Grid ColumnDefinitions="*,*" IsVisible="{Binding Cansee}">
+                                <Frame CornerRadius="0" IsVisible="{Binding Cansee}">
+                                    <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" IsVisible="{Binding Cansee}">
+                                        <Label HorizontalOptions="Start" Grid.Row="0" Text="{Binding EmployeeName}" TextColor="Black" FontSize="16" IsVisible="{Binding Cansee}"/>
+                                        <Label HorizontalOptions="Start"  Grid.Row="1" Text="{Binding UserName}" TextColor="Blue" FontSize="16" IsVisible="{Binding Cansee}"/>
                                         <!--<Label Margin="80,0,0,0" HorizontalOptions="Start" Grid.Row="1" Grid.Column="0" Text="{Binding GroupName}" TextColor="Red" FontSize="16"/>-->
                                     </Grid>
                                 </Frame>
-                                <Frame Grid.Column="1" CornerRadius="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                                <Frame Grid.Column="1" CornerRadius="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding Cansee}">
                                     <Grid>
-                                        <Picker FontSize="18" HeightRequest="50" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="DarkGreen" WidthRequest="140" ItemsSource="{Binding TitleGroup}"
+                                        <Picker  IsVisible="{Binding Cansee}" FontSize="18" HeightRequest="50" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" TextColor="DarkGreen" WidthRequest="140" ItemsSource="{Binding TitleGroup}"
                                                 ItemDisplayBinding="{Binding GroupName}" 
                                                 SelectedItem="{Binding SelectedGroup}"
                                                 SelectedIndex="{Binding SelectedIndex}"/>

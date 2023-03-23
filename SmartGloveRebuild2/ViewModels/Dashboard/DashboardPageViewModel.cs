@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 
@@ -43,6 +44,7 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
             GetUserBasicInfo();
             CheckUserActivity();
             LoopCheckActivity();
+            getAppVersion();
             getNotification();
             if (App.UserDetails.Role == "ADMIN1" || App.UserDetails.Role == "ADMIN2" )
             {
@@ -77,7 +79,7 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
                 Title = "Employee Dashboard";
             }
         }
-#else 
+#else
         public DashboardPageViewModel(ILoginService loginServices)
         {
             _loginService = loginServices;
@@ -332,6 +334,63 @@ namespace SmartGloveRebuild2.ViewModels.Dashboard
                     }
                 }
             }
+        }
+
+        public async Task<string> getPlayStoreVersion()
+        {
+            var version = await Task.Run(async () =>
+            {
+                var uri = new Uri($"https://play.google.com/store/apps/details?id={AppInfo.Current.PackageName}&hl=en");
+                using (var client = new HttpClient())
+                using (var request = new HttpRequestMessage(HttpMethod.Get, uri))
+                {
+                    request.Headers.TryAddWithoutValidation("Accept", "text/html");
+                    request.Headers.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
+                    request.Headers.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
+                    using (var response = await client.SendAsync(request).ConfigureAwait(false))
+                    {
+                        try
+                        {
+                            response.EnsureSuccessStatusCode();
+                            var responseHTML = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var rx = new Regex(@"\[\[\[""\d{1,3}\.\d{1,3}\.{0,1}\d{0,3}""]]", RegexOptions.Compiled);
+                            MatchCollection matches = rx.Matches(responseHTML);
+                            return matches.Count > 0 ? matches[0].Value : "Unknown";
+                        }
+                        catch
+                        {
+                            return "Error";
+                        }
+                    }
+                }
+            }
+            );
+            char[] charsToTrim = { '[', ']' };
+            string trimmedversion = version.Trim(charsToTrim);
+            string correctversion = trimmedversion.Substring(1, trimmedversion.Length - 2);
+            return correctversion;
+        }
+
+        public async void getAppVersion()
+        {
+            if (IsBusy) { return; }
+            IsBusy = true;
+            var currentPlaystoreversion = await getPlayStoreVersion();
+            if (currentPlaystoreversion != null)
+            {
+                if (AppInfo.Current.Version.ToString() == currentPlaystoreversion)
+                {
+                    IsBusy = false;
+                    return;
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Alert", "New Version Detected, Please update to the latest version from Play Store.", "OK");
+                    var uri = new Uri($"https://play.google.com/store/apps/details?id={AppInfo.Current.PackageName}&hl=en");
+                    await Launcher.OpenAsync(uri);
+                }
+            }
+            IsBusy = false;
         }
 
         public async void LoopCheckActivity()

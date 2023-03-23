@@ -10,6 +10,7 @@ namespace SmartGloveRebuild2.Models.Group
     public class GroupList : ObservableObject
     {
         private string groupname;
+        private bool cansee = true;
         private string employeename;
         private string username;
         private double totalhour;
@@ -45,6 +46,12 @@ namespace SmartGloveRebuild2.Models.Group
         {
             get => selectedindex;
             set => SetProperty(ref selectedindex, value);
+        }
+
+        public bool Cansee
+        {
+            get => cansee;
+            set => SetProperty(ref cansee, value);
         }
 
         public AssignGroupDTO SelectedGroup { get; set; }
